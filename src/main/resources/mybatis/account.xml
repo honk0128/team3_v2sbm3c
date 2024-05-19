@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- SB가 자동으로 구현하여 연동하는 interface -->
+<mapper namespace="dev.mvc.account.AccountDAOInter"> <!-- SB가 자동으로 구현하여 연동하는 interface -->
+  <select id="checkID" resultType="int" parameterType="String">
+    SELECT COUNT(aid) as cnt
+    FROM ACCOUNT
+    WHERE aid=#{aid}
+  </select>
+  
+  <insert id="signin" parameterType="dev.mvc.account.AccountVO">
+    INSERT INTO ACCOUNT(accountno, aid, apasswd, aname, aprofile_img, aprofile_imgsave, aprofile_thum, aprofile_size, zipcode, address1, address2, atel, adate, agrade)
+    VALUES (account_seq.nextval, #{aid}, #{apasswd}, #{aname}, #{aprofile_img}, #{aprofile_imgsave}, #{aprofile_thum}, #{aprofile_size}, #{zipcode}, #{address1}, 
+               #{address2}, #{atel}, sysdate, #{agrade})
+  </insert>
+  
+  <select id="list" resultType="dev.mvc.account.AccountVO">
+    SELECT accountno, aid, apasswd, aname, aprofile_img, aprofile_imgsave, aprofile_thum, aprofile_size, zipcode, address1, address2, atel, adate, agrade
+    FROM account
+    ORDER BY agrade ASC, aid ASC
+  </select>
+  
+    <!-- memberno로 회원 정보 조회 -->
+  <select id="read" resultType="dev.mvc.account.AccountVO" parameterType="int">
+    SELECT accountno, aid, apasswd, aname, aprofile_img, aprofile_imgsave, aprofile_thum, aprofile_size, zipcode, address1, address2, atel, adate, agrade
+    FROM account
+    WHERE accountno = #{accountno}
+  </select>  
+
+  <!-- id(이메일)로 회원 정보 조회 -->
+  <select id="readById" resultType="dev.mvc.account.AccountVO" parameterType="String">
+    SELECT accountno, aid, apasswd, aname, aprofile_img, aprofile_imgsave, aprofile_thum, aprofile_size, zipcode, address1, address2, atel, adate, agrade
+    FROM account
+    WHERE aid = #{aid}
+  </select>
+  
+    <!-- 로그인 -->
+  <select id="login" resultType="int" parameterType="HashMap">
+    SELECT COUNT(accountno) as cnt
+    FROM account
+    WHERE aid=#{aid} AND apasswd=#{apasswd}
+  </select>
+
+</mapper>

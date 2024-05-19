@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dev.mvc.crudcate.CrudcateDAOInter"> <!-- SB가 자동으로 구현하여 연동하는 interface -->
+  <!-- Create -->
+  <insert id="create" parameterType="dev.mvc.crudcate.CrudcateVO">
+    INSERT INTO CRUDCATE(crudcateno, name, namesub, namesubsub, cnt, crudate, seqno, visible)
+    VALUES(CRUDCATE_SEQ.nextval, #{name}, #{namesub}, #{namesubsub}, 0, sysdate, #{seqno}, 'Y')
+  </insert>
+
+  <!-- List -->
+  <select id="list_all" resultType="dev.mvc.crudcate.CrudcateVO">
+    SELECT crudcateno, name, namesub, namesubsub, cnt, crudate, seqno, visible
+    FROM crudcate
+    ORDER BY crudcateno ASC
+  </select>
+
+  <!-- Read -->
+  <select id="read" resultType="dev.mvc.crudcate.CrudcateVO" parameterType = "int">
+    SELECT crudcateno, name, namesub, namesubsub, cnt, crudate, seqno, visible
+    FROM crudcate
+    WHERE crudcateno=#{crudcateno}
+  </select>
+
+  <!-- Update -->
+  <update id="update" parameterType="dev.mvc.crudcate.CrudcateVO">
+    UPDATE crudcate
+    SET name = #{name}, namesub = #{namesub}, namesubsub = #{namesubsub}, crudate = sysdate, cnt = #{cnt}, seqno = #{seqno}, visible = #{visible}
+    WHERE crudcateno = #{crudcateno}
+  </update>
+
+  <!-- Delete -->
+  <delete id="delete" parameterType = "int">
+    DELETE FROM crudcate
+    WHERE crudcateno = #{crudcateno}
+  </delete>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
