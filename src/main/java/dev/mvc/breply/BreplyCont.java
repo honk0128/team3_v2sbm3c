@@ -152,7 +152,9 @@ public class BreplyCont {
     return "breply/read";
   }
   
-  
+  /**
+   * 업데이트
+   */
   @GetMapping(value = "update_Breply")
   public String update_Breply(Model model,
                                 HttpSession session,
