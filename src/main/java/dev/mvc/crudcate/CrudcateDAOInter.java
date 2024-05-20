@@ -39,4 +39,31 @@ public interface CrudcateDAOInter {
    */
   public int delete(int crudcateno);
   
+  /**
+   * 출력 순서 높임
+   * @param crudcateno
+   * @return
+   */
+  public int seqno_forward(int crudcateno);
+
+  /**
+   * 출력 순서 낮춤
+   * @param crudcateno
+   * @return
+   */
+  public int seqno_backward(int crudcateno);
+
+  /**
+   * 카테고리 공개
+   * @param crudcateno
+   * @return
+   */
+  public int visible_y(int crudcateno);
+
+  /**
+   * 카테고리 비공개
+   * @param crudcateno
+   * @return
+   */
+  public int visible_n(int crudcateno);
 }

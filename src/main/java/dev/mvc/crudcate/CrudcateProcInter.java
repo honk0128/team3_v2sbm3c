@@ -35,4 +35,15 @@ public interface CrudcateProcInter {
    * @return
    */
   public int delete(int crudcateno);
+
+  public int seqno_forward(int crudcateno);
+
+
+  public int seqno_backward(int crudcateno);
+
+
+  public int visible_y(int crudcateno);
+
+
+  public int visible_n(int crudcateno);
 }

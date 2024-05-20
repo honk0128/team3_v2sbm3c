@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -136,5 +136,31 @@ public class CrudcateCont {
     }
   }
   
-  
+    @GetMapping(value="/seqno_forward/{crudcateno}")
+  public String seqno_forward(Model model, @PathVariable("crudcateno") Integer crudcateno, CrudcateVO crudcateVO) {
+    this.crudcateProc.seqno_forward(crudcateno);
+
+    return "redirect:/crudcate/list_all";
+  }
+
+  @GetMapping(value="/seqno_backward/{crudcateno}")
+  public String seqno_backward(Model model, @PathVariable("crudcateno") Integer crudcateno, CrudcateVO crudcateVO) {
+    this.crudcateProc.seqno_backward(crudcateno);
+
+    return "redirect:/crudcate/list_all";
+  }
+
+  @GetMapping(value="/visible_y/{crudcateno}")
+  public String visible_y(Model model, @PathVariable("crudcateno") Integer crudcateno, CrudcateVO crudcateVO) {
+    this.crudcateProc.visible_y(crudcateno);
+
+    return "redirect:/crudcate/list_all";
+  }
+
+  @GetMapping(value="/visible_n/{crudcateno}")
+  public String visible_n(Model model, @PathVariable("crudcateno") Integer crudcateno, CrudcateVO crudcateVO) {
+    this.crudcateProc.visible_n(crudcateno);
+
+    return "redirect:/crudcate/list_all";
+  }
 }

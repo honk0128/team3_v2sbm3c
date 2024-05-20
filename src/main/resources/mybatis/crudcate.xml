@@ -35,6 +35,32 @@
     WHERE crudcateno = #{crudcateno}
   </delete>
 
+  <!-- seqno_forward -->
+  <update id="seqno_forward" parameterType="Integer">
+    UPDATE crudcate
+    SET crudate = sysdate, seqno = seqno - 1
+    WHERE crudcateno = #{crudcateno}
+  </update>
+
+  <!-- seqno_backward -->
+  <update id="seqno_backward" parameterType="Integer">
+    UPDATE crudcate
+    SET crudate = sysdate, seqno = seqno + 1
+    WHERE crudcateno = #{crudcateno}
+  </update>
+
+  <!-- 카테고리 공개 -->
+  <update id="visible_y" parameterType="Integer">
+    UPDATE crudcate SET visible='Y' 
+    WHERE crudcateno = #{crudcateno}
+  </update>
+
+  <!-- 카테고리 비공개 -->
+  <update id="visible_n" parameterType="Integer">
+    UPDATE crudcate SET visible='N' 
+    WHERE crudcateno = #{crudcateno}
+  </update>
+
 </mapper>
 
 

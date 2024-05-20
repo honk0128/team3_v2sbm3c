@@ -44,5 +44,28 @@ public class CrudcateProc implements CrudcateProcInter {
     int cnt = this.crudcateDAO.delete(crudcateeno);
     return cnt;
   }
+
+  @Override
+  public int seqno_forward(int crudcateeno) {
+    int cnt = this.crudcateDAO.seqno_forward(crudcateeno);
+    return cnt;
+  }
+
+  @Override
+  public int seqno_backward(int crudcateeno) {
+    int cnt = this.crudcateDAO.seqno_backward(crudcateeno);
+    return cnt;
+  }
   
+  @Override
+  public int visible_y(int crudcateeno) {
+    int cnt = this.crudcateDAO.visible_y(crudcateeno);
+    return cnt;
+  }
+
+  @Override
+  public int visible_n(int crudcateeno) {
+    int cnt = this.crudcateDAO.visible_n(crudcateeno);
+    return cnt;
+  }
 }
