@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 
 
+
 public interface AccountDAOInter {
   /**
    * 중복 아이디 검사
@@ -44,6 +45,13 @@ public interface AccountDAOInter {
    * 로그인 처리
    */
   public int login(HashMap<String, Object> map);
+  
+  /**
+   * 수정 처리
+   * @param accountVO
+   * @return
+   */
+  public int update_account(AccountVO accountVO);
   
 }
  
