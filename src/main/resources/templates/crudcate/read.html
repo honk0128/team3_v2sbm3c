@@ -5,6 +5,9 @@
     <div class="title_line">카테고리 조회</div>
 
     <div class="menu_line"></div>
+    <!-- /crudcate/list_search_component 로 교체 -->
+    <div th:replace="~{crudcate/list_search_component::list_search_fragment}"></div>
+    <div class="menu_line"></div>
 
     <div class="container w-75 mt-3">
       <ul class="list-group list-group-flush">
@@ -18,5 +21,9 @@
         <li class="list-group-item">출력 모드: <span th:text="${crudcateVO.visible}"></span></li>
       </ul>
     </div>
+
+    <br />
+    <!-- /crudcate/list_all_component 로 교체 -->
+    <div th:replace="~{crudcate/list_all_component::list_all_fragment}"></div>
   </div>
 </html>

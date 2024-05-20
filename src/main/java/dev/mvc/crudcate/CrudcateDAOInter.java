@@ -1,6 +1,7 @@
 package dev.mvc.crudcate;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -66,4 +67,17 @@ public interface CrudcateDAOInter {
    * @return
    */
   public int visible_n(int crudcateno);
+
+  public ArrayList<CrudcateVO> list_all_name_y();
+
+  public ArrayList<CrudcateVO> list_all_namesub_y(String name);
+
+  public ArrayList<CrudcateVO> list_search(String word);
+
+  public ArrayList<CrudcateVO> list_search_paging(Map<String, Object> map);
+
+  public int list_search_count(String word);
+
+  public String pagingBox(int movieno, int now_page, String word, String list_file, int search_count, int record_per_page, int page_per_blocK);
+
 }

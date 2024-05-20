@@ -61,6 +61,64 @@
     WHERE crudcateno = #{crudcateno}
   </update>
 
+  <!-- 공개할 중분류 목록 -->
+  <select id="list_all_name_y" resultType="dev.mvc.crudcate.CrudcateVO">
+    SELECT crudcateno, name, namesub, namesubsub, cnt, crudate, seqno, visible
+    FROM crudcate
+    WHERE name IN (
+      SELECT DISTINCT name
+      FROM crudcate
+    ) AND namesub = '-' AND visible='Y'
+    ORDER BY name ASC
+  </select>
+
+  <!-- 공개할 소분류 목록 -->
+  <select id="list_all_namesub_y" resultType="dev.mvc.crudcate.CrudcateVO" parameterType="String">
+    SELECT crudcateno, name, namesub, namesubsub, cnt, crudate, seqno, visible
+    FROM crudcate
+    WHERE name = #{name} AND namesub != '-' AND visible = 'Y' AND namesubsub = '-'
+    ORDER BY seqno ASC
+  </select>
+
+  <!-- 관리자용 검색 -->
+  <select id="list_search" resultType="dev.mvc.crudcate.CrudcateVO" parameterType="String">
+    SELECT crudcateno, name, namesub, namesubsub, cnt, crudate, seqno, visible
+    FROM crudcate
+    <if test="word != null and word !=''">
+      WHERE UPPER(name) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(namesub) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(namesubsub) LIKE '%' || UPPER(#{word}) || '%'
+    </if>
+    ORDER BY crudcateno ASC
+  </select>
+
+  <!--페이징 -->
+  <select id="list_search_paging" resultType="dev.mvc.crudcate.CrudcateVO" parameterType="Map">
+  SELECT crudcateno, name, namesub, namesubsub, cnt, crudate, seqno, visible, r
+  FROM (
+      SELECT crudcateno, name, namesub, namesubsub, cnt, crudate, seqno, visible, rownum as r
+      FROM (
+          SELECT crudcateno, name, namesub, namesubsub, cnt, crudate, seqno, visible
+          FROM crudcate
+          <if test="word != null and word !=''">
+          WHERE UPPER(name) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(namesub) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(namesubsub) LIKE '%' || UPPER(#{word}) || '%'
+          </if>
+          ORDER BY crudcateno ASC
+      )
+  )
+  <!-- WHERE r >= 1 AND r <= 3; -->
+  WHERE r &gt;= #{start_num} AND r &lt;= #{end_num}
+  </select>
+
+  <!-- 검색된 코드 수 -->
+  <select id="list_search_count" resultType="int" parameterType="String">
+    SELECT count(*) as cnt
+    FROM crudcate
+    <if test="word != null and word !=''">
+      WHERE UPPER(name) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(namesub) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(namesubsub) LIKE '%' || UPPER(#{word}) || '%'
+    </if>
+    ORDER BY crudcateno ASC
+  </select>
+
+
 </mapper>
 
 

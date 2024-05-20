@@ -3,6 +3,10 @@
 <html layout:decorate="~{layout}">
   <!-- layout.html 상속-->
   <div layout:fragment="content">
+    <!-- /crudcate/list_search_component 로 교체 -->
+    <div th:replace="~{crudcate/list_search_component::list_search_fragment}"></div>
+    <div class="menu_line"></div>
+
     <div id="panel_delete" style="padding: 10px 0px 10px 0px; width: 100%; text-align: center">
       <form name="frm" th:object="${crudcateVO}" method="post" action="/crudcate/delete">
         <!-- hidden -->
@@ -15,9 +19,19 @@
         <span th:text="${crudcateVO.namesubsub}" class="title_line_text"></span> ]
         <div class="content_body_bottom">
           <button type="submit" class="btn btn-secondary btn-sm">삭제</button>
-          <button type="button" th:attr="onclick=|location.href='/crudcate/list_all'|" class="btn btn-secondary btn-sm">취소</button>
+          <button
+            type="button"
+            th:attr="onclick=|location.href='/crudcate/list_search?word=${word}&now_page=${now_page}'|"
+            class="btn btn-secondary btn-sm"
+          >
+            취소
+          </button>
         </div>
       </form>
+
+      <br />
+      <!-- /crudcate/list_all_component 로 교체 -->
+      <div th:replace="~{crudcate/list_all_component::list_all_fragment}"></div>
     </div>
   </div>
 </html>

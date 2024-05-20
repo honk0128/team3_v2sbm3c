@@ -4,6 +4,11 @@
   <!-- layout.html 상속-->
   <div layout:fragment="content">
     <div class="title_line">카테고리 수정</div>
+
+    <!-- /crudcate/list_search_component 로 교체 -->
+    <div th:replace="~{crudcate/list_search_component::list_search_fragment}"></div>
+    <div class="menu_line"></div>
+
     <form name="frm" th:object="${crudcateVO}" method="post" action="/crudcate/update">
       <!-- hidden -->
       <input type="hidden" name="crudcateno" th:value="${crudcateVO.crudcateno}" />
@@ -103,8 +108,18 @@
 
       <div class="content_body_bottom">
         <button type="submit" class="btn btn-secondary btn-sm">수정</button>
-        <button type="button" th:attr="onclick=|location.href='/crudcate/list_all'|" class="btn btn-secondary btn-sm">취소</button>
+        <button
+          type="button"
+          th:attr="onclick=|location.href='/crudcate/list_search?word=${word}&now_page=${now_page}'|"
+          class="btn btn-secondary btn-sm"
+        >
+          취소
+        </button>
       </div>
     </form>
+
+    <br />
+    <!-- /crudcate/list_all_component 로 교체 -->
+    <div th:replace="~{crudcate/list_all_component::list_all_fragment}"></div>
   </div>
 </html>
