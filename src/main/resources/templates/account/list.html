@@ -46,8 +46,14 @@
           <div th:if="${accountVO.agrade >= 40 and accountVO.agrade <= 49}"><img src='/member/images/x.png' title="탈퇴 회원" class="icon"></div>
         </div>
       </td>
-       <td class='td_basic' th:if="${accountVO.aprofile_img.endsWith('jpg') or accountVO.aprofile_img.endsWith('png') or accountVO.aprofile_img.endsWith('gif')}">
-        <img th:src="@{|/profiles/storage/${accountVO.aprofile_thum}|}" style="width: 90px; height: 70px;">
+       <td class='td_basic' >
+         <div th:if="${accountVO.aprofile_img.endsWith('jpg') or accountVO.aprofile_img.endsWith('png') or accountVO.aprofile_img.endsWith('gif')}">
+          <img th:src="@{|/profiles/storage/${accountVO.aprofile_thum}|}" style="width: 90px; height: 70px;">
+        </div>
+        
+        <div th:if="${accountVO.aprofile_size == 0}">
+          <img src="/account/images/basic.jpg" style="width: 90px; height: 70px;">
+        </div>
        </td>
 
       <td class='td_basic'><a th:href="@{|./read?accountno=${accountVO.accountno}|}" th:text="${accountVO.aid}"></a></td>
