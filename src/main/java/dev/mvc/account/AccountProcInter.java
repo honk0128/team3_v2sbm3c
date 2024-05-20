@@ -7,14 +7,14 @@ import java.util.HashMap;
 public interface AccountProcInter {
   /**
    * 중복 아이디 검사
-   * @param id
+   * @param aid
    * @return 중복 아이디 갯수, 1: 중복, 0: 중복 없음
    */
   public int checkID(String aid);
   
   /**
    * 회원 가입
-   * @param memberVO
+   * @param accountVO
    * @return
    */
   public int signin(AccountVO accountVO);
@@ -34,7 +34,7 @@ public interface AccountProcInter {
   
   /**
    * id로 회원 정보 조회
-   * @param id
+   * @param aid
    * @return
    */
   public AccountVO readById(String aid);

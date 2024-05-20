@@ -45,23 +45,11 @@ public class AccountVO {
     /** 등급 */
     private int agrade = 0;
 
-    /** 등록된 패스워드 */
-    private String old_passwd = "";
-    /** id 저장 여부 */
-    private String id_save = "";
-    /** passwd 저장 여부 */
-    private String passwd_save = "";
-    /** 이동할 주소 저장 */
-    private String url_address = "";
     
     
-    // 파일 업로드 관련
+    // 프로필 이미지 업로드
     // -----------------------------------------------------------------------------------
-    /**
-    이미지 파일
-    <input type='file' class="form-control" name='aprofile_imgMF' id='aprofile_imgMF' 
-               value='' placeholder="파일 선택">
-    */
+
     private MultipartFile aprofile_imgMF = null;
     /** 메인 이미지 크기 단위, 파일 크기 */
     private String aprofile_size_label = "";

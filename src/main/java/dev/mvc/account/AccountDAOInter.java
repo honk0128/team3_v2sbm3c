@@ -8,7 +8,7 @@ import java.util.HashMap;
 public interface AccountDAOInter {
   /**
    * 중복 아이디 검사
-   * @param id
+   * @param aid
    * @return 중복 아이디 갯수
    */
   public int checkID(String aid);
@@ -35,7 +35,7 @@ public interface AccountDAOInter {
   
   /**
    * id로 회원 정보 조회
-   * @param id
+   * @param aid
    * @return
    */
   public AccountVO readById(String aid);

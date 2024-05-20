@@ -88,7 +88,7 @@ public class AccountCont {
       MultipartFile mf = accountVO.getAprofile_imgMF();
 
       aprofile_img = mf.getOriginalFilename(); // 원본 파일명 산출, 01.jpg
-      System.out.println("-> 원본 파일명 산출 file1: " + aprofile_img);
+      System.out.println("-> 원본 파일명 산출 aprofile_img: " + aprofile_img);
 
       long aprofile_size = mf.getSize(); // 파일 크기
       if (aprofile_size > 0) { // 파일 크기 체크, 파일을 올리는 경우
