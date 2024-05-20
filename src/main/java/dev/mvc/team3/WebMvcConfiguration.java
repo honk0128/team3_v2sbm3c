@@ -6,6 +6,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import dev.mvc.account.Profiles;
 import dev.mvc.breply.Breply;
+import dev.mvc.contents.Contents;
 import dev.mvc.tool.Tool;
 
 @Configuration
@@ -24,6 +25,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer{
      // JSP 인식되는 경로: http://localhost:9093/contents/storage";
         registry.addResourceHandler("/contents/storage/**").addResourceLocations("file:///" +  Breply.getUploadDir());
         
+        
+        registry.addResourceHandler("/contents/storage/**").addResourceLocations("file:///" +  Contents.getUploadDir());
         // JSP 인식되는 경로: http://localhost:9091/attachfile/storage";
         // registry.addResourceHandler("/contents/storage/**").addResourceLocations("file:///" +  Tool.getOSPath() + "/attachfile/storage/");
         

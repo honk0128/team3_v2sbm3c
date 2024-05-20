@@ -1,6 +1,8 @@
 package dev.mvc.ai;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import jakarta.servlet.http.HttpServletRequest;  // 변경된 부분
 import jakarta.servlet.http.HttpSession;        // 변경된 부분
 
@@ -8,13 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import dev.mvc.account.AccountVO;
+import dev.mvc.breply.Breply;
+import dev.mvc.breply.BreplyVO;
 import dev.mvc.contents.Contents;
 import dev.mvc.tool.Tool;
 import dev.mvc.tool.Upload;
@@ -110,4 +118,82 @@ public class AiCont {
     }
     return mav; // 결과 반환
   }
+  
+//  @GetMapping(value = "/update")
+//  public String update(Model model) {
+//    
+//    
+//    return "ai/update";
+//  }
+//  
+//  @PostMapping(value = "update")
+//  public String update_ai(Model model,
+//                                int searchno,
+//                                AiVO aiVO,
+//                                RedirectAttributes ra,) {
+//      HashMap<String, Object> map = new HashMap<String, Object>();
+//      map.put("searchno", aiVO.getSearchno());
+//      
+//
+//      if(this.breplyProc.password_check(map) == 1) {
+//        this.breplyProc.update_contents(breplyVO);
+//
+//        ra.addAttribute("searchno", aiVO.getText_search());
+//        return "redirect:/ai/list";
+//      } else {
+//        ra.addAttribute("code", "passwd_fail");
+//        ra.addAttribute("cnt", 0);
+//        ra.addAttribute("url", "ai/msg");
+//
+//        return "redirect:/ai/msg";
+//      }
+//  }
+//  
+  
+  @GetMapping(value = "/list")
+  public String list(HttpSession session, Model model) {
+
+    ArrayList<AiVO> list = this.aiProc.list();
+
+    model.addAttribute("list", list);
+
+    return "ai/list"; // templates/member/list.html
+  }
+  
+  
+  @GetMapping(value = "/delete")
+  public String delete(@RequestParam("searchno") int searchno, HttpSession session, Model model, RedirectAttributes ra, AiVO aiVO
+                       ) {
+    
+    System.out.println("GET /delete, searchno: " + searchno);
+    model.addAttribute("searchno", searchno);
+    model.addAttribute("aiVO", aiVO);
+    
+    
+    return "/ai/delete";
+  }
+  
+  @PostMapping(value = "/delete")
+  public String delete(@RequestParam("searchno") int searchno, AiVO aiVO) {
+    
+   
+        
+    String file1saved = aiVO.getImg_search_save();
+    String thumb1 = aiVO.getImg_search_thumb();
+    
+    String uploadDir = Contents.getUploadDir();
+    Tool.deleteFile(uploadDir, file1saved);
+    Tool.deleteFile(uploadDir, thumb1);
+//        
+    this.aiProc.delete(searchno);
+//    
+//    HashMap<String, Object> hashMap = new HashMap<String, Object>();
+//    hashMap.put("word", word);
+//
+//    ra.addAttribute("word", word);
+//    ra.addAttribute("now_page", now_page);
+    
+    return "redirect:/ai/list";
+  }   
+  
 }

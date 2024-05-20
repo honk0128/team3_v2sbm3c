@@ -3,6 +3,7 @@ package dev.mvc.ai;
 import java.util.ArrayList;
 import java.util.Map;
 
+import dev.mvc.account.AccountVO;
 import dev.mvc.ai.AiVO;
 
 public interface AiDAOInter {
@@ -14,7 +15,11 @@ public interface AiDAOInter {
    */
   public int create(AiVO aiVO);
   
+  public ArrayList<AiVO> list();
   
+  public int update(AiVO aiVO);
+  
+  public int delete(int searchno);
 }
 
 

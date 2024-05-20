@@ -16,7 +16,7 @@ public class Contents {
         String path = "";
         if (File.separator.equals("\\")) { // windows, 개발 환경의 파일 업로드 폴더
             // path = "C:/kd/deploy/resort_v3sbm3c/contents/storage/";
-            path="C:\\kd\\deploy\\team3_v2sbm3c\\contents\\storage\\";
+            path="D:\\kdproject\\deploy\\team3_v2sbm3c\\contents\\storage\\";
             // System.out.println("Windows 10: " + path);
             
         } else { // Linux, AWS, 서비스용 배치 폴더 

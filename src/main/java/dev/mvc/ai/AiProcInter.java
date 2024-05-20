@@ -12,7 +12,13 @@ public interface AiProcInter {
    */
   public int create(AiVO aiVO);
   
+  public ArrayList<AiVO> list();
   
+  public int update(AiVO aiVO);
+  
+  public int delete(int searchno);
+
+
   
 }
 
