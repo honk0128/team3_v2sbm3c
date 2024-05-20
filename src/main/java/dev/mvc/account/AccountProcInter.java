@@ -44,6 +44,13 @@ public interface AccountProcInter {
    */
   public int login(HashMap<String, Object> map);
   
+  /**
+   * 수정 처리
+   * @param accountVO
+   * @return
+   */
+  public int update_account(AccountVO accountVO);
+  
 
   
 }

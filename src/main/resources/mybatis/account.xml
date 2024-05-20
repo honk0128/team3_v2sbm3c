@@ -40,5 +40,12 @@
     FROM account
     WHERE aid=#{aid} AND apasswd=#{apasswd}
   </select>
+  <!-- update -->
+   <update id="update_account" parameterType="dev.mvc.account.AccountVO">
+    UPDATE account 
+    SET aname=#{aname}, atel=#{atel}, zipcode=#{zipcode}, address1=#{address1}, address2=#{address2}, 
+         aprofile_img=#{aprofile_img}, aprofile_imgsave=#{aprofile_imgsave}, aprofile_thum=#{aprofile_thum}, aprofile_size=#{aprofile_size}
+    WHERE accountno=#{accountno}
+  </update>
 
 </mapper>

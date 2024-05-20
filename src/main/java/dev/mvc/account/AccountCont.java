@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import dev.mvc.contents.Contents;
 //import dev.mvc.cate.CateProcInter;
 //import dev.mvc.cate.CateVOMenu;
 import dev.mvc.tool.Security;
@@ -253,5 +254,91 @@ public class AccountCont {
   public String logout(HttpSession session, Model model) {
     session.invalidate();  // 모든 세션 변수 삭제
     return "redirect:/";
+  }
+  
+  /**
+   * 수정 처리
+   * @param model
+   * @param memberVO
+   * @return
+   */
+  @PostMapping(value="/update_account")
+  public String update_proc(Model model, AccountVO accountVO, RedirectAttributes ra) {
+    AccountVO accountVO_old = accountProc.read(accountVO.getAccountno());
+    
+    // -------------------------------------------------------------------
+    // 파일 삭제 시작
+    // -------------------------------------------------------------------
+    String file1saved = accountVO_old.getAprofile_imgsave();  // 실제 저장된 파일명
+    String thumb1 = accountVO_old.getAprofile_thum();       // 실제 저장된 preview 이미지 파일명
+    long size1 = 0;
+       
+    String upDir =  Profiles.getUploadDir(); // C:/kd/deploy/resort_v4sbm3c/contents/storage/
+    
+    Tool.deleteFile(upDir, file1saved);  // 실제 저장된 파일삭제
+    Tool.deleteFile(upDir, thumb1);     // preview 이미지 삭제
+    // -------------------------------------------------------------------
+    // 파일 삭제 종료
+    // -------------------------------------------------------------------
+        
+    // -------------------------------------------------------------------
+    // 파일 전송 시작
+    // -------------------------------------------------------------------
+    String file1 = "";          // 원본 파일명 image
+
+    // 전송 파일이 없어도 file1MF 객체가 생성됨.
+    // <input type='file' class="form-control" name='file1MF' id='file1MF' 
+    //           value='' placeholder="파일 선택">
+    MultipartFile mf = accountVO.getAprofile_imgMF();
+        
+    file1 = mf.getOriginalFilename(); // 원본 파일명
+    size1 = mf.getSize();  // 파일 크기
+        
+    if (size1 > 0) { // 폼에서 새롭게 올리는 파일이 있는지 파일 크기로 체크 ★
+      // 파일 저장 후 업로드된 파일명이 리턴됨, spring.jsp, spring_1.jpg...
+      file1saved = Upload.saveFileSpring(mf, upDir); 
+      
+      if (Tool.isImage(file1saved)) { // 이미지인지 검사
+        // thumb 이미지 생성후 파일명 리턴됨, width: 250, height: 200
+        thumb1 = Tool.preview(upDir, file1saved, 250, 200); 
+      }
+      
+    } else { // 파일이 삭제만 되고 새로 올리지 않는 경우
+      file1="";
+      file1saved="";
+      thumb1="";
+      size1=0;
+    }
+        
+    accountVO.setAprofile_img(file1);
+    accountVO.setAprofile_imgsave(file1saved);
+    accountVO.setAprofile_thum(thumb1);
+    accountVO.setAprofile_size(size1);
+    // -------------------------------------------------------------------
+    // 파일 전송 코드 종료
+    // -------------------------------------------------------------------
+    
+    
+    int cnt = this.accountProc.update_account(accountVO); // 수정
+    
+    if (cnt == 1) {
+      model.addAttribute("code", "update_success");
+      model.addAttribute("aname", accountVO.getAname());
+      model.addAttribute("aid", accountVO.getAid());
+      
+      model.addAttribute("code", "update_success");
+      model.addAttribute("aname", accountVO.getAname());
+      model.addAttribute("aid", accountVO.getAid());
+
+      ra.addAttribute("accountno", accountVO.getAccountno());
+      
+      return "redirect:/account/read"; // request -> param으로 접근 전환
+    } else {
+      model.addAttribute("code", "update_fail");
+    }
+    
+    model.addAttribute("cnt", cnt);
+    
+    return "member/msg"; // /templates/member/msg.html
   }
 }

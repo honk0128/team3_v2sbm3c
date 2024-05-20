@@ -32,7 +32,7 @@
       let aname = document.getElementById('aname');
       let aname_msg = document.getElementById('aname_msg');
   
-      if (mname.value.length == 0) {
+      if (aname.value.length == 0) {
         aname_msg.innerHTML= '이름 입력은 필수입니다.';
         aname_msg.classList.add('span_warning');    // class 적용
         aname.focus();
@@ -56,18 +56,30 @@
   <div class='menu_line'></div>
   
   <div style="width: 60%; margin: 0px auto ">
-    <form name="frm" id="frm" th:object="${accountVO}" method="post" action="/member/update">
+    <form name="frm" id="frm" th:object="${accountVO}" method="post" action="./update_account" enctype="multipart/form-data">
       <input type="hidden" name="accountno" th:value="${accountVO.accountno}">
       
+        <div class="form-group" th:if="${accountVO.aprofile_img.endsWith('jpg') or accountVO.aprofile_img.endsWith('png') or accountVO.aprofile_img.endsWith('gif')}">
+          <label for="aprofile_img">프로필 이미지*</label>  
+          <br>
+          <img th:src="@{|/profiles/storage/${accountVO.aprofile_thum}|}" style="width: 90px; height: 90px;"> 
+          <input type='file' name='aprofile_imgMF' id='aprofile_imgMF' value='' placeholder="파일 선택"><br>
+        </div>
+        
+        <div class="form-group" th:if="${accountVO.aprofile_size == 0}">
+          <img src="/account/images/basic.jpg" style="width: 90px; height: 70px;">
+          <input type='file' name='aprofile_imgMF' id='aprofile_imgMF' value='' placeholder="파일 선택"><br>
+        </div>
+      
       <div class="form-group">
-        <label for="mname">성명*</label>
+        <label for="aname">성명*</label>
         <input type='text' name='aname' id='aname' th:value='${accountVO.aname}' required="required" 
                    placeholder="성명" class="form-control form-control-sm" style="width: 30%;">
         <span id='aname_msg'></span>
       </div>   
   
       <div class="form-group">
-        <label for="tel">전화 번호</label>
+        <label for="atel">전화 번호</label>
         <input type='text' name='atel' id='atel' th:value='${accountVO.atel}' required="required" 
                   placeholder="전화번호" class="form-control form-control-sm" style="width: 30%;">
         예) 010-0000-0000
@@ -92,6 +104,8 @@
         <input type='text' name='address2' id='address2' th:value='${accountVO.address2}' placeholder="상세 주소"
                   class="form-control form-control-sm">
       </div>   
+
+
 
 <!-- ------------------------------ DAUM 우편번호 API 시작 ------------------------------ -->
     <div>

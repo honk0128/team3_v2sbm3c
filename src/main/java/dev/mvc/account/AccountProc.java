@@ -65,5 +65,12 @@ public class AccountProc implements AccountProcInter{
     int cnt = this.accountDAO.login(map);
     return cnt;
   }
+
+
+  @Override
+  public int update_account(AccountVO accountVO) {
+    int cnt = this.accountDAO.update_account(accountVO);
+    return cnt;
+  }
   
 }
