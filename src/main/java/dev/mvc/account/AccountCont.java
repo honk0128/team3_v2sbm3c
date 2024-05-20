@@ -182,7 +182,7 @@ public class AccountCont {
       AccountVO accountVO = this.accountProc.read(accountno);
       model.addAttribute("accountVO", accountVO);
 
-      return "account/read"; // templates/member/read.html
+      return "account/read"; // templates/account/read.html
     } else {
       return "redirect:/member/login_form_need"; // redirect
     }
@@ -235,7 +235,7 @@ public class AccountCont {
         session.setAttribute("agrade", "guest");
       }
 
-      return "account/list";
+      return "index";
     } else {
       model.addAttribute("code", "login_fail");
       return "account/msg";

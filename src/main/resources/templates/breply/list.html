@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+  <div class='title_line'> 카테고리</div>
+
+  <table class="table table-hover">
+    <colgroup>
+      <col style='width: 12%;' />
+      <col style='width: 12%;' />
+      <col style='width: 12%;' />
+      <col style='width: 12%;' />
+      <col style='width: 12%;' />
+      <col style='width: 12%;' />
+    </colgroup>
+    <thead>
+      <tr>
+        <th class="th_bs">순서</th>
+        <th class="th_bs">내용</th>
+        <th class="th_bs">이미지</th>
+        <th class="th_bs">이미지 미리보기</th>
+        <th class="th_bs">썸네일</th>
+        <th class="th_bs">이미지 크기</th>
+        <th class="th_bs">등록일</th>
+        <th class="th_bs">비밀번호</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="breplyVO:${list}">
+        <td class="td_bs" th:text="${breplyVO.breplyno}"></td>
+        <td class="td_bs"><a th:href="@{|./read/${breplyVO.breplyno}|}" style="display: block;" th:text="${breplyVO.breplycont}"></a></td>
+        <td class="td_bs"><a th:href="@{|./read/${breplyVO.breplyno}|}" style="display: block;" th:text="${breplyVO.breplyimg}"></a></td>
+        <td class="td_bs" th:text="${breplyVO.breplysaved}"></td>
+        <td class="td_bs" th:text="${breplyVO.breplythumb}"></td>
+        <td class="td_bs" th:text="${breplyVO.breplysize}"></td>
+        <td class="td_bs" th:text="${breplyVO.breplydate.substring(0, 10)}"></td>
+        <td class="td_bs" th:text="${breplyVO.breplypasswd}"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</html>

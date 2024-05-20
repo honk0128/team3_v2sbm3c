@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html layout:decorate="~{layout}"> <!-- layout.html을 상속 -->
+
+<div layout:fragment="content">
+  <div class='title_line'> 카테고리 등록</div>
+  <form name="frm" th:object="${breplyVO}" method="post" action="/breply/create" enctype="multipart/form-data">    
+
+    <!-- <div th:replace="~{errors::errorsFragment}"></div> -->
+
+    <div style="margin:5px auto; width: 50%;">
+      <input type="text" name="breplycont" value="" autofocus="autofocus" class="form-control form-control-sm"
+        style="width: 100%;" th:field="*{breplycont}" placeholder="내용 입력하세요">
+      <div th:if="${#fields.hasErrors('breplycont')}" class="alert alert-danger" role="alert">
+        <div th:each="err : ${#lists.sort(#fields.errors('breplycont'))}" th:text="${err}"></div>
+      </div>
+    </div>
+
+    <div style="margin:5px auto; width: 50%;">
+      <input type='file' class="form-control" name='file1MF' id='file1MF' 
+               value='' placeholder="파일 선택">
+    </div>
+
+    <div style="margin:5px auto; width: 50%;">
+      <input type="number" name="breplypasswd" value="" class="form-control form-control-sm" style="width: 100%;"
+        th:field="*{breplypasswd}" placeholder="비밀번호를 입력해주세요">
+      <div th:if="${#fields.hasErrors('breplypasswd')}" class="alert alert-danger" role="alert">
+        <div th:each="err : ${#lists.sort(#fields.errors('breplypasswd'))}" th:text="${err}"></div>
+      </div>
+    </div>
+
+    <div class="content_body_bottom">
+      <button type="submit" class="btn btn-secondary btn-sm">등록</button>
+      <button type="button" onclick="location.href = './reply_list'" class="btn btn-secondary btn-sm">목록</button>
+    </div>
+  </form>
+
+  <!-- <div th:replace="~{cate/list_all_component::list_all_fragment}"></div> -->
+</div>
+
+</html>
