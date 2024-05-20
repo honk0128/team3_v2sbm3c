@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dev.mvc.ai.AiDAOInter">
+  <insert id="create" parameterType="dev.mvc.ai.AiVO">
+    INSERT INTO AI_SEARCH (SEARCHNO, IMG_SEARCH, IMG_SEARCH_SAVE, IMG_SEARCH_THUMB, IMG_SEARCH_SIZE, TEXT_SEARCH, ACCOUNTNO, ANSWERNO)
+    VALUES (AI_SEARCH_SEQ.NEXTVAL, #{img_search}, #{img_search_save}, #{img_search_thumb}, #{img_search_size}, #{text_search}, #{accountno}, #{answerno})
+  </insert>
+</mapper>
+
+
+
+
+
+
+
+
+
+
