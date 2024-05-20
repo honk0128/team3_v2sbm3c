@@ -56,10 +56,10 @@ public class AiCont {
    * @return
    */
   @RequestMapping(value = "/create.do", method = RequestMethod.POST)
-  public ModelAndView create(HttpSession session, @ModelAttribute AiVO aiVO, @RequestParam("file1MF") MultipartFile file1MF) {
+  public ModelAndView create(HttpSession session, @ModelAttribute AiVO aiVO,@RequestParam("text") String text, @RequestParam("file1MF") MultipartFile file1MF) {
     ModelAndView mav = new ModelAndView();
     
-    String text = "";
+    
     String file1 = "";          // 원본 파일명
     String file1saved = "";     // 저장된 파일명
     String thumb1 = "";         // preview image
