@@ -36,11 +36,9 @@
         </td>
         <td class="td_bs" th:text="${breplyVO.breplydate.substring(0, 10)}"></td>
         <td class="td_bs">
-          <a th:href="@{|/breply/update_file?breplyno=${breplyVO.breplyno}|}"><i class="bi bi-file-earmark-image"></i></a>
+          <a th:href="@{|/breply/update/${breplyVO.breplyno}|}"><i class="bi bi-pencil-square"></i></a>
           <span class="menu_devide"> |</span>
-          <a th:href="@{|/breply/update_contents?breplyno=${breplyVO.breplyno}|}"><i class="bi bi-pencil-square"></i></a>
-          <span class="menu_devide"> |</span>
-          <a th:href="@{|/breply/delete?breplyno=${breplyVO.breplyno}|}"><i class="bi bi-trash3"></i></a>
+          <a th:href="@{|/breply/delete/${breplyVO.breplyno}|}"><i class="bi bi-trash3"></i></a>
         </td>
       </tr>
     </tbody>

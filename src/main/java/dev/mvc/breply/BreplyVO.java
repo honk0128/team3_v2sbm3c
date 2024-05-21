@@ -28,7 +28,7 @@ public class BreplyVO {
 
   /** 댓글내용 */
   @NotEmpty(message="내용을 입력해주세요.")
-  private String breplycont;
+  private String breplycont="";
 
   /** 이미지 파일 */
   private MultipartFile file1MF = null;

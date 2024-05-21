@@ -20,8 +20,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
-import jakarta.servlet.http.HttpSession;
+// import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 
@@ -167,89 +168,60 @@ public class BreplyCont {
   /**
    * 업데이트
    */
-  @GetMapping(value = "update_contents")
-  public String update_contents(Model model,
-                                HttpSession session,
-                                @RequestParam(name="breplyno") Integer breplyno,
-                                RedirectAttributes ra) {
+  @GetMapping(value = "/update/{breplyno}")
+  public String update(Model model, @PathVariable(name="breplyno") Integer breplyno) {
 
     BreplyVO breplyVO = this.breplyProc.read(breplyno);
     model.addAttribute("breplyVO", breplyVO);
 
-    return "breply/update_contents";
+    System.out.println("cont: " + breplyVO.getBreplycont());;
+
+    return "breply/update";
   }
 
-  @PostMapping(value = "update_contents")
-  public String update_contents(Model model,
-                              HttpSession session,
-                              BreplyVO breplyVO,
-                              RedirectAttributes ra) {
-
-    // 댓글 내용 업데이트
-    int cnt = this.breplyProc.update_contents(breplyVO);
-    System.out.println("cnt : " + cnt);
-
-    // 비밀번호 확인을 위한 맵 생성
-    HashMap<String, Object> map = new HashMap<String, Object>();
-    map.put("breplyno", breplyVO.getBreplyno());
-    map.put("breplypasswd", breplyVO.getBreplypasswd());
-    // System.out.println("-> map : " + map.put("breplypasswd", breplyVO.getBreplypasswd()));
-
-    // 비밀번호 확인
-    if(this.breplyProc.password_check(map) == 1) {
-        // 비밀번호가 맞으면
-        if(cnt == 1) {
-            // 댓글 내용이 정상적으로 업데이트 되었을 때
-            model.addAttribute("content", breplyVO.getBreplycont());
-            return "redirect:/breply/list";
-        } else {
-            // 댓글 내용이 업데이트되지 않았을 때
-            return null;
-        }
-    } else {
-        // 비밀번호가 틀렸을 때
-        ra.addAttribute("code", "passwd_fail");
-        ra.addAttribute("cnt", 0);
-        // ra.addAttribute("url", "breply/msg");
-
-        return "redirect:/breply/msg";
-    }
-  }
-
-
-  @PostMapping(value = "/update_file")
-  public String update_file(HttpSession session, Model model, 
-                            BreplyVO breplyVO,
-                            String word, 
-                            int now_page,
-                            RedirectAttributes ra) {
-    
+  @PostMapping(value="/update")
+  public String update_process(Model model, BreplyVO breplyVO, RedirectAttributes ra) {
     BreplyVO breplyVO_old = breplyProc.read(breplyVO.getBreplyno());
+    // BreplyVO breplycont = 
     
-    String file1saved = breplyVO_old.getBreplyimg();
-    String thumb1 = breplyVO_old.getBreplysaved();
+    // -------------------------------------------------------------------
+    // 파일 삭제 시작
+    // -------------------------------------------------------------------
+    String file1saved = breplyVO_old.getBreplysaved();  // 실제 저장된 파일명
+    String thumb1 = breplyVO_old.getBreplythumb();       // 실제 저장된 preview 이미지 파일명
     long size1 = 0;
+       
+    String upDir =  Breply.getUploadDir(); // C:/kd/deploy/resort_v4sbm3c/contents/storage/
+    
+    Tool.deleteFile(upDir, file1saved);  // 실제 저장된 파일삭제
+    Tool.deleteFile(upDir, thumb1);     // preview 이미지 삭제
+    // -------------------------------------------------------------------
+    // 파일 삭제 종료
+    // -------------------------------------------------------------------
         
-    String upDir =  Breply.getUploadDir();
-    
-    Tool.deleteFile(upDir, file1saved);
-    Tool.deleteFile(upDir, thumb1);
-    
-    String file1 = "";
+    // -------------------------------------------------------------------
+    // 파일 전송 시작
+    // -------------------------------------------------------------------
+    String file1 = "";          // 원본 파일명 image
 
+    // 전송 파일이 없어도 file1MF 객체가 생성됨.
+    // <input type='file' class="form-control" name='file1MF' id='file1MF' 
+    //           value='' placeholder="파일 선택">
     MultipartFile mf = breplyVO.getFile1MF();
         
-    file1 = mf.getOriginalFilename();
-    size1 = mf.getSize();
+    file1 = mf.getOriginalFilename(); // 원본 파일명
+    size1 = mf.getSize();  // 파일 크기
         
-    if (size1 > 0) {
+    if (size1 > 0) { // 폼에서 새롭게 올리는 파일이 있는지 파일 크기로 체크 ★
+      // 파일 저장 후 업로드된 파일명이 리턴됨, spring.jsp, spring_1.jpg...
       file1saved = Upload.saveFileSpring(mf, upDir); 
       
-      if (Tool.isImage(file1saved)) {
+      if (Tool.isImage(file1saved)) { // 이미지인지 검사
+        // thumb 이미지 생성후 파일명 리턴됨, width: 250, height: 200
         thumb1 = Tool.preview(upDir, file1saved, 250, 200); 
       }
       
-    } else {
+    } else { // 파일이 삭제만 되고 새로 올리지 않는 경우
       file1="";
       file1saved="";
       thumb1="";
@@ -260,41 +232,136 @@ public class BreplyCont {
     breplyVO.setBreplysaved(file1saved);
     breplyVO.setBreplythumb(thumb1);
     breplyVO.setBreplysize(size1);
-        
-    this.breplyProc.update_img(breplyVO);
+    // -------------------------------------------------------------------
+    // 파일 전송 코드 종료
+    // -------------------------------------------------------------------
+    model.addAttribute("breplyVO", breplyVO);
+    System.out.println("cont: "+breplyVO.getBreplycont());
+    
+    int cnt = this.breplyProc.update(breplyVO); // 수정
+    System.out.println("cnt: " + cnt);
+    
+    if (cnt == 1) {
+      model.addAttribute("code", "update_success");
+      model.addAttribute("breplycont", breplyVO.getBreplycont());
+      model.addAttribute("breplypasswd", breplyVO.getBreplypasswd());
 
-    ra.addAttribute("breplyno", breplyVO.getBreplyno());
-    ra.addAttribute("word", word);
-    ra.addAttribute("now_page", now_page);
-    return "redirect:/breply/read";
+      ra.addAttribute("breplyno", breplyVO.getBreplyno());
+      
+      return "redirect:/breply/list"; // request -> param으로 접근 전환
+    } else {
+      model.addAttribute("code", "update_fail");
+    }
+    
+    model.addAttribute("cnt", cnt);
+    
+    return "member/msg"; // /templates/member/msg.html
+  }
+
+  // @PostMapping(value = "update_contents")
+  // public String update_contents(Model model,
+  //                             BreplyVO breplyVO) {
+
+  //   // 댓글 내용 업데이트
+  //   int cnt = this.breplyProc.update_contents(breplyVO);
+  //   System.out.println("cnt : " + cnt);
+
+  //   // 비밀번호 확인을 위한 맵 생성
+  //   HashMap<String, Object> map = new HashMap<String, Object>();
+  //   map.put("breplyno", breplyVO.getBreplyno());
+  //   map.put("breplypasswd", breplyVO.getBreplypasswd());
+  //   // System.out.println("-> map : " + map.put("breplypasswd", breplyVO.getBreplypasswd()));
+
+  //   // 비밀번호 확인
+  //   if(this.breplyProc.password_check(map) == 1) {
+  //       // 비밀번호가 맞으면
+  //       if(cnt == 1) {
+  //           // 댓글 내용이 정상적으로 업데이트 되었을 때
+  //           model.addAttribute("content", breplyVO.getBreplycont());
+  //           return "redirect:/breply/list";
+  //       } else {
+  //           // 댓글 내용이 업데이트되지 않았을 때
+  //           return null;
+  //       }
+  //   } else {
+  //       // 비밀번호가 틀렸을 때
+  //       ra.addAttribute("code", "passwd_fail");
+  //       ra.addAttribute("cnt", 0);
+  //       // ra.addAttribute("url", "breply/msg");
+
+  //       return "redirect:/breply/msg";
+  //   }
+  // }
+
+
+  // @PostMapping(value = "/update_file")
+  // public String update_file(HttpSession session, Model model, 
+  //                           BreplyVO breplyVO,
+  //                           String word, 
+  //                           int now_page,
+  //                           RedirectAttributes ra) {
+    
+  //   BreplyVO breplyVO_old = breplyProc.read(breplyVO.getBreplyno());
+    
+  //   String file1saved = breplyVO_old.getBreplyimg();
+  //   String thumb1 = breplyVO_old.getBreplysaved();
+  //   long size1 = 0;
+        
+  //   String upDir =  Breply.getUploadDir();
+    
+  //   Tool.deleteFile(upDir, file1saved);
+  //   Tool.deleteFile(upDir, thumb1);
+    
+  //   String file1 = "";
+
+  //   MultipartFile mf = breplyVO.getFile1MF();
+        
+  //   file1 = mf.getOriginalFilename();
+  //   size1 = mf.getSize();
+        
+  //   if (size1 > 0) {
+  //     file1saved = Upload.saveFileSpring(mf, upDir); 
+      
+  //     if (Tool.isImage(file1saved)) {
+  //       thumb1 = Tool.preview(upDir, file1saved, 250, 200); 
+  //     }
+      
+  //   } else {
+  //     file1="";
+  //     file1saved="";
+  //     thumb1="";
+  //     size1=0;
+  //   }
+        
+  //   breplyVO.setBreplyimg(file1);
+  //   breplyVO.setBreplysaved(file1saved);
+  //   breplyVO.setBreplythumb(thumb1);
+  //   breplyVO.setBreplysize(size1);
+        
+  //   this.breplyProc.update_img(breplyVO);
+
+  //   ra.addAttribute("breplyno", breplyVO.getBreplyno());
+  //   ra.addAttribute("word", word);
+  //   ra.addAttribute("now_page", now_page);
+  //   return "redirect:/breply/read";
               
-  }   
+  // }   
   
-  @GetMapping(value = "/delete")
-  public String delete(HttpSession session, Model model, RedirectAttributes ra, 
-                       @RequestParam(name = "breplyno") int breplyno,
-                       @RequestParam(name="word", defaultValue = "") String word,
-                       @RequestParam(name="now_page", defaultValue="1") int now_page) {
+  @GetMapping(value = "/delete/{breplyno}")
+  public String delete(Model model, @PathVariable("breplyno") Integer breplyno) {
     
     BreplyVO breplyVO = this.breplyProc.read(breplyno);
-    System.out.println("breplyno : " + breplyno);
-    model.addAttribute("BreplyVO", breplyVO);
-    
-    return "/breply/delete";
+    model.addAttribute("breplyVO", breplyVO);
+    return "breply/delete";
   }
   
   @PostMapping(value = "/delete")
-  public String delete(Model model,
-                      RedirectAttributes ra,
-                      @RequestParam(name = "breplyno", defaultValue = "") int breplyno,
-                      @RequestParam(name="word", defaultValue = "") String word,
-                      @RequestParam(name="now_page", defaultValue="1") int now_page) {
+  public String delete_process(Model model,
+                      Integer breplyno) {
   BreplyVO breplyVO = this.breplyProc.read(breplyno);
-  System.out.println(breplyVO);
-  System.out.println(breplyno);
+  model.addAttribute("breplyVO", breplyVO);
 
   int cnt = this.breplyProc.delete(breplyno);
-  model.addAttribute("cnt", cnt);
   System.out.println("cnt : " + cnt);
   if(cnt == 1) {
     return "redirect:/breply/list";

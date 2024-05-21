@@ -28,20 +28,20 @@ public interface BreplyProcInter {
   public BreplyVO read(int breplyno);
 
   /**
-   * 댓글(글) 수정
-   * update id="update_contents" parameterType="dev.mvc.breply.BreplyVO"
+   * 댓글 수정
+   * update id="update" parameterType="dev.mvc.breply.BreplyVO"
    * @param breplyVO
    * @return
    */
-  public int update_contents(BreplyVO breplyVO);
+  public int update(BreplyVO breplyVO);
 
-  /**
-   * 댓글(사진) 수정
-   * update id="update_img" parameterType="dev.mvc.breply.BreplyVO"
-   * @param breplyVO
-   * @return
-   */
-  public int update_img(BreplyVO breplyVO);
+  // /**
+  //  * 댓글(사진) 수정
+  //  * update id="update_img" parameterType="dev.mvc.breply.BreplyVO"
+  //  * @param breplyVO
+  //  * @return
+  //  */
+  // public int update_img(BreplyVO breplyVO);
 
   /**
    * delete id="delete" parameterType="int"

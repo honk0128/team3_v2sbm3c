@@ -27,16 +27,16 @@
     SET BREPLYCONT = #{breplycont}, BREPLYDATE = sysdate
     WHERE BREPLYNO = #{breplyno}
   </update> -->
-  <update id="update_contents" parameterType="dev.mvc.breply.BreplyVO">
+  <!-- <update id="update_contents" parameterType="dev.mvc.breply.BreplyVO">
     UPDATE BREPLY
     SET BREPLYCONT = #{breplycont, jdbcType=CLOB}, BREPLYDATE = sysdate
     WHERE BREPLYNO = #{breplyno}
-  </update>
+  </update> -->
 
-  <!-- 댓글(사진) 수정 -->
-  <update id="update_img" parameterType="dev.mvc.breply.BreplyVO">
+  <!-- 댓글 수정 -->
+  <update id="update" parameterType="dev.mvc.breply.BreplyVO">
     UPDATE BREPLY
-    SET BREPLYIMG = #{breplyimg}, BREPLYSAVED = #{breplysaved}, BREPLYthumb = #{breplythumb}, BREPLYSIZE = #{breplysize}
+    SET BREPLYCONT = #{breplycont}, BREPLYIMG = #{breplyimg}, BREPLYSAVED = #{breplysaved}, BREPLYthumb = #{breplythumb}, BREPLYSIZE = #{breplysize}, BREPLYDATE = sysdate
     WHERE BREPLYNO = #{breplyno}
   </update>
 

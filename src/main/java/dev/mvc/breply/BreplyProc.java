@@ -43,16 +43,16 @@ public class BreplyProc implements BreplyProcInter{
   }
 
   @Override
-  public int update_contents(BreplyVO breplyVO) {
-    int cnt = this.breplyDAO.update_contents(breplyVO);
+  public int update(BreplyVO breplyVO) {
+    int cnt = this.breplyDAO.update(breplyVO);
     return cnt;
   }
 
-  @Override
-  public int update_img(BreplyVO breplyVO) {
-    int cnt = this.breplyDAO.update_img(breplyVO);
-    return cnt;
-  }
+  // @Override
+  // public int update_img(BreplyVO breplyVO) {
+  //   int cnt = this.breplyDAO.update_img(breplyVO);
+  //   return cnt;
+  // }
 
   public int delete(int breplyno) {
     int cnt = this.breplyDAO.delete(breplyno);
