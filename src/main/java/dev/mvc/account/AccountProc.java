@@ -23,18 +23,18 @@ public class AccountProc implements AccountProcInter{
   
 
   @Override
-  public int checkID(String aid) {
-    int cnt = this.accountDAO.checkID(aid);
+  public int checkID_account(String aid) {
+    int cnt = this.accountDAO.checkID_account(aid);
     return cnt;
   }
 
   @Override
-  public int signin(AccountVO accountVO) {
+  public int signin_account(AccountVO accountVO) {
    String apasswd = accountVO.getApasswd();
    String passwd_encoded = this.security.aesEncode(apasswd);
    accountVO.setApasswd(passwd_encoded);
    
-   int cnt = this.accountDAO.signin(accountVO);
+   int cnt = this.accountDAO.signin_account(accountVO);
     return cnt;
   }
 

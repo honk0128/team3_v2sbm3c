@@ -151,7 +151,7 @@
   <aside class="aside_right">
     <a href="javascript:location.reload();">새로고침</a>
     <span class='menu_divide' >│</span> 
-    <a href='./create'>회원 가입</a>
+    <a href='/manager/signin'>관리자 회원 가입</a>
     <span class='menu_divide' >│</span> 
     <a href='./list'>목록</a>
   </aside> 
@@ -159,7 +159,7 @@
   <div class='menu_line'></div>
   
   <div style="width: 60%; margin: 0px auto ">
-    <form name="frm" id="frm" th:object="${accountVO}" method="post" action="/account/signin" enctype="multipart/form-data">
+    <form name="frm" id="frm" th:object="${accountVO}" method="post" action="/account/signin_account" enctype="multipart/form-data">
       <div>
         <label for="aid">아이디(이메일)*</label>
         <input type="text" name="aid" id="aid" value="" autofocus="autofocus"

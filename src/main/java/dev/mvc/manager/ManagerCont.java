@@ -51,6 +51,60 @@ public class ManagerCont {
   public ManagerCont() {
     System.out.println("-> ManagerCont created");
   }
+  
+  @GetMapping(value = "/checkID")
+  @ResponseBody
+  public String checkID(String mid) {
+    System.out.println("-> id: " + mid);
+    int cnt = this.managerProc.checkID_manager(mid);
+    
+    JSONObject obj = new JSONObject();
+    obj.put("cnt", cnt);
+
+    return obj.toString();
+  }
+  
+  /**
+   * 회원 가입 폼
+   * @param model
+   * @param memberVO
+   * @return
+   */
+  @GetMapping(value="/signin") // http://localhost:9091/account/create
+  public String create_form(Model model, ManagerVO managerVO) {
+    return "manager/create";    // /template/member/create.html
+  }
+  
+  /**
+   * 회원가입 실행
+   * @param model
+   * @param managerVO
+   * @return
+   */
+  @PostMapping(value="/signin_manager")
+  public String create_proc(Model model, ManagerVO managerVO) {
+    int checkID_cnt = this.managerProc.checkID_manager(managerVO.getMid());
+    
+    if (checkID_cnt == 0) {
+      managerVO.setMgrade(1); // 관리자 등급 번호 1
+      int cnt = this.managerProc.signin_manager(managerVO);
+      
+      if (cnt == 1) {
+        model.addAttribute("code", "create_success");
+        model.addAttribute("mname", managerVO.getMname());
+        model.addAttribute("mid", managerVO.getMid());
+      } else {
+        model.addAttribute("code", "create_fail");
+      }
+      
+      model.addAttribute("cnt", cnt);
+    } else { // id 중복
+      model.addAttribute("code", "duplicte_fail");
+      model.addAttribute("cnt", 0);
+    }
+    
+    return "manager/create"; // /templates/member/msg.html
+  }
 
   /**
    * 로그인

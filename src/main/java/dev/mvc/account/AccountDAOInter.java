@@ -12,14 +12,14 @@ public interface AccountDAOInter {
    * @param aid
    * @return 중복 아이디 갯수
    */
-  public int checkID(String aid);
+  public int checkID_account(String aid);
   
   /**
    * 회원 가입
    * @param accountVO
    * @return 추가한 레코드 갯수
    */
-  public int signin(AccountVO accountVO);
+  public int signin_account(AccountVO accountVO);
 
   /**
    * 회원 전체 목록

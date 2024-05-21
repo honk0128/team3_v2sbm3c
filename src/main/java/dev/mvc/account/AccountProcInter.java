@@ -10,14 +10,14 @@ public interface AccountProcInter {
    * @param aid
    * @return 중복 아이디 갯수, 1: 중복, 0: 중복 없음
    */
-  public int checkID(String aid);
+  public int checkID_account(String aid);
   
   /**
    * 회원 가입
    * @param accountVO
    * @return
    */
-  public int signin(AccountVO accountVO);
+  public int signin_account(AccountVO accountVO);
   
   /**
    * 회원 전체 목록

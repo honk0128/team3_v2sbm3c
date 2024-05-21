@@ -59,7 +59,7 @@ public class AccountCont {
   @ResponseBody
   public String checkID(String aid) {
     System.out.println("-> id: " + aid);
-    int cnt = this.accountProc.checkID(aid);
+    int cnt = this.accountProc.checkID_account(aid);
 
     JSONObject obj = new JSONObject();
     obj.put("cnt", cnt);
@@ -73,9 +73,9 @@ public class AccountCont {
     return "account/create";
   }
 
-  @PostMapping(value = "/signin")
+  @PostMapping(value = "/signin_account")
   public String signin_proc(Model model, AccountVO accountVO, RedirectAttributes ra) {
-    int checkID_cnt = this.accountProc.checkID(accountVO.getAid());
+    int checkID_cnt = this.accountProc.checkID_account(accountVO.getAid());
 
     if (checkID_cnt == 0) {
       // ------------------------------------------------------------------------------
@@ -127,7 +127,7 @@ public class AccountCont {
       // ------------------------------------------------------------------------------
 
       accountVO.setAgrade(15); // 기본 회원 15
-      int cnt = this.accountProc.signin(accountVO);
+      int cnt = this.accountProc.signin_account(accountVO);
 
       if (cnt == 1) {
         model.addAttribute("code", "create_success");

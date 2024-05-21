@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import dev.mvc.tool.Security;
 import jakarta.servlet.http.HttpSession;
 
@@ -12,7 +11,7 @@ import jakarta.servlet.http.HttpSession;
 public class ManagerProc implements ManagerProcInter {
 
   @Autowired
-  private ManagerDAOInter ManagerDAO;
+  private ManagerDAOInter managerDAO;
 
   @Autowired
   Security security;
@@ -20,16 +19,32 @@ public class ManagerProc implements ManagerProcInter {
   public ManagerProc() {
     System.out.println("-> ManagerProc created.");
   }
+  
+  @Override
+  public int checkID_manager(String mid) {
+    int cnt = this.managerDAO.checkID_manager(mid);
+    return cnt;
+  }
+  
+  @Override
+  public int signin_manager(ManagerVO managerVO) {
+    String mpasswd = managerVO.getMpasswd();
+    String passwd_encoded = this.security.aesEncode(mpasswd);
+    managerVO.setMpasswd(passwd_encoded);
+    
+    int cnt = this.managerDAO.signin_manager(managerVO);
+     return cnt;
+  }
 
   @Override
   public int login_manager(HashMap<String, Object> map) {
-    int cnt = this.ManagerDAO.login_manager(map);
+    int cnt = this.managerDAO.login_manager(map);
     return cnt;
   }
 
   @Override
   public ManagerVO readById(String mid) {
-    ManagerVO managerVO = this.ManagerDAO.readById(mid);
+    ManagerVO managerVO = this.managerDAO.readById(mid);
     return managerVO;
   }
 
@@ -76,5 +91,6 @@ public class ManagerProc implements ManagerProcInter {
 
     return sw;
   }
+
 
 }
