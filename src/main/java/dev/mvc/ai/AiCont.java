@@ -119,36 +119,80 @@ public class AiCont {
     return mav; // 결과 반환
   }
   
-//  @GetMapping(value = "/update")
-//  public String update(Model model) {
-//    
-//    
-//    return "ai/update";
-//  }
-//  
-//  @PostMapping(value = "update")
-//  public String update_ai(Model model,
-//                                int searchno,
-//                                AiVO aiVO,
-//                                RedirectAttributes ra,) {
-//      HashMap<String, Object> map = new HashMap<String, Object>();
-//      map.put("searchno", aiVO.getSearchno());
-//      
-//
-//      if(this.breplyProc.password_check(map) == 1) {
-//        this.breplyProc.update_contents(breplyVO);
-//
-//        ra.addAttribute("searchno", aiVO.getText_search());
-//        return "redirect:/ai/list";
-//      } else {
-//        ra.addAttribute("code", "passwd_fail");
-//        ra.addAttribute("cnt", 0);
-//        ra.addAttribute("url", "ai/msg");
-//
-//        return "redirect:/ai/msg";
-//      }
-//  }
-//  
+  @GetMapping(value = "/update")
+  public String update(Model model,
+                                HttpSession session,
+                                @RequestParam("searchno") int searchno,
+                                
+                                RedirectAttributes ra
+                                
+                                ) {
+    
+    AiVO aiVO = new AiVO();
+    
+    aiVO.setSearchno(searchno);
+    
+   
+    model.addAttribute("aiVO", aiVO);
+
+System.out.println(searchno);
+    
+    System.out.println(aiVO.getText_search());
+    
+    return "ai/update";
+  }
+  
+  @PostMapping(value = "/update")
+  public String update_ai(Model model,
+                          HttpSession session,
+                          @ModelAttribute("aiVO") AiVO aiVO,
+                          RedirectAttributes ra) {
+      // 여기서는 간단히 데이터를 수정하는 로직을 가정합니다
+      // 실제로는 데이터를 수정하는 서비스나 DAO 계층을 호출해야 합니다
+    String file1saved = aiVO.getImg_search();
+    String thumb1 = aiVO.getImg_search_save();
+    long size1 = 0; 
+    
+    String upDir = Contents.getUploadDir();
+    
+    Tool.deleteFile(upDir, file1saved);
+    Tool.deleteFile(upDir, thumb1);
+    
+    String file1 = "";
+    
+    MultipartFile mf = aiVO.getFile1MF();
+    
+    file1 = mf.getOriginalFilename();
+    size1 = mf.getSize();
+    
+    if (size1 > 0) {
+      file1saved = Upload.saveFileSpring(mf, upDir); 
+      
+      if (Tool.isImage(file1saved)) {
+        thumb1 = Tool.preview(upDir, file1saved, 250, 200); 
+      }
+      
+    } else {
+      file1="";
+      file1saved="";
+      thumb1="";
+      size1=0;
+    }
+    
+    aiVO.setImg_search(file1);
+    aiVO.setImg_search_save(file1saved);
+    aiVO.setImg_search_thumb(thumb1);
+    aiVO.setImg_search_size(size1);
+    
+    aiProc.update(aiVO); // 예를 들어, aiService.updateAi 메서드를 호출하여 데이터를 업데이트합니다
+
+      ra.addAttribute("searchno", aiVO.getSearchno());
+      ra.addAttribute("text_search", aiVO.getText_search());
+      ra.addAttribute("file1", file1);
+
+      return "redirect:/ai/list";
+  }
+  
   
   @GetMapping(value = "/list")
   public String list(HttpSession session, Model model) {

@@ -52,7 +52,9 @@
       <td class='td_basic' th:text="${aiVO.text_search}"></td>
       
       <td class='td_basic'>
+        <a th:href="@{/ai/update(searchno=${aiVO.searchno})}">
         <img src='/member/images/update.png' title='수정' class="icon"></a>
+        </a>
         <a th:href="@{/ai/delete(searchno=${aiVO.searchno})}">
     <img src='/member/images/delete.png' title='삭제' class="icon">
 </a>

@@ -39,7 +39,7 @@ import jakarta.validation.constraints.Max;
     private String img_search_thumb = "";
     
     /** 저장한 이미지 사이즈 */
-    private Integer img_search_size = 0;
+    private long img_search_size = 0;
     
     /** 질문한 텍스트 */
     private String text_search = "";
