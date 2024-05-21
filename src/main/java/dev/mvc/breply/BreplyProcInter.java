@@ -44,16 +44,16 @@ public interface BreplyProcInter {
   public int update_img(BreplyVO breplyVO);
 
   /**
-   * 패스워드 검사
-   * @param hashMap
-   * @return
-   */
-  public int password_check(HashMap<String, Object> hashMap);
-
-  /**
    * delete id="delete" parameterType="int"
    * @param breplyno
    * @return 삭제된 레코드 갯수
    */
   public int delete(int breplyno);
+
+    /**
+   * 패스워드 검사
+   * @param hashMap
+   * @return
+   */
+  public int password_check(HashMap<String, Object> hashMap);
 }

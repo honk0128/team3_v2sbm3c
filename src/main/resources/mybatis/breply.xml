@@ -22,9 +22,14 @@
   </select>
 
   <!-- 댓글(글) 수정 -->
+  <!-- <update id="update_contents" parameterType="dev.mvc.breply.BreplyVO">
+    UPDATE BREPLY
+    SET BREPLYCONT = #{breplycont}, BREPLYDATE = sysdate
+    WHERE BREPLYNO = #{breplyno}
+  </update> -->
   <update id="update_contents" parameterType="dev.mvc.breply.BreplyVO">
     UPDATE BREPLY
-    SET BREPLYCONT = #{breplycont}, BREPLYDATE = sysdate, BREPLYPASSWD = #{breplypasswd}
+    SET BREPLYCONT = #{breplycont, jdbcType=CLOB}, BREPLYDATE = sysdate
     WHERE BREPLYNO = #{breplyno}
   </update>
 
@@ -42,8 +47,8 @@
 
   <select id="password_check" resultType="int" parameterType="HashMap">
     SELECT COUNT(*) as cnt 
-    FROM contents
-    WHERE replyno = #{replyno} AND breplypasswd=#{breplypasswd}
+    FROM breply
+    WHERE breplyno = #{breplyno} AND BREPLYPASSWD = #{breplypasswd}
   </select>
 
 </mapper>

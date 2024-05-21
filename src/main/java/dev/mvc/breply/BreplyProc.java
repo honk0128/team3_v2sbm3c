@@ -22,6 +22,10 @@ public class BreplyProc implements BreplyProcInter{
 
   @Override
   public int replycreate(BreplyVO breplyVO) {
+    String passwd = breplyVO.getBreplypasswd();
+    String passwd_encoded = this.security.aesEncode(passwd);
+    breplyVO.setBreplypasswd(passwd_encoded);
+
     int cnt = this.breplyDAO.replycreate(breplyVO);
     return cnt;
   }
@@ -57,8 +61,11 @@ public class BreplyProc implements BreplyProcInter{
 
   @Override
   public int password_check(HashMap<String, Object> map) {
-    String passwd = (String)map.get("passwd");
-    passwd = this.security.aesEncode(passwd);
+    String breplypasswd = (String)map.get("breplypasswd");
+    System.out.println("-> passwd type: " + (String)map.get("breplypasswd"));
+    breplypasswd = this.security.aesEncode(breplypasswd);
+    System.out.println(breplypasswd);
+    map.put("breplypasswd", breplypasswd);
 
     int cnt = this.breplyDAO.password_check(map);
     return cnt;

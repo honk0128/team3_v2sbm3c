@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import dev.mvc.crudcate.CrudcateProcInter;
+import dev.mvc.crudcate.CrudcateVO;
 import dev.mvc.tool.Tool;
 import dev.mvc.tool.Upload;
 
@@ -29,6 +31,10 @@ public class BreplyCont {
   @Autowired
   @Qualifier("dev.mvc.breply.BreplyProc")
   private BreplyProcInter breplyProc;
+
+  @Autowired
+  @Qualifier("dev.mvc.crudcate.CrudcateProc")
+  private CrudcateProcInter crudcateProc;
 
   public BreplyCont() {
     System.out.println("-> BreplyCont created.");
@@ -133,8 +139,11 @@ public class BreplyCont {
     return "breply/list";
   }
 
-  @GetMapping(value = "read")
-  public String read(Model model, int breplyno, String word,
+  /**
+   * 댓글 조회
+   */
+  @GetMapping(value = "/read")
+  public String read(Model model, int breplyno, String word, CrudcateVO crudcateVO,
                      @RequestParam(name="now_page", defaultValue="1") int now_page) {
     model.addAttribute("now_page", now_page);
 
@@ -147,6 +156,9 @@ public class BreplyCont {
     word = Tool.checkNull(word).trim();
 
     model.addAttribute("breplyVO", breplyVO);
+
+    model.addAttribute("crudcateVO", crudcateVO);
+
     model.addAttribute("word", word);
     
     return "breply/read";
@@ -155,46 +167,55 @@ public class BreplyCont {
   /**
    * 업데이트
    */
-  @GetMapping(value = "update_Breply")
-  public String update_Breply(Model model,
+  @GetMapping(value = "update_contents")
+  public String update_contents(Model model,
                                 HttpSession session,
-                                int breplyno,
-                                RedirectAttributes ra,
-                                String word,
-                                int now_page) {
-    model.addAttribute("word", word);
-    model.addAttribute("now_page", now_page);
+                                @RequestParam(name="breplyno") Integer breplyno,
+                                RedirectAttributes ra) {
 
     BreplyVO breplyVO = this.breplyProc.read(breplyno);
     model.addAttribute("breplyVO", breplyVO);
 
-    return "breply/update_Breply";
+    return "breply/update_contents";
   }
 
   @PostMapping(value = "update_contents")
-  public String update_Breply(Model model,
-                                HttpSession session,
-                                BreplyVO breplyVO,
-                                RedirectAttributes ra,
-                                String word,
-                                int now_page) {
-      HashMap<String, Object> map = new HashMap<String, Object>();
-      map.put("breplyno", breplyVO.getBreplyno());
-      map.put("breplypasswd", breplyVO.getBreplypasswd());
+  public String update_contents(Model model,
+                              HttpSession session,
+                              BreplyVO breplyVO,
+                              RedirectAttributes ra) {
 
-      if(this.breplyProc.password_check(map) == 1) {
-        this.breplyProc.update_contents(breplyVO);
+    // 댓글 내용 업데이트
+    int cnt = this.breplyProc.update_contents(breplyVO);
+    System.out.println("cnt : " + cnt);
 
-        ra.addAttribute("breplyno", breplyVO.getBreplycont());
-        return "redirect:/breply/read";
-      } else {
+    // 비밀번호 확인을 위한 맵 생성
+    HashMap<String, Object> map = new HashMap<String, Object>();
+    map.put("breplyno", breplyVO.getBreplyno());
+    map.put("breplypasswd", breplyVO.getBreplypasswd());
+    // System.out.println("-> map : " + map.put("breplypasswd", breplyVO.getBreplypasswd()));
+
+    // 비밀번호 확인
+    if(this.breplyProc.password_check(map) == 1) {
+        // 비밀번호가 맞으면
+        if(cnt == 1) {
+            // 댓글 내용이 정상적으로 업데이트 되었을 때
+            model.addAttribute("content", breplyVO.getBreplycont());
+            return "redirect:/breply/list";
+        } else {
+            // 댓글 내용이 업데이트되지 않았을 때
+            return null;
+        }
+    } else {
+        // 비밀번호가 틀렸을 때
         ra.addAttribute("code", "passwd_fail");
         ra.addAttribute("cnt", 0);
-        ra.addAttribute("url", "breply/msg");
+        // ra.addAttribute("url", "breply/msg");
 
         return "redirect:/breply/msg";
-      }
+    }
   }
+
 
   @PostMapping(value = "/update_file")
   public String update_file(HttpSession session, Model model, 
@@ -251,36 +272,55 @@ public class BreplyCont {
   
   @GetMapping(value = "/delete")
   public String delete(HttpSession session, Model model, RedirectAttributes ra, 
-                       int breplyno, String word, int now_page) {
+                       @RequestParam(name = "breplyno") int breplyno,
+                       @RequestParam(name="word", defaultValue = "") String word,
+                       @RequestParam(name="now_page", defaultValue="1") int now_page) {
     
-  BreplyVO BreplyVO = this.breplyProc.read(breplyno);
-    model.addAttribute("BreplyVO", BreplyVO);
-    model.addAttribute("word", word);
-    model.addAttribute("now_page", now_page);
+    BreplyVO breplyVO = this.breplyProc.read(breplyno);
+    System.out.println("breplyno : " + breplyno);
+    model.addAttribute("BreplyVO", breplyVO);
     
     return "/breply/delete";
   }
   
   @PostMapping(value = "/delete")
-  public String delete(RedirectAttributes ra, int breplyno, String word, int now_page) {
-    
-    BreplyVO BreplyVO_read = breplyProc.read(breplyno);
-        
-    String file1saved = BreplyVO_read.getBreplysaved();
-    String thumb1 = BreplyVO_read.getBreplythumb();
-    
-    String uploadDir = Breply.getUploadDir();
-    Tool.deleteFile(uploadDir, file1saved);
-    Tool.deleteFile(uploadDir, thumb1);
-        
-    this.breplyProc.delete(breplyno);
-    
-    HashMap<String, Object> hashMap = new HashMap<String, Object>();
-    hashMap.put("word", word);
+  public String delete(Model model,
+                      RedirectAttributes ra,
+                      @RequestParam(name = "breplyno", defaultValue = "") int breplyno,
+                      @RequestParam(name="word", defaultValue = "") String word,
+                      @RequestParam(name="now_page", defaultValue="1") int now_page) {
+  BreplyVO breplyVO = this.breplyProc.read(breplyno);
+  System.out.println(breplyVO);
+  System.out.println(breplyno);
 
-    ra.addAttribute("word", word);
-    ra.addAttribute("now_page", now_page);
-    
+  int cnt = this.breplyProc.delete(breplyno);
+  model.addAttribute("cnt", cnt);
+  System.out.println("cnt : " + cnt);
+  if(cnt == 1) {
     return "redirect:/breply/list";
+  } else {
+    model.addAttribute("code", "delete_fail");
+      return "breply/msg";
+  }
+    
+    // BreplyVO BreplyVO_read = new BreplyVO();                    
+    // BreplyVO_read = breplyProc.read(breplyno);
+        
+    // String file1saved = BreplyVO_read.getBreplysaved();
+    // String thumb1 = BreplyVO_read.getBreplythumb();
+    
+    // String uploadDir = Breply.getUploadDir();
+    // Tool.deleteFile(uploadDir, file1saved);
+    // Tool.deleteFile(uploadDir, thumb1);
+        
+    // this.breplyProc.delete(breplyno);
+    
+    // HashMap<String, Object> hashMap = new HashMap<String, Object>();
+    // hashMap.put("word", word);
+
+    // ra.addAttribute("word", word);
+    // ra.addAttribute("now_page", now_page);
+    
+    // return "redirect:/breply/list";
   }   
 }

@@ -48,13 +48,18 @@ ORDER BY BREPLYNO ASC;
 
 SELECT * FROM breply;
 
-commit;
+commit; 
 
 UPDATE BREPLY
 SET BREPLYCONT = '수정', BREPLYIMG = null, BREPLYSAVED = null, BREPLYTHUMB = null, BREPLYSIZE = null, BREPLYDATE = sysdate, BREPLYPASSWD = 5678
 WHERE BREPLYNO = 6;
 
-delete BREPLY
+
+delete breply;
+
+SELECT COUNT(*) as cnt 
+FROM BREPLY
+WHERE breplyno = 39 AND BREPLYPASSWD = 'fS/kjO+fuEKk06Zl7VYMhg=='
 
 
 /**********************************/

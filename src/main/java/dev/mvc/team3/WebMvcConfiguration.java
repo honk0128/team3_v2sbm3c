@@ -26,7 +26,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer{
         registry.addResourceHandler("/contents/storage/**").addResourceLocations("file:///" +  Breply.getUploadDir());
         
         
-        registry.addResourceHandler("/contents/storage/**").addResourceLocations("file:///" +  Contents.getUploadDir());
+        // registry.addResourceHandler("/contents/storage/**").addResourceLocations("file:///" +  Contents.getUploadDir());
         // JSP 인식되는 경로: http://localhost:9091/attachfile/storage";
         // registry.addResourceHandler("/contents/storage/**").addResourceLocations("file:///" +  Tool.getOSPath() + "/attachfile/storage/");
         
