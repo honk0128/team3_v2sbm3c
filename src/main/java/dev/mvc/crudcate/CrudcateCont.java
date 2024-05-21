@@ -254,7 +254,7 @@ public class CrudcateCont {
     }
   }
   
-    @GetMapping(value="/seqno_forward/{crudcateno}")
+  @GetMapping(value="/seqno_forward/{crudcateno}")
   public String seqno_forward(Model model, @PathVariable("crudcateno") Integer crudcateno, CrudcateVO crudcateVO, @RequestParam(name="word", defaultValue = "") String word, @RequestParam(name="now_page", defaultValue = "1") int now_page) {
     this.crudcateProc.seqno_forward(crudcateno);
 

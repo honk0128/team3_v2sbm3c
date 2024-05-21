@@ -91,9 +91,9 @@ public class BoardCont {
    * @return
    */
   @PostMapping(value = "/create")
-  public String create_process(HttpServletRequest request, HttpSession session, Model model, BoardVO boardVO, RedirectAttributes ra) {
+public String create_process(HttpServletRequest request, HttpSession session, Model model, BoardVO boardVO, RedirectAttributes ra) {
       
-    if (this.managerProc.isMemberAdmin(session)) { // 관리자로 로그인한경우
+    if (session.getAttribute("accountno") != null) { // 회원으로 로그인한 경우
       // ------------------------------------------------------------------------------
       // 파일 전송 코드 시작
       // ------------------------------------------------------------------------------
@@ -170,5 +170,6 @@ public class BoardCont {
   }
   return "redirect:/board/login_form_need"; // /member/login_cookie_need.html
 }
+
 
 }

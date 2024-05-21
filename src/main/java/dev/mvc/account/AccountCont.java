@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import dev.mvc.contents.Contents;
+// import dev.mvc.contents.Contents;
 import dev.mvc.manager.ManagerProcInter;
 //import dev.mvc.cate.CateProcInter;
 //import dev.mvc.cate.CateVOMenu;

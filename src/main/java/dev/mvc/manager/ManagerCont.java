@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import dev.mvc.account.AccountProcInter;
-import dev.mvc.contents.Contents;
+// import dev.mvc.contents.Contents;
 //import dev.mvc.cate.CateProcInter;
 //import dev.mvc.cate.CateVOMenu;
 import dev.mvc.tool.Security;
@@ -171,6 +171,5 @@ public class ManagerCont {
     session.invalidate();  // 모든 세션 변수 삭제
     return "redirect:/";
   }
-  
- 
+
 }
