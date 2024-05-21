@@ -35,11 +35,12 @@
   </select>
   
     <!-- 로그인 -->
-  <select id="login" resultType="int" parameterType="HashMap">
+  <select id="login_account" resultType="int" parameterType="HashMap">
     SELECT COUNT(accountno) as cnt
     FROM account
     WHERE aid=#{aid} AND apasswd=#{apasswd}
   </select>
+  
   <!-- update -->
    <update id="update_account" parameterType="dev.mvc.account.AccountVO">
     UPDATE account 
@@ -47,5 +48,11 @@
          aprofile_img=#{aprofile_img}, aprofile_imgsave=#{aprofile_imgsave}, aprofile_thum=#{aprofile_thum}, aprofile_size=#{aprofile_size}
     WHERE accountno=#{accountno}
   </update>
+  
+  <!-- delete -->
+    <delete id="delete_account" parameterType="int">
+    DELETE FROM account
+    WHERE accountno=#{accountno}
+  </delete>
 
 </mapper>

@@ -57,11 +57,15 @@
         <li class="nav-item" th:if="${session.accountno != null}">
           <a class="nav-link" th:href="@{|/account/read?accountno=${session.accountno}|}">회원 정보 조회</a>
         </li>
+        <li class="nav-item" th:if="${session.accountno != null}">
+          <a class="nav-link" th:href="@{|/account/delete?accountno=${session.accountno}|}">회원 정보 삭제</a>
+        </li>
         <li class="nav-item"><a class="nav-link" href="/account/list">회원 목록</a></li>
+        
 
         <li class="nav-item">
-          <span th:if="${session.accountno == null}"><a class="nav-link" href="/account/login" th:text="@{|로그인|}"></a></span>
-          <span th:if="${session.accountno != null}"><a class="nav-link" href="/account/logout" th:text="@{|${session.aid} 로그아웃|}"></a></span>
+          <span th:if="${session.accountno == null} and ${session.managerno == null}"><a class="nav-link" href="/account/login" th:text="@{|로그인|}"></a></span>
+          <span th:if="${session.accountno != null} or ${session.managerno != null}"><a class="nav-link" href="/account/logout" th:text="@{|${session.accountno != null ? session.aid : session.mid} 로그아웃|}"></a></span>
         </li>
       </ul>
     </div>

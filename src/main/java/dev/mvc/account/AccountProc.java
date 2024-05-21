@@ -61,8 +61,8 @@ public class AccountProc implements AccountProcInter{
 
 
   @Override
-  public int login(HashMap<String, Object> map) {
-    int cnt = this.accountDAO.login(map);
+  public int login_account(HashMap<String, Object> map) {
+    int cnt = this.accountDAO.login_account(map);
     return cnt;
   }
 
@@ -70,6 +70,13 @@ public class AccountProc implements AccountProcInter{
   @Override
   public int update_account(AccountVO accountVO) {
     int cnt = this.accountDAO.update_account(accountVO);
+    return cnt;
+  }
+
+
+  @Override
+  public int delete_account(int accountno) {
+    int cnt = this.accountDAO.delete_account(accountno);
     return cnt;
   }
   

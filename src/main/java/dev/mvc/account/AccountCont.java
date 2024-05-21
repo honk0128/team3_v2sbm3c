@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import dev.mvc.contents.Contents;
+import dev.mvc.manager.ManagerProcInter;
 //import dev.mvc.cate.CateProcInter;
 //import dev.mvc.cate.CateVOMenu;
 import dev.mvc.tool.Security;
@@ -42,6 +43,10 @@ public class AccountCont {
   @Autowired
   @Qualifier("dev.mvc.account.AccountProc")
   private AccountProcInter accountProc;
+  
+  @Autowired
+  @Qualifier("dev.mvc.manager.ManagerProc")
+  private ManagerProcInter managerProc;
   
   @Autowired
   Security security;
@@ -144,12 +149,15 @@ public class AccountCont {
 
   @GetMapping(value = "/list")
   public String list(HttpSession session, Model model) {
-
+    if (this.managerProc.isMemberAdmin(session)) {
     ArrayList<AccountVO> list = this.accountProc.list();
 
     model.addAttribute("list", list);
 
     return "account/list"; // templates/member/list.html
+  }else {
+    return "redirect:/member/login_form_need";  // redirect
+  } 
   }
 
   /**
@@ -209,13 +217,13 @@ public class AccountCont {
    * @param memberno 회원 번호
    * @return 회원 정보
    */
-  @PostMapping(value = "/login")
+  @PostMapping(value = "/login_account")
   public String login_proc(HttpSession session, Model model, String aid, String apasswd) {
     HashMap<String, Object> map = new HashMap<String, Object>();
     map.put("aid", aid);
     map.put("apasswd", this.security.aesEncode(apasswd));
 
-    int cnt = this.accountProc.login(map);
+    int cnt = this.accountProc.login_account(map);
     System.out.println("-> login_proc cnt: " + cnt);
 
     model.addAttribute("cnt", cnt);
@@ -340,5 +348,39 @@ public class AccountCont {
     model.addAttribute("cnt", cnt);
     
     return "member/msg"; // /templates/member/msg.html
+  }
+  
+  /**
+   * 삭제
+   * @param model
+   * @param accountno 회원 번호
+   * @return 회원 정보
+   */
+  @GetMapping(value="/delete")
+  public String delete(Model model, int accountno) {
+    System.out.println("-> delete accountno: " + accountno);
+    
+    AccountVO accountVO = this.accountProc.read(accountno);
+    model.addAttribute("accountVO", accountVO);
+    
+    return "account/delete";  // templates/member/delete.html
+  }
+  
+  /**
+   * 회원 Delete process
+   * @param model
+   * @param accountno 삭제할 레코드 번호
+   * @return
+   */
+  @PostMapping(value="/delete_account")
+  public String delete_process(Model model, Integer accountno) {
+    int cnt = this.accountProc.delete_account(accountno);
+    
+    if (cnt == 1) {
+      return "redirect:/account/list";
+    } else {
+      model.addAttribute("code", "delete_fail");
+      return "account/msg"; // /templates/member/msg.html
+    }
   }
 }

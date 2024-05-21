@@ -44,7 +44,7 @@ public interface AccountDAOInter {
   /**
    * 로그인 처리
    */
-  public int login(HashMap<String, Object> map);
+  public int login_account(HashMap<String, Object> map);
   
   /**
    * 수정 처리
@@ -52,6 +52,13 @@ public interface AccountDAOInter {
    * @return
    */
   public int update_account(AccountVO accountVO);
+  
+  /**
+   * 회원 삭제 처리
+   * @param accountno
+   * @return
+   */
+  public int delete_account(int accountno);
   
 }
  
