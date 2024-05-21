@@ -72,7 +72,7 @@ public class AiCont {
     String file1saved = "";     // 저장된 파일명
     String thumb1 = "";         // preview image
 
-    String upDir =  Contents.getUploadDir(); // 파일을 업로드할 폴더 경로
+    String upDir =  Aiurl.getUploadDir(); // 파일을 업로드할 폴더 경로
     System.out.println("-> upDir: " + upDir);
     
     file1 = file1MF.getOriginalFilename(); // 원본 파일명
@@ -153,7 +153,7 @@ System.out.println(searchno);
     String thumb1 = aiVO.getImg_search_save();
     long size1 = 0; 
     
-    String upDir = Contents.getUploadDir();
+    String upDir = Aiurl.getUploadDir();
     
     Tool.deleteFile(upDir, file1saved);
     Tool.deleteFile(upDir, thumb1);
@@ -225,7 +225,7 @@ System.out.println(searchno);
     String file1saved = aiVO.getImg_search_save();
     String thumb1 = aiVO.getImg_search_thumb();
     
-    String uploadDir = Contents.getUploadDir();
+    String uploadDir = Aiurl.getUploadDir();
     Tool.deleteFile(uploadDir, file1saved);
     Tool.deleteFile(uploadDir, thumb1);
 //        
