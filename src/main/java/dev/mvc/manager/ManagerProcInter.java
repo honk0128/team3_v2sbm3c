@@ -50,6 +50,34 @@ public interface ManagerProcInter {
    */
   public boolean isMemberAdmin(HttpSession session);
   
+  
+  /**
+   * 회원 전체 목록
+   * @return
+   */
+  public ArrayList<ManagerVO> list();
+  
+  /**
+   * managerno로 회원 정보 조회
+   * @param managerno
+   * @return
+   */
+  public ManagerVO read(int managerno);
+  
+  /**
+   * 수정 처리
+   * @param accountVO
+   * @return
+   */
+  public int update_manager(ManagerVO managerVO);
+  
+  /**
+   * 회원 삭제 처리
+   * @param accountno
+   * @return
+   */
+  public int delete_manager(int managerno);
+  
 
 
   

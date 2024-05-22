@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import dev.mvc.account.AccountProcInter;
 // import dev.mvc.contents.Contents;
 //import dev.mvc.cate.CateProcInter;
 //import dev.mvc.cate.CateVOMenu;
@@ -170,6 +169,119 @@ public class ManagerCont {
   public String logout(HttpSession session, Model model) {
     session.invalidate();  // 모든 세션 변수 삭제
     return "redirect:/";
+  }
+  
+  @GetMapping(value = "/list")
+  public String list(HttpSession session, Model model) {
+    if (this.managerProc.isMemberAdmin(session)) {
+    ArrayList<ManagerVO> list = this.managerProc.list();
+
+    model.addAttribute("list", list);
+
+    return "manager/list"; // templates/member/list.html
+  }else {
+    return "redirect:/member/login_form_need";  // redirect
+  } 
+  }
+
+  /**
+   * 조회
+   * 
+   * @param model
+   * @param accountno 회원 번호
+   * @return 회원 정보
+   */
+  @GetMapping(value = "/read")
+  public String read(HttpSession session, Model model, int managerno) {
+    // 회원은 회원 등급만 처리, 관리자: 1 ~ 10, 사용자: 11 ~ 20
+    // int gradeno = this.memberProc.read(memberno).getGrade(); // 등급 번호
+    String mgrade = (String) session.getAttribute("mgrade"); // 등급: admin, member, guest
+
+    // 사용자: member && 11 ~ 20
+    // if (grade.equals("member") && (gradeno >= 11 && gradeno <= 20) && memberno ==
+    // (int)session.getAttribute("memberno")) {
+    if (mgrade.equals("admin") && managerno == (int) session.getAttribute("managerno")) {
+      // System.out.println("-> read memberno: " + memberno);
+
+      ManagerVO managerVO = this.managerProc.read(managerno);
+      model.addAttribute("managerVO", managerVO);
+      System.out.println("mgrade: " + mgrade);
+
+      return "manager/read"; // templates/member/read.html
+
+    } else if (mgrade.equals("admin")) {
+      // System.out.println("-> read memberno: " + memberno);
+
+      ManagerVO managerVO = this.managerProc.read(managerno);
+      model.addAttribute("managerVO", managerVO);
+
+      return "manager/read"; // templates/account/read.html
+    } else {
+      return "redirect:/member/login_form_need"; // redirect
+    }
+
+  }
+  
+  /**
+   * 수정 처리
+   * @param model
+   * @param memberVO
+   * @return
+   */
+  @PostMapping(value="/update_manager")
+  public String update_proc(Model model, ManagerVO managerVO, RedirectAttributes ra) {
+    
+    
+    int cnt = this.managerProc.update_manager(managerVO);
+    if (cnt == 1) {
+      
+      model.addAttribute("code", "update_success");
+      model.addAttribute("mname", managerVO.getMname());
+
+      ra.addAttribute("managerno", managerVO.getManagerno());
+      
+      return "redirect:/manager/read"; // request -> param으로 접근 전환
+    } else {
+      model.addAttribute("code", "update_fail");
+    }
+    
+    model.addAttribute("cnt", cnt);
+    
+    return "manager/msg"; // /templates/member/msg.html
+  }
+  
+  /**
+   * 삭제
+   * @param model
+   * @param manager 회원 번호
+   * @return 회원 정보
+   */
+  @GetMapping(value="/delete")
+  public String delete(Model model, int managerno) {
+    System.out.println("-> delete managerno: " + managerno);
+    
+    ManagerVO managerVO = this.managerProc.read(managerno);
+    model.addAttribute("managerVO", managerVO);
+    
+    return "manager/delete";  // templates/member/delete.html
+  }
+  
+  /**
+   * 관리자 Delete process
+   * @param model
+   * @param managerno 삭제할 레코드 번호
+   * @return
+   */
+  @PostMapping(value="/delete_manager")
+  public String delete_process(Model model, Integer managerno) {
+    int cnt = this.managerProc.delete_manager(managerno);
+    
+    if (cnt == 1) {
+      return "redirect:/manager/list";
+    } else {
+      model.addAttribute("code", "delete_fail");
+      return "manager/msg"; // /templates/member/msg.html
+    }
   }
 
 }

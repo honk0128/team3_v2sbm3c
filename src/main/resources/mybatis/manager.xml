@@ -25,5 +25,31 @@
     FROM manager
     WHERE mid = #{mid}
   </select>
+  
+    <select id="list" resultType="dev.mvc.manager.ManagerVO">
+    SELECT managerno, mid, mpasswd, mname, mdate, mgrade
+    FROM manager
+    ORDER BY mgrade ASC, mid ASC
+  </select>
+  
+    <!-- memberno로 회원 정보 조회 -->
+  <select id="read" resultType="dev.mvc.manager.ManagerVO" parameterType="int">
+    SELECT managerno, mid, mpasswd, mname, mdate, mgrade
+    FROM manager
+    WHERE managerno = #{managerno}
+  </select>  
+  
+    <!-- update -->
+   <update id="update_manager" parameterType="dev.mvc.manager.ManagerVO">
+    UPDATE manager 
+    SET mname=#{mname}
+    WHERE managerno=#{managerno}
+  </update>
+  
+  <!-- delete -->
+    <delete id="delete_manager" parameterType="int">
+    DELETE FROM manager
+    WHERE managerno=#{managerno}
+  </delete>
 
 </mapper>

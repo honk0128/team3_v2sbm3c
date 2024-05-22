@@ -171,21 +171,21 @@ public class AccountCont {
   public String read(HttpSession session, Model model, int accountno) {
     // 회원은 회원 등급만 처리, 관리자: 1 ~ 10, 사용자: 11 ~ 20
     // int gradeno = this.memberProc.read(memberno).getGrade(); // 등급 번호
-    String agrade = (String) session.getAttribute("agrade"); // 등급: admin, member, guest
+    String mgrade = (String) session.getAttribute("mgrade"); // 등급: admin, member, guest
 
     // 사용자: member && 11 ~ 20
     // if (grade.equals("member") && (gradeno >= 11 && gradeno <= 20) && memberno ==
     // (int)session.getAttribute("memberno")) {
-    if (agrade.equals("account") && accountno == (int) session.getAttribute("accountno")) {
+    if (mgrade.equals("account") && accountno == (int) session.getAttribute("accountno")) {
       // System.out.println("-> read memberno: " + memberno);
 
       AccountVO accountVO = this.accountProc.read(accountno);
       model.addAttribute("accountVO", accountVO);
-      System.out.println("agrade: " + agrade);
+      System.out.println("mgrade: " + mgrade);
 
       return "account/read"; // templates/member/read.html
 
-    } else if (agrade.equals("admin")) {
+    } else if (mgrade.equals("admin")) {
       // System.out.println("-> read memberno: " + memberno);
 
       AccountVO accountVO = this.accountProc.read(accountno);
@@ -330,9 +330,6 @@ public class AccountCont {
     int cnt = this.accountProc.update_account(accountVO); // 수정
     
     if (cnt == 1) {
-      model.addAttribute("code", "update_success");
-      model.addAttribute("aname", accountVO.getAname());
-      model.addAttribute("aid", accountVO.getAid());
       
       model.addAttribute("code", "update_success");
       model.addAttribute("aname", accountVO.getAname());
@@ -347,7 +344,7 @@ public class AccountCont {
     
     model.addAttribute("cnt", cnt);
     
-    return "member/msg"; // /templates/member/msg.html
+    return "account/msg"; // /templates/member/msg.html
   }
   
   /**

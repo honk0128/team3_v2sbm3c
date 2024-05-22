@@ -1,5 +1,6 @@
 package dev.mvc.manager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,6 +91,30 @@ public class ManagerProc implements ManagerProcInter {
     }
 
     return sw;
+  }
+
+  @Override
+  public ArrayList<ManagerVO> list() {
+    ArrayList <ManagerVO> list = this.managerDAO.list();
+    return list;
+  }
+
+  @Override
+  public ManagerVO read(int managerno) {
+    ManagerVO managerVO = this.managerDAO.read(managerno);
+    return managerVO;
+  }
+
+  @Override
+  public int update_manager(ManagerVO managerVO) {
+    int cnt = this.managerDAO.update_manager(managerVO);
+    return cnt;
+  }
+
+  @Override
+  public int delete_manager(int managerno) {
+    int cnt = this.managerDAO.delete_manager(managerno);
+    return cnt;
   }
 
 
