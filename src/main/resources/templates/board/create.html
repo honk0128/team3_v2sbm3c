@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html layout:decorate="~{layout}">
   <!-- layout.html 상속-->
   <div layout:fragment="content">
@@ -10,12 +11,12 @@
 
     <div class="menu_line"></div>
 
-    <form name="frm" method="post" th:object="${boardVO}" action="./create" enctype="multipart/form-data">
+    <form name="frm" method="post" th:object="${contentsVO}" action="./create" enctype="multipart/form-data">
       <input type="hidden" name="crudcateno" th:value="${param.crudcateno}" />
 
       <div>
         <label>제목</label>
-        <input type="text" name="btitle" required="required" autofocus="autofocus" class="form-control" style="width: 100%" />
+        <input type="text" name="btitle" value="레시피1" required="required" autofocus="autofocus" class="form-control" style="width: 100%" />
       </div>
       <div>
         <label>내용</label>
@@ -23,15 +24,11 @@
       </div>
       <div>
         <label>검색어</label>
-        <input type="text" name="btag" required="required" class="form-control" style="width: 100%" />
+        <input type="text" name="btag" value="" required="required" class="form-control" style="width: 100%" />
       </div>
       <div>
         <label>이미지</label>
-        <input type="file" class="form-control" name="bphotoNF" id="bphotoNF" placeholder="파일 선택" />
-      </div>
-      <div>
-        <label>출력 모드</label>
-        <input type="text" class="form-control" name="bvisible" id="bvisible" th:field="*{bvisible}" placeholder="출력 모드" />
+        <input type="file" class="form-control" name="bphotoNF" id="bphotoNF" value="" placeholder="파일 선택" />
       </div>
       <div>
         <label>패스워드</label>
@@ -39,7 +36,13 @@
       </div>
       <div class="content_body_bottom">
         <button type="submit" class="btn btn-secondary btn-sm">등록</button>
-        <button type="button" th:attr="onclick=|location.href='./list_cno'|" class="btn btn-secondary btn-sm">목록</button>
+        <button
+          type="button"
+          th:attr="onclick=|location.href='./list_by_cateno_search_paging?crudcateno=${crudcateno}'|"
+          class="btn btn-secondary btn-sm"
+        >
+          목록
+        </button>
       </div>
     </form>
   </div>

@@ -29,9 +29,7 @@
           >
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li th:each="crudcateVO:${crudcateVOMenu.list_namesubs}">
-              <a class="dropdown-item" th:href="@{|/board/list_cno?crudcateno=${crudcateVO.crudcateno}|}" th:text="${crudcateVO.namesub}"></a>
-            </li>
+            <li th:each="crudcateVO:${crudcateVOMenu.list_namesubs}"><a class="dropdown-item" href="#" th:text="${crudcateVO.namesub}"></a></li>
           </ul>
         </li>
         <li class="nav-item">
@@ -63,19 +61,12 @@
           <a class="nav-link" th:href="@{|/account/delete?accountno=${session.accountno}|}">회원 정보 삭제</a>
         </li>
         <li class="nav-item"><a class="nav-link" href="/account/list">회원 목록</a></li>
-<<<<<<< HEAD
-=======
         <li class="nav-item"><a class="nav-link" href="/manager/list">관리자 목록</a></li>
         
->>>>>>> 523995388e651abc3e0b9c4b4d8c6dd3f6fd4993
 
         <li class="nav-item">
-          <span th:if="${session.accountno == null} and ${session.managerno == null}"
-            ><a class="nav-link" href="/account/login" th:text="@{|로그인|}"></a
-          ></span>
-          <span th:if="${session.accountno != null} or ${session.managerno != null}"
-            ><a class="nav-link" href="/account/logout" th:text="@{|${session.accountno != null ? session.aid : session.mid} 로그아웃|}"></a
-          ></span>
+          <span th:if="${session.accountno == null} and ${session.managerno == null}"><a class="nav-link" href="/account/login" th:text="@{|로그인|}"></a></span>
+          <span th:if="${session.accountno != null} or ${session.managerno != null}"><a class="nav-link" href="/account/logout" th:text="@{|${session.accountno != null ? session.aid : session.mid} 로그아웃|}"></a></span>
         </li>
       </ul>
     </div>

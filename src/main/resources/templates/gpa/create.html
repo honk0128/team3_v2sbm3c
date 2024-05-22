@@ -1,0 +1,66 @@
+<!DOCTYPE html> 
+
+<html layout:decorate="~{layout}"> 
+<head> 
+<meta charset="UTF-8"> 
+<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=3.0, width=device-width" /> 
+<title>Resort world</title>
+<link rel="shortcut icon" href="/images/shortcut.png" /> 
+<link href="/css/style.css" rel="Stylesheet" type="text/css"> <!-- /static 기준 -->
+</head>
+ 
+<body layout:fragment="content">
+<c:import url="/menu/top.do" />
+ 
+  <div class='title_line'> 별점 등록</div>
+  
+  <aside class="aside_right">
+    
+    <a href="javascript:location.reload();">새로고침</a>
+    
+    
+  </aside>
+  
+  <div style="text-align: right; clear: both;">  
+  
+  </div>
+  
+  <div class='menu_line'></div>
+  
+  <form name='frm' method='post' action='./create' id="starscore" enctype="multipart/form-data">
+    <input type="hidden" name="cateno" value="${param.cateno }">
+    
+    
+    <div>
+       <span id="starspan" class="text-bold">별점을 선택해주세요</span>
+       <fieldset>
+    <input type="radio" name="reviewStar" value="5" id="rate1"><label
+      for="rate1">★</label>
+    <input type="radio" name="reviewStar" value="4" id="rate2"><label
+      for="rate2">★</label>
+    <input type="radio" name="reviewStar" value="3" id="rate3"><label
+      for="rate3">★</label>
+    <input type="radio" name="reviewStar" value="2" id="rate4"><label
+      for="rate4">★</label>
+    <input type="radio" name="reviewStar" value="1" id="rate5"><label
+      for="rate5">★</label>
+  </fieldset>
+       </div>
+     
+    <!--<div>
+       <label>이미지</label>
+       <input type='file' class="form-control" name='file1MF' id='file1MF' value='' placeholder="파일 선택">
+    </div> -->   
+    
+    <div class="content_body_bottom">
+      <button type="submit" class="btn btn-secondary btn-sm">등록</button>
+      <button type="button" onclick="location.href='./list_by_cateno_search_paging.do?cateno=${param.cateno}'" class="btn btn-secondary btn-sm">목록</button>
+    </div>
+  
+  </form>
+
+ 
+<jsp:include page="../menu/bottom.jsp" flush='false' />
+</body>
+ 
+</html>
