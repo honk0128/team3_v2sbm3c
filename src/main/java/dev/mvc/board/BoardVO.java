@@ -2,6 +2,8 @@ package dev.mvc.board;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -90,7 +92,7 @@ public class BoardVO {
   private String byoutube;
 
   /** 게시판 출력모드 */
-  private String bvisible;
+  private String bvisible = "Y";
 
   /** 분류 번호 */
   private int tagno;

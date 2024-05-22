@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+  <!-- layout.html 상속-->
+  <div layout:fragment="content">
+
+  <div class='title_line'>
+    <span th:text="${crudcateVO.name}" class="title_line_text"></span>
+    > <span th:text="${crudcateVO.namesub}" class="title_line_text"></span>
+    > <span th:text="|${boardVO.btitle} Youtube 등록/수정/삭제|" class="title_line_text"></span>
+  </div>
+  
+  <div class='menu_line'></div>
+
+  <form name='frm' method='post' action='./youtube'>
+    <input type="hidden" name="boardno" th:value="${boardVO.boardno}">
+    <!-- <input type="hidden" name="word" th:value="${word}">
+    <input type="hidden" name="now_page" th:value="${now_page}"> -->
+    
+    <div>
+      <label>Youtube 스크립트</label>
+      <textarea name='byoutube' class="form-control" rows="12" style='width: 100%;' th:text="${boardVO.byoutube}"></textarea>
+    </div>
+    <div class="content_body_bottom">
+      <button type="submit" class="btn btn-secondary btn-sm">저장</button>
+      <button type="button" onclick="frm.byoutube.value=''; frm.submit();" 
+                  class="btn btn-secondary btn-sm">지우기</button>
+      <button type="button" onclick="history.back();" class="btn btn-secondary btn-sm">취소</button>
+    </div>
+  
+  </form>
+
+  <hr>
+  <div style="text-align: center;">
+      <h5>[참고] Youtube의 등록 방법</h5>
+      <img src='/board/images/youtube01.jpg' style='width: 60%;'><br><br>
+      <img src='/board/images/youtube02.jpg' style='width: 60%;'><br>
+  </div>
+
+</html>
+
+
