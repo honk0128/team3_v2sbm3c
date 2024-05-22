@@ -58,6 +58,7 @@ public interface AccountProcInter {
    */
   public int delete_account(int accountno);
   
+  
 
   
 }

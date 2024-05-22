@@ -62,5 +62,15 @@ public class AccountVO {
     /** 메인 이미지 크기 */
     private long aprofile_size = 0;
     
+    // 회원 로그인 로그
+    
+    /** 로그인 번호 **/
+    private int loginno;
+    /** IP */
+    private String ip = "";
+    /** 로그인 날짜 */
+    private String ldata = "";
+
+    
 }
 

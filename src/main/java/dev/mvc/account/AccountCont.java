@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import dev.mvc.loginlog.LoginlogProcInter;
+import dev.mvc.loginlog.LoginlogVO;
 // import dev.mvc.contents.Contents;
 import dev.mvc.manager.ManagerProcInter;
 //import dev.mvc.cate.CateProcInter;
@@ -35,6 +37,7 @@ import dev.mvc.tool.Security;
 //import jakarta.servlet.http.HttpSession;
 import dev.mvc.tool.Tool;
 import dev.mvc.tool.Upload;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @RequestMapping("/account")
@@ -47,6 +50,10 @@ public class AccountCont {
   @Autowired
   @Qualifier("dev.mvc.manager.ManagerProc")
   private ManagerProcInter managerProc;
+  
+  @Autowired
+  @Qualifier("dev.mvc.loginlog.LoginlogProc")
+  private LoginlogProcInter LoginlogProc;
   
   @Autowired
   Security security;
@@ -218,7 +225,7 @@ public class AccountCont {
    * @return 회원 정보
    */
   @PostMapping(value = "/login_account")
-  public String login_proc(HttpSession session, Model model, String aid, String apasswd) {
+  public String login_proc(HttpSession session, HttpServletRequest request, Model model, String aid, String apasswd, LoginlogVO loginlogVO) {
     HashMap<String, Object> map = new HashMap<String, Object>();
     map.put("aid", aid);
     map.put("apasswd", this.security.aesEncode(apasswd));
@@ -227,6 +234,11 @@ public class AccountCont {
     System.out.println("-> login_proc cnt: " + cnt);
 
     model.addAttribute("cnt", cnt);
+    
+    String ip = request.getRemoteAddr(); // IP
+    System.out.println("-> 접속 IP: " + ip);
+    
+    
 
     if (cnt == 1) {
       // id를 이용하여 회원 정보 조회
@@ -235,6 +247,14 @@ public class AccountCont {
       session.setAttribute("aid", accountVO.getAid());
       session.setAttribute("aname", accountVO.getAname());
       session.setAttribute("agrade", accountVO.getAgrade());
+      
+      loginlogVO.setIp(ip);
+      loginlogVO.setAccountno(accountVO.getAccountno());
+      
+      int log = this.LoginlogProc.account_log(loginlogVO);
+      model.addAttribute("log", log);
+      model.addAttribute("ip", ip);
+      
       
       if (accountVO.getAgrade() >= 1 && accountVO.getAgrade() <= 10) {
         session.setAttribute("agrade", "admin");
