@@ -52,7 +52,7 @@ public class CrudcateCont {
 
       // 페이징 버튼 목록
       int search_count = this.crudcateProc.list_search_count(word);
-      String paging = this.crudcateProc.pagingBox(now_page, now_page, word, "/crudcate/list_search", search_count, this.record_per_page, this.page_per_blocK);
+      String paging = this.crudcateProc.pagingBox(now_page, word, "/crudcate/list_search", search_count, this.record_per_page, this.page_per_blocK);
       model.addAttribute("paging", paging);
       model.addAttribute("word", word);
       model.addAttribute("now_page", now_page);
@@ -101,7 +101,7 @@ public class CrudcateCont {
 
     // 페이징 버튼 목록
     int search_count = this.crudcateProc.list_search_count(word);
-    String paging = this.crudcateProc.pagingBox(now_page, now_page, word, "/crudcate/list_search", search_count, this.record_per_page, this.page_per_blocK);
+    String paging = this.crudcateProc.pagingBox(now_page, word, "/crudcate/list_search", search_count, this.record_per_page, this.page_per_blocK);
     model.addAttribute("paging", paging);
     model.addAttribute("word", word);
     model.addAttribute("now_page", now_page);
@@ -135,7 +135,7 @@ public class CrudcateCont {
 
     // 페이징 버튼 목록
     int search_count = this.crudcateProc.list_search_count(word);
-    String paging = this.crudcateProc.pagingBox(now_page, now_page, word, "/crudcate/list_search", search_count, this.record_per_page, this.page_per_blocK);
+    String paging = this.crudcateProc.pagingBox(now_page, word, "/crudcate/list_search", search_count, this.record_per_page, this.page_per_blocK);
     model.addAttribute("paging", paging);
     model.addAttribute("word", word);
     model.addAttribute("now_page", now_page);
@@ -166,7 +166,7 @@ public class CrudcateCont {
 
     // 페이징 버튼 목록
     int search_count = this.crudcateProc.list_search_count(word);
-    String paging = this.crudcateProc.pagingBox(now_page, now_page, word, "/crudcate/list_search", search_count, this.record_per_page, this.page_per_blocK);
+    String paging = this.crudcateProc.pagingBox(now_page, word, "/crudcate/list_search", search_count, this.record_per_page, this.page_per_blocK);
     model.addAttribute("paging", paging);
     model.addAttribute("word", word);
     model.addAttribute("now_page", now_page);
@@ -209,7 +209,7 @@ public class CrudcateCont {
 
     // 페이징 버튼 목록
     int search_count = this.crudcateProc.list_search_count(word);
-    String paging = this.crudcateProc.pagingBox(now_page, now_page, word, "/crudcate/list_search", search_count, this.record_per_page, this.page_per_blocK);
+    String paging = this.crudcateProc.pagingBox(now_page, word, "/crudcate/list_search", search_count, this.record_per_page, this.page_per_blocK);
     model.addAttribute("paging", paging);
     model.addAttribute("word", word);
     model.addAttribute("now_page", now_page);
@@ -287,6 +287,8 @@ public class CrudcateCont {
     ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
     model.addAttribute("menu", menu);
 
+    word = Tool.checkNull(word).trim();
+
     Map<String, Object> map = new HashMap<String, Object>();
     map.put("word", word);
 
@@ -296,7 +298,7 @@ public class CrudcateCont {
 
     // 페이징 버튼 목록
     int search_count = this.crudcateProc.list_search_count(word);
-    String paging = this.crudcateProc.pagingBox(now_page, now_page, word, "/crudcate/list_search", search_count, this.record_per_page, this.page_per_blocK);
+    String paging = this.crudcateProc.pagingBox(now_page, word, "/crudcate/list_search", search_count, this.record_per_page, this.page_per_blocK);
     model.addAttribute("paging", paging);
     model.addAttribute("word", word);
     model.addAttribute("now_page", now_page);

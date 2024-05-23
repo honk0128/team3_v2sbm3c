@@ -21,8 +21,8 @@
       <th class='th_bs'>출력모드</th>
     </tr>
     
-    <tr th:if="${list.size() > 0}" th:each="boardVO, status:${list}" 
-        th:attr="onclick=|location.href='/board/read?boardno=${boardVO.boardno}'|"
+    <tr th:each="boardVO, status:${list}" 
+        th:attr="onclick=|location.href='/board/read?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}'|"
         style="cursor: pointer; height: 90px;">
       <td class='td_basic' style="vertical-align: middle; text-align: center;">
         <div th:if="${boardVO.bphoto.endsWith('jpg') || boardVO.bphoto.endsWith('png')  || boardVO.bphoto.endsWith('gif')}">
