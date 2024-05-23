@@ -8,14 +8,12 @@
       > 글 조회
     </div>
 
-    <aside class="aside_right" th:if="${session.mgrade >= 1 and session.mgrade <= 10}">
+    <aside class="aside_right" th:if="${session.managerno >= 1}">
       <a href="./create?crudcateno=${crudcateno}">등록</a>
       <span class="menu_divide">│</span>
-      <a th:href="@{|/board/update_text?boardno=${boardVO.boardno}&now_page=${now_page}&word=${word }|}">글 수정</a>
+      <a th:href="@{|/board/update_board?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}">글 수정</a>
       <span class="menu_divide">│</span>
       <a th:href="@{|./update_file?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}">파일 수정</a>
-      <span class="menu_divide">│</span>
-      <a th:href="@{|/board/map?crudcateno=${boardVO.crudcateno}&boardno=${boardVO.boardno}|}">지도</a>
       <span class="menu_divide">│</span>
       <a th:href="@{|/board/youtube?crudcateno=${boardVO.crudcateno}&boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}">Youtube</a>
       <span class="menu_divide">│</span>
@@ -28,7 +26,7 @@
       <span class="menu_divide">│</span>
     </aside>
 
-    <aside class="aside_right" th:if="${session.grade != 'admin'}">
+    <aside class="aside_right" th:if="${session.accountno > 0}">
       <a href="javascript:location.reload();">새로고침</a>
       <span class="menu_divide">│</span>
       <a th:href="@{|./list_cno?crudcateno=${crudcateVO.crudcateno}&word=${word}&now_page=${now_page}|}">목록</a>
@@ -36,6 +34,7 @@
     </aside>
 
     <div class="menu_line"></div>
+    <input type="hidden" name="crudcateno" th:value="${crudcateno}" />
 
     <fieldset class="fieldset_basic">
       <ul>
@@ -65,7 +64,6 @@
           </div>
         </li>
 
-        <li><a th:href="@{|/board/youtube?crudcateno=${boardVO.crudcateno}&boardno=${boardVO.boardno}|}">Youtube</a></li>
         <li
           class="li_none"
           style="clear: both; padding-top: 10px; padding-bottom: 25px"

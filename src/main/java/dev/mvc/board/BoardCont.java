@@ -184,14 +184,11 @@ public class BoardCont {
   @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
 
     if (this.managerProc.isMemberAdmin(session)) {
-      ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
-      model.addAttribute("menu", menu);
-  
       word = Tool.checkNull(word).trim();
 
-      HashMap<String, Object> map = new HashMap<String, Object>();
-      map.put("word", word);
-  
+      ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+      model.addAttribute("menu", menu);
+
       // 페이징 목록
       ArrayList<BoardVO> list = this.boardProc.list_all(word, now_page, Board.RECORD_PER_PAGE);
       model.addAttribute("list", list);
@@ -340,4 +337,243 @@ public class BoardCont {
     return "board/list_cno_search_paging";
   }
 
+  @GetMapping(value = "/update_board")
+  public String update_board(HttpSession session, Model model, int boardno, RedirectAttributes ra, String word, int now_page) {
+
+    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    model.addAttribute("menu", menu);
+
+    model.addAttribute("word", word);
+    model.addAttribute("now_page", now_page);
+
+    if (this.managerProc.isMemberAdmin(session)) { // 관리자로 로그인한경우
+      BoardVO boardVO = this.boardProc.read(boardno);
+      model.addAttribute("boardVO", boardVO);
+
+      CrudcateVO crudcateVO = this.crudcateProc.read(boardVO.getCrudcateno());
+      model.addAttribute("crudcateVO", crudcateVO);
+
+      return "/board/update_board";
+    } else {
+      ra.addAttribute("url", "/manager/login_cookie_need"); 
+      return "redirect:/board/msg";
+    }
+
+  }
+
+  @PostMapping(value = "/update_board")
+  public String update_board(HttpSession session, Model model, BoardVO boardVO, RedirectAttributes ra, String search_word, int now_page) {
+    ra.addAttribute("word", search_word);
+    ra.addAttribute("now_page", now_page);
+
+    if (this.managerProc.isMemberAdmin(session)) { // 관리자 로그인 확인
+      HashMap<String, Object> map = new HashMap<String, Object>();
+      map.put("boardno", boardVO.getBoardno());
+      map.put("bpasswd", boardVO.getBpasswd());
+
+      if (this.boardProc.password_check(map) == 1) { // 패스워드 일치
+        this.boardProc.update_board(boardVO); // 글수정
+
+        // mav 객체 이용
+        ra.addAttribute("boardno", boardVO.getBoardno());
+        ra.addAttribute("crudcateno", boardVO.getCrudcateno());
+        return "redirect:/board/read"; // @GetMapping(value = "/read")
+
+      } else { // 패스워드 불일치
+        ra.addFlashAttribute("code", "passwd_fail"); // redirect -> forward -> html
+        ra.addFlashAttribute("cnt", 0);
+        ra.addAttribute("url", "/board/msg"); // msg.html, redirect parameter 적용
+
+        return "redirect:/board/msg"; // @GetMapping(value = "/msg")
+      }
+    } else { // 정상적인 로그인이 아닌 경우 로그인 유도
+      ra.addAttribute("url", "/member/login_cookie_need"); // /templates/member/login_cookie_need.html
+      return "redirect:/board/msg"; // @GetMapping(value = "/msg")
+    }
+
+  }
+
+   /**
+   * 파일 수정 폼 http://localhost:9091/board/update_file?boardno=1
+   * 
+   * @return
+   */
+  @GetMapping(value = "/update_file")
+  public String update_file(HttpSession session, Model model, int boardno, String word, int now_page) {
+    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    model.addAttribute("menu", menu);
+    
+    model.addAttribute("word", word);
+    model.addAttribute("now_page", now_page);
+    
+    BoardVO boardVO = this.boardProc.read(boardno);
+    model.addAttribute("boardVO", boardVO);
+
+    CrudcateVO crudcateVO = this.crudcateProc.read(boardVO.getCrudcateno());
+    model.addAttribute("crudcateVO", crudcateVO);
+
+    return "/board/update_file";
+
+  }
+
+  /**
+   * 파일 수정 처리 http://localhost:9091/board/update_file
+   * 
+   * @return
+   */
+  @PostMapping(value = "/update_file")
+  public String update_file(HttpSession session, Model model, RedirectAttributes ra, BoardVO boardVO, String word, int now_page) {
+
+    if (this.managerProc.isMemberAdmin(session)) {
+      // 삭제할 파일 정보를 읽어옴, 기존에 등록된 레코드 저장용
+      BoardVO boardVO_old = boardProc.read(boardVO.getBoardno());
+
+      // -------------------------------------------------------------------
+      // 파일 삭제 시작
+      // -------------------------------------------------------------------
+      String file1saved = boardVO_old.getBphotosaved(); // 실제 저장된 파일명
+      String thumb1 = boardVO_old.getBthumb(); // 실제 저장된 preview 이미지 파일명
+      long size1 = 0;
+
+      String upDir = Board.getUploadDir(); // C:/kd/deploy/resort_v4sbm3c/board/storage/
+
+      Tool.deleteFile(upDir, file1saved); // 실제 저장된 파일삭제
+      Tool.deleteFile(upDir, thumb1); // preview 이미지 삭제
+      // -------------------------------------------------------------------
+      // 파일 삭제 종료
+      // -------------------------------------------------------------------
+
+      // -------------------------------------------------------------------
+      // 파일 전송 시작
+      // -------------------------------------------------------------------
+      String file1 = ""; // 원본 파일명 image
+
+      // 전송 파일이 없어도 file1MF 객체가 생성됨.
+      // <input type='file' class="form-control" name='file1MF' id='file1MF'
+      // value='' placeholder="파일 선택">
+      MultipartFile mf = boardVO.getBphotoNF();
+
+      file1 = mf.getOriginalFilename(); // 원본 파일명
+      size1 = mf.getSize(); // 파일 크기
+
+      if (size1 > 0) { // 폼에서 새롭게 올리는 파일이 있는지 파일 크기로 체크 ★
+        // 파일 저장 후 업로드된 파일명이 리턴됨, spring.jsp, spring_1.jpg...
+        file1saved = Upload.saveFileSpring(mf, upDir);
+
+        if (Tool.isImage(file1saved)) { // 이미지인지 검사
+          // thumb 이미지 생성후 파일명 리턴됨, width: 250, height: 200
+          thumb1 = Tool.preview(upDir, file1saved, 250, 200);
+        }
+
+      } else { // 파일이 삭제만 되고 새로 올리지 않는 경우
+        file1 = "";
+        file1saved = "";
+        thumb1 = "";
+        size1 = 0;
+      }
+
+      boardVO.setBphoto(file1);
+      boardVO.setBphotosaved(file1saved);
+      boardVO.setBthumb(thumb1);
+      boardVO.setBsize(size1);
+      // -------------------------------------------------------------------
+      // 파일 전송 코드 종료
+      // -------------------------------------------------------------------
+
+      this.boardProc.update_file(boardVO); // Oracle 처리
+      ra.addAttribute ("boardno", boardVO.getBoardno());
+      ra.addAttribute("crudcateno", boardVO.getCrudcateno());
+      ra.addAttribute("word", word);
+      ra.addAttribute("now_page", now_page);
+      
+      return "redirect:/board/read";
+    } else {
+      ra.addAttribute("url", "/member/login_cookie_need"); 
+      return "redirect:/board/msg"; // GET
+    }
+  }
+
+  /**
+   * 파일 삭제 폼
+   * http://localhost:9091/board/delete?boardno=1
+   * 
+   * @return
+   */
+  @GetMapping(value = "/delete")
+  public String delete(HttpSession session, Model model, RedirectAttributes ra,int crudcateno, int boardno, String word, int now_page) {
+    if (this.managerProc.isMemberAdmin(session)) { // 관리자로 로그인한경우
+      model.addAttribute("crudcateno", crudcateno);
+      model.addAttribute("word", word);
+      model.addAttribute("now_page", now_page);
+      
+      ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+      model.addAttribute("menu", menu);
+      
+      BoardVO boardVO = this.boardProc.read(boardno);
+      model.addAttribute("boardVO", boardVO);
+      
+      CrudcateVO crudcateVO = this.crudcateProc.read(boardVO.getCrudcateno());
+      model.addAttribute("crudcateVO", crudcateVO);
+      
+      return "/board/delete"; // forward
+      
+    } else {
+      ra.addAttribute("url", "/manager/login_cookie_need");
+      return "redirect:/board/msg"; 
+    }
+
+  }
+  
+  /**
+   * 삭제 처리 http://localhost:9091/board/delete
+   * 
+   * @return
+   */
+  @PostMapping(value = "/delete")
+  public String delete(RedirectAttributes ra,
+                              int boardno, int crudcateno, String word, int now_page) {
+    // -------------------------------------------------------------------
+    // 파일 삭제 시작
+    // -------------------------------------------------------------------
+    // 삭제할 파일 정보를 읽어옴.
+    BoardVO boardVO_read = boardProc.read(boardno);
+        
+    String file1saved = boardVO_read.getBphotosaved();
+    String thumb1 = boardVO_read.getBthumb();
+    
+    String uploadDir = Board.getUploadDir();
+    Tool.deleteFile(uploadDir, file1saved);  // 실제 저장된 파일삭제
+    Tool.deleteFile(uploadDir, thumb1);     // preview 이미지 삭제
+    // -------------------------------------------------------------------
+    // 파일 삭제 종료
+    // -------------------------------------------------------------------
+        
+    this.boardProc.delete(boardno); // DBMS 삭제
+        
+    // -------------------------------------------------------------------------------------
+    // 마지막 페이지의 마지막 레코드 삭제시의 페이지 번호 -1 처리
+    // -------------------------------------------------------------------------------------    
+    // 마지막 페이지의 마지막 10번째 레코드를 삭제후
+    // 하나의 페이지가 3개의 레코드로 구성되는 경우 현재 9개의 레코드가 남아 있으면
+    // 페이지수를 4 -> 3으로 감소 시켜야함, 마지막 페이지의 마지막 레코드 삭제시 나머지는 0 발생
+    
+    HashMap<String, Object> map = new HashMap<String, Object>();
+    map.put("crudcateno", crudcateno);
+    map.put("word", word);
+    
+    if (this.boardProc.list_cno_search_count(map) % Board.RECORD_PER_PAGE == 0) {
+      now_page = now_page - 1; // 삭제시 DBMS는 바로 적용되나 크롬은 새로고침등의 필요로 단계가 작동 해야함.
+      if (now_page < 1) {
+        now_page = 1; // 시작 페이지
+      }
+    }
+    // -------------------------------------------------------------------------------------
+
+    ra.addAttribute("crudcateno", crudcateno);
+    ra.addAttribute("word", word);
+    ra.addAttribute("now_page", now_page);
+    
+    return "redirect:/board/list_cno";    
+    
+  }   
 }

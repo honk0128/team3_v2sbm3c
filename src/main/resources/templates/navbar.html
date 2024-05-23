@@ -63,6 +63,7 @@
             </ul>
           </li>
 
+          <!-- 관리자 -->
           <li class="nav-item dropdown" th:if="${session.managerno >=1}">
             <a
               class="nav-link dropdown-toggle"
@@ -83,7 +84,7 @@
           </li>
 
           <!-- 댓글 -->
-          <li class="nav-item dropdown" th:if="${session.accountno != null} and ${session.managerno != null}">
+          <li class="nav-item dropdown" th:if="${session.accountno >= 0 or session.managerno >= 0}">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -91,7 +92,7 @@
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
-              th:text="댓글 관리"
+              th:text="댓글관리"
             >
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -105,7 +106,7 @@
           </li>
 
           <!-- Ai -->
-          <li class="nav-item dropdown" th:if="${session.accountno != null} and ${session.managerno != null}">
+          <li class="nav-item dropdown" th:if="${session.accountno >= 0 or session.managerno >= 0}">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -113,7 +114,7 @@
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
-              th:text="Ai 질문"
+              th:text="Ai질문"
             >
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
