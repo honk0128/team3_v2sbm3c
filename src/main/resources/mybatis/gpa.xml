@@ -13,6 +13,15 @@
     SELECT ACCOUNTNO FROM ACCOUNT WHERE AID = #{aid}
 </select>
   
+ 
+  
+  
+   <select id="list" parameterType="dev.mvc.gpa.GpaVO">
+  SELECT GPANO, GPASCORE, ACCOUNTNO, BOARDNO, GPADATE
+  FROM GPA
+  ORDER BY GPANO ASC
+  </select>
+  
 </mapper>
 
 

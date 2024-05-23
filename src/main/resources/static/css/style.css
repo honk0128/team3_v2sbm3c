@@ -582,6 +582,13 @@ a:active {
 #starscore fieldset legend{
     text-align: right;
 }
+
+#starfont {
+            color: gold;              /* 글자 색상 */
+            font-size: 24px;          /* 글자 크기 */
+            font-weight: bold;        /* 글자 두께 */
+        }
+
 #starscore input[type=radio]{
     display: none;
 }

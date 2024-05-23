@@ -1,5 +1,7 @@
 package dev.mvc.gpa;
 
+import java.util.ArrayList;
+
 
 
 public interface GpaDAOInter {
@@ -19,5 +21,9 @@ public interface GpaDAOInter {
      * @return
      */
     public GpaVO readById(String aid);
+    
+    
+    public ArrayList<GpaVO> list();
+    
 
 }

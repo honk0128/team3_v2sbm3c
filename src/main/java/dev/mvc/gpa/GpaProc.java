@@ -1,5 +1,7 @@
 package dev.mvc.gpa;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,13 @@ public class GpaProc  implements GpaProcInter{
   public GpaVO readById(String aid) {
     GpaVO gpaVO = this.gpaDAO.readById(aid);
     return gpaVO;
+  }
+
+  @Override
+  public ArrayList<GpaVO> list() {
+    ArrayList<GpaVO> list = this.gpaDAO.list();
+    
+    return list;
   }
   
   

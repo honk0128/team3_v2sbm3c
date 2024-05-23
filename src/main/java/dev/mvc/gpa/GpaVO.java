@@ -19,19 +19,26 @@ import lombok.Setter;
 public class GpaVO {
   
   
+  /**유저 아이디 */
   
   private String aid = "";
   
   
-  
+
+  /**별점 번호*/
   private Integer gpano = 0;
-  
+
+  /**별점 점수 */
   private Integer gpascore = 0;
-  
+
+  /**등록일*/
   private Date gpadate;
   
+
+  /**유저 번호 */
   private Integer accountno = 0;
-  
+
+  /**게시판 번호 */
   private Integer boardno = 0;
   
 }
