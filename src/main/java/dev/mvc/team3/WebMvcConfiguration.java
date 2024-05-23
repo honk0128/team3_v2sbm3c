@@ -6,6 +6,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import dev.mvc.account.Profiles;
 import dev.mvc.breply.Breply;
+import dev.mvc.board.Board;
 import dev.mvc.tool.Tool;
 
 @Configuration
@@ -18,12 +19,17 @@ public class WebMvcConfiguration implements WebMvcConfigurer{
         // Ubuntu: path = "/home/ubuntu/deploy/resort_v2sbm3c_blog/contents/storage";
         // ▶ file:////home/ubuntu/deploy/resort_v2sbm3c_blog/contents/storage
 
+        //
         // JSP 인식되는 경로: http://localhost:9093/profiles/storage";
         registry.addResourceHandler("/profiles/storage/**").addResourceLocations("file:///" +  Profiles.getUploadDir());
         
+        //
         // JSP 인식되는 경로: http://localhost:9093/contents/storage";
         registry.addResourceHandler("/contents/storage/**").addResourceLocations("file:///" +  Breply.getUploadDir());
         
+        // 게시판 사진
+        // JSP 인식되는 경로: http://localhost:9093/board/storage";
+        registry.addResourceHandler("/board/storage/**").addResourceLocations("file:///" +  Board.getUploadDir());
         
         // registry.addResourceHandler("/contents/storage/**").addResourceLocations("file:///" +  Contents.getUploadDir());
         // JSP 인식되는 경로: http://localhost:9091/attachfile/storage";
