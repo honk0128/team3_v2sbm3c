@@ -32,6 +32,18 @@ public class GpaProc  implements GpaProcInter{
     
     return list;
   }
+
+  @Override
+  public int delete(int gpano) {
+    int cnt = this.gpaDAO.delete(gpano);
+    return cnt;
+  }
+
+  @Override
+  public int update(GpaVO gpaVO) {
+    int cnt = this.gpaDAO.update(gpaVO);
+    return cnt;
+  }
   
   
   

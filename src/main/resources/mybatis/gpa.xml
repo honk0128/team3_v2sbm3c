@@ -14,13 +14,23 @@
 </select>
   
  
-  
-  
    <select id="list" parameterType="dev.mvc.gpa.GpaVO">
   SELECT GPANO, GPASCORE, ACCOUNTNO, BOARDNO, GPADATE
   FROM GPA
   ORDER BY GPANO ASC
   </select>
+  
+   <delete id="delete" parameterType="dev.mvc.gpa.GpaVO">
+    DELETE FROM GPA WHERE GPANO=#{gpano}
+  </delete>
+  
+  
+  <update id="update" parameterType="dev.mvc.gpa.GpaVO">
+    UPDATE GPA
+    SET GPASCORE = #{gpascore}
+    WHERE GPANO = #{gpano}
+    
+  </update>
   
 </mapper>
 

@@ -21,4 +21,9 @@ public interface GpaProcInter {
     
     
     public ArrayList<GpaVO> list();
+    
+    
+    public int update(GpaVO gpaVO);
+    
+    public int delete(int gpano);
 }

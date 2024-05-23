@@ -567,12 +567,12 @@ a:active {
   margin: 1px 2px;
   border-radius: 10px;
 }
-<<<<<<< HEAD
+
 
 /**별점 css */
 #starscore fieldset{
     display: inline-block;
-    direction: rtl;
+    
     border:0;
 }
 
@@ -617,5 +617,4 @@ a:active {
     font-size: 16px;
     resize: none;
 }
-=======
->>>>>>> ca3fa161a760fb5e14b18a9cf513a10630b23934
+

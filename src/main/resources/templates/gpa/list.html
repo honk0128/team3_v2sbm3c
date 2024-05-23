@@ -40,6 +40,7 @@
     <tr th:each="gpaVO, status:${list}">
       
        <fieldset>
+         
         <td class='td_basic'>
           <span th:each="star : ${#numbers.sequence(1, gpaVO.gpascore)}" name="reviewStar" id="starfont">★</span>
         </td>
@@ -52,7 +53,7 @@
         <a th:href="@{/gpa/update(gpano=${gpaVO.gpano})}">
         <img src='/member/images/update.png' title='수정' class="icon"></a>
         </a>
-        <a th:href="@{/ai/delete(gpano=${gpaVO.gpano})}">
+        <a th:href="@{/gpa/delete(gpano=${gpaVO.gpano})}">
     <img src='/member/images/delete.png' title='삭제' class="icon">
 </a>
       </td>

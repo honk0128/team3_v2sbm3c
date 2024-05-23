@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 
 
+
+
 public interface GpaDAOInter {
 
   
@@ -25,5 +27,8 @@ public interface GpaDAOInter {
     
     public ArrayList<GpaVO> list();
     
+    public int update(GpaVO gpaVO);
+    
+    public int delete(int gpano);
 
 }
