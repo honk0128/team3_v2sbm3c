@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dev.mvc.brereply.BrereplyDAOInter">
+  <!-- 대댓글 등록 -->
+  <insert id="brereply_create" parameterType="dev.mvc.brereply.BrereplyVO">
+    INSERT INTO brereply(brereplyno, brereplycont, brereplydate, breplyno, accountno, brereplyimg, brereplysave, brereplythumb, brereplysize, brereplypasswd)
+    VALUES(brereply_seq.nextval, #{brereplycont}, sysdate, #{breplyno}, #{accountno}, #{brereplyimg}, #{brereplysave}, #{brereplythumb}, #{brereplysize}, #{brereplypasswd})
+  </insert>
+
+  <!-- 대댓글 목록 -->
+  <select id="brereply_list" resultType="dev.mvc.brereply.BrereplyVO">
+    SELECT brereplyno, brereplycont, brereplydate, brereplyimg, brereplysave, brereplythumb, brereplysize
+    FROM brereply
+  </select>
+
+  <!-- 대댓글 조회 -->
+  <select id="brereply_read" resultType="dev.mvc.brereply.BrereplyVO" parameterType="int" >
+    SELECT brereplyno, brereplycont, brereplydate, brereplyimg, brereplysave, brereplythumb, brereplysize
+    FROM brereply
+    WHERE brereplyno = #{brereplyno}
+  </select>
+
+  <!-- 대댓글 수정 -->
+  <update id="brereply_update" parameterType="dev.mvc.brereply.BrereplyVO">
+    update brereply
+    set brereplycont = #{brereplycont}, brereplydate = sysdate, brereplyimg = #{brereplyimg}, brereplysave = #{brereplysave}, brereplythumb = #{brereplythumb}, brereplysize = #{brereplysize}
+    WHERE brereplyno = #{brereplyno}
+  </update>
+
+  <!-- 대댓글 수정 -->
+  <delete id="brereply_delete" parameterType="int">
+    delete brereply
+    where brereplyno = #{brereplyno}
+  </delete>
+
+  <select id="brereply_password_check" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt 
+    FROM breply
+    WHERE breplyno = #{breplyno} AND BREPLYPASSWD = #{breplypasswd}
+  </select>
+
+</mapper>
