@@ -19,6 +19,8 @@ import dev.mvc.account.AccountProcInter;
 import dev.mvc.crudcate.CrudcateProcInter;
 import dev.mvc.crudcate.CrudcateVO;
 import dev.mvc.crudcate.CrudcateVOMenu;
+import dev.mvc.gpa.GpaProcInter;
+import dev.mvc.gpa.GpaVO;
 import dev.mvc.manager.ManagerProc;
 import dev.mvc.manager.ManagerProcInter;
 import dev.mvc.tool.Tool;
@@ -44,6 +46,10 @@ public class BoardCont {
   @Autowired
   @Qualifier("dev.mvc.board.BoardProc")
   private BoardProcInter boardProc;
+  
+  @Autowired
+  @Qualifier("dev.mvc.gpa.GpaProc")
+  private GpaProcInter gpaProc;
 
   public BoardCont() {
     System.out.println("-> BoardCont created.");
@@ -220,12 +226,15 @@ public class BoardCont {
    * @return
    */
   @GetMapping(value = "/read")
-  public String read(Model model, Integer boardno, @RequestParam(name = "word", defaultValue = "") String word,
+  public String read(Model model, @RequestParam("boardno") int boardno, @RequestParam(name = "word", defaultValue = "") String word,
   @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
 
     ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
     model.addAttribute("menu", menu);
 
+    ArrayList<GpaVO> list = this.gpaProc.avgscore(boardno);
+    model.addAttribute("list", list);
+    
     BoardVO boardVO = this.boardProc.read(boardno);
     long bsize = boardVO.getBsize();
     String bsize_label = Tool.unit(bsize);

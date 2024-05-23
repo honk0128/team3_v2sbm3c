@@ -72,6 +72,9 @@
           <div style="text-align: center; width: 640px; margin: 0px auto" th:utext="${boardVO.byoutube}"></div>
         </li>
       </ul>
+      <!-- /cate/list_all_component.html 파일의 list_all_fragment import -->
+  <div th:replace="~{gpa/avgscore :: avgscore}"></div>
+  
     </fieldset>
   </div>
 </html>
