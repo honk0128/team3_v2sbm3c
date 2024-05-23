@@ -2,6 +2,7 @@ package dev.mvc.account;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 
 
@@ -59,6 +60,14 @@ public interface AccountDAOInter {
    * @return
    */
   public int delete_account(int accountno);
+  
+  public ArrayList<AccountVO> list_account_search(String word);
+  
+  public ArrayList<AccountVO> list_account_search_paging(Map <String, Object> map);
+  
+  public int list_account_search_count(String word);
+  
+  public String pagingBox(int now_page, String word, String list_file, int search_count, int record_per_page, int page_per_blocK);
   
 }
  
