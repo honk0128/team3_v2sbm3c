@@ -54,6 +54,43 @@
     DELETE FROM account
     WHERE accountno=#{accountno}
   </delete>
+  
+    <!-- 관리자용 회원 검색 -->
+  <select id="list_account_search" resultType="dev.mvc.account.AccountVO" parameterType="String">
+    SELECT accountno, aid, apasswd, aname, aprofile_img, aprofile_imgsave, aprofile_thum, aprofile_size, zipcode, address1, address2, atel, adate, agrade
+    FROM account
+    <if test="word != null and word !=''">
+      WHERE UPPER(aid) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(aname) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(atel) LIKE '%' || UPPER(#{word}) || '%'
+    </if>
+    ORDER BY accountno ASC
+  </select>
+  
+  <!--페이징 -->
+  <select id="list_account_search_paging" resultType="dev.mvc.account.AccountVO" parameterType="Map">
+  SELECT accountno, aid, apasswd, aname, aprofile_img, aprofile_imgsave, aprofile_thum, aprofile_size, zipcode, address1, address2, atel, adate, agrade, r
+  FROM (
+      SELECT accountno, aid, apasswd, aname, aprofile_img, aprofile_imgsave, aprofile_thum, aprofile_size, zipcode, address1, address2, atel, adate, agrade, rownum as r
+      FROM (
+          SELECT accountno, aid, apasswd, aname, aprofile_img, aprofile_imgsave, aprofile_thum, aprofile_size, zipcode, address1, address2, atel, adate, agrade
+          FROM account
+          <if test="word != null and word !=''">
+          WHERE UPPER(aid) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(aname) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(atel) LIKE '%' || UPPER(#{word}) || '%'
+          </if>
+          ORDER BY accountno ASC
+      )
+  )
+  <!-- WHERE r >= 1 AND r <= 3; -->
+  WHERE r &gt;= #{start_num} AND r &lt;= #{end_num}
+  </select>
 
+  <!-- 검색된 코드 수 -->
+  <select id="list_account_search_count" resultType="int" parameterType="String">
+    SELECT count(*) as cnt
+    FROM account
+    <if test="word != null and word !=''">
+      WHERE UPPER(aid) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(aname) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(atel) LIKE '%' || UPPER(#{word}) || '%'
+    </if>
+    ORDER BY accountno ASC
+  </select>
 
 </mapper>

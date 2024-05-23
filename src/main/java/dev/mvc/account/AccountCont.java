@@ -14,10 +14,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 //import org.springframework.web.bind.annotation.PostMapping;
 //import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 //import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -57,6 +59,12 @@ public class AccountCont {
   
   @Autowired
   Security security;
+  
+  /** 페이지당 출력할 레코드 갯수 */
+  public int record_per_page = 5;
+
+  /** 블럭당 페이지 수, 하나의 블럭은 10개의 페이지로 구성됨 */
+  public int page_per_blocK = 10;
 
   public AccountCont() {
     System.out.println("-> AccountCont created");
@@ -153,13 +161,23 @@ public class AccountCont {
 
     return "account/create"; // /templates/member/msg.html
   }
-
+  
   @GetMapping(value = "/list")
-  public String list(HttpSession session, Model model) {
+  public String list(HttpSession session, Model model,
+                       @RequestParam(name="word", defaultValue = "") String word, 
+                       @RequestParam(name="now_page", defaultValue = "1") int now_page) {
     if (this.managerProc.isMemberAdmin(session)) {
-    ArrayList<AccountVO> list = this.accountProc.list();
-
-    model.addAttribute("list", list);
+      
+      // 페이징 목록
+      ArrayList<AccountVO> list = this.accountProc.list_account_search_paging(word, now_page, this.record_per_page);
+      model.addAttribute("list", list);
+    
+      // 페이징 버튼 목록
+      int search_count = this.accountProc.list_account_search_count(word);
+      String paging = this.accountProc.pagingBox(now_page, now_page, word, "/account/list", search_count, this.record_per_page, this.page_per_blocK);
+      model.addAttribute("paging", paging);
+      model.addAttribute("word", word);
+      model.addAttribute("now_page", now_page);
 
     return "account/list"; // templates/member/list.html
   }else {
@@ -332,10 +350,10 @@ public class AccountCont {
       }
       
     } else { // 파일이 삭제만 되고 새로 올리지 않는 경우
-      file1="";
-      file1saved="";
-      thumb1="";
-      size1=0;
+      file1 = accountVO_old.getAprofile_img();
+      file1saved = accountVO_old.getAprofile_imgsave();
+      thumb1 = accountVO_old.getAprofile_thum();
+      size1 = accountVO_old.getAprofile_size();
     }
         
     accountVO.setAprofile_img(file1);

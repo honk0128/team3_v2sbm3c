@@ -13,6 +13,7 @@
     <a href='./list'>목록</a>
   </aside> 
    
+  <div th:replace="~{account/list_search_component::list_search_fragment}"></div>
   <div class='menu_line'></div>
        
    <table class="table table-striped" style='width: 100%;'>
@@ -71,6 +72,11 @@
       
     </tr>
   </table>
+  
+  <div class="bottom_menu" th:utext="${paging}"></div>
+    <!-- 페이지 버튼 목록 출력 종료 -->
+  </div>
+
    
   <div class='bottom_menu'>
     <button type='button' onclick="location.reload();" class="btn btn-primary btn-sm">새로 고침</button>
