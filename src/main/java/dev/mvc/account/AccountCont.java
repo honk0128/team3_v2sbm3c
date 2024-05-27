@@ -282,7 +282,7 @@ public class AccountCont {
         session.setAttribute("agrade", "guest");
       }
 
-      return "index";
+      return "redirect:/";
     } else {
       model.addAttribute("code", "login_fail");
       return "account/msg";

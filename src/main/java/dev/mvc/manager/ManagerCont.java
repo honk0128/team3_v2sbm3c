@@ -151,7 +151,7 @@ public class ManagerCont {
         session.setAttribute("mgrade", "guest");
       }
 
-      return "index";
+      return "redirect:/";
     } else {
       model.addAttribute("code", "login_fail");
       return "account/msg";

@@ -1,0 +1,60 @@
+<div th:fragment="cont_fragment">
+  <script>
+    // URL 파라미터에서 특정 값을 추출하는 함수
+    function getParameterByName(name, url = window.location.href) {
+      name = name.replace(/[\[\]]/g, "\\$&");
+      let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return "";
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    // 북마크 추가
+    async function addBookmark() {
+      const currentUrl = window.location.href; // 현재 페이지의 URL
+      const accountNo = document.getElementById("accountNo").value;
+      const boardNo = getParameterByName("boardno");
+
+      const response = await fetch("/bookmark/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          accountno: accountNo,
+          bookmarkurl: currentUrl,
+          boardno: boardNo,
+        }),
+      });
+
+      const result = await response.json();
+      alert(result.message);
+    }
+
+    // 북마크 삭제
+    async function deleteBookmark() {
+      const accountno = document.getElementById("accountNo").value;
+      const boardNo = getParameterByName("boardno");
+
+      const response = await fetch("/bookmark/delete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          accountno: accountno,
+          boardno: boardNo,
+        }),
+      });
+
+      const result = await response.json();
+      alert(result.message);
+      if (result.result) {
+        // 성공적으로 삭제되었을 경우 필요한 처리
+      } else {
+        // 삭제에 실패한 경우 필요한 처리
+      }
+    }
+  </script>
+</div>
