@@ -72,6 +72,16 @@
           <div style="text-align: center; width: 640px; margin: 0px auto" th:utext="${boardVO.byoutube}"></div>
         </li>
       </ul>
+      
+     <!-- <a th:href="@{/gpa/create(boardno=${param.boardno})}">Create</a>-->
+<a th:href="@{|/gpa/create?boardno=${boardVO.boardno}|}">별점 추가</a>
+        
+      <!--
+         <div class="content_body_bottom">
+      <button type="submit" class="btn btn-secondary btn-sm">등록</button>
+      <button type="button" onclick="location.href='./list_by_cateno_search_paging.do?cateno=${param.cateno}'" class="btn btn-secondary btn-sm">목록</button>
+    </div>
+        -->
       <!-- /cate/list_all_component.html 파일의 list_all_fragment import -->
   <div th:replace="~{gpa/avgscore :: avgscore}"></div>
   
