@@ -21,7 +21,8 @@ public interface GpaProcInter {
     
     
     public ArrayList<GpaVO> list();
-    
+
+    public ArrayList<GpaVO> avgscore(int boardno);
     
     public int update(GpaVO gpaVO);
     

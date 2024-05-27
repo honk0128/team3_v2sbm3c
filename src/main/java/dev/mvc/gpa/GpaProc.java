@@ -44,6 +44,12 @@ public class GpaProc  implements GpaProcInter{
     int cnt = this.gpaDAO.update(gpaVO);
     return cnt;
   }
+
+  @Override
+  public ArrayList<GpaVO> avgscore(int boardno) {
+    ArrayList<GpaVO> list = this.gpaDAO.avgscore(boardno);
+    return list;
+  }
   
   
   

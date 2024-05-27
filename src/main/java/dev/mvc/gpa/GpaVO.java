@@ -23,7 +23,7 @@ public class GpaVO {
   
   private String aid = "";
   
-  
+ private double avg_gpascore = 0;
 
   /**별점 번호*/
   private Integer gpano = 0;

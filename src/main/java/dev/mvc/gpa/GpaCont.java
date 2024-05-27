@@ -18,6 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import dev.mvc.ai.AiVO;
 import dev.mvc.ai.Aiurl;
+import dev.mvc.crudcate.CrudcateProcInter;
+import dev.mvc.crudcate.CrudcateVOMenu;
 import dev.mvc.tool.Tool;
 import dev.mvc.tool.Upload;
 import jakarta.servlet.http.Cookie;
@@ -28,9 +30,14 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/gpa")
 @Controller
 public class GpaCont {
-
+  @Autowired
+  @Qualifier("dev.mvc.crudcate.CrudcateProc")
+  private CrudcateProcInter crudcateProc;
+  
   @Autowired
   @Qualifier("dev.mvc.gpa.GpaProc")
+  
+  
   private GpaProcInter gpaproc;
  
   
@@ -78,14 +85,34 @@ public class GpaCont {
   
   
   @GetMapping(value = "/list")
-  public String list(HttpSession session, Model model) {
+  public String list(HttpSession session, Model model, @RequestParam("boardno")int boardno , GpaVO gpaVO) {
 
+    gpaVO.getBoardno();
+    
     ArrayList<GpaVO> list = this.gpaproc.list();
-
     model.addAttribute("list", list);
 
+    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    model.addAttribute("menu", menu);
+    
     return "gpa/list"; // templates/member/list.html
   }
+  
+  
+  @GetMapping(value = "/avgscore")
+  public String avgscore(HttpSession session, Model model, @RequestParam("boardno")int boardno , GpaVO gpaVO) {
+
+    gpaVO.setBoardno(boardno);
+    
+    ArrayList<GpaVO> list = this.gpaproc.avgscore(gpaVO.getBoardno());
+    model.addAttribute("list", list);
+
+    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    model.addAttribute("menu", menu);
+    
+    return "gpa/avgscore"; // templates/member/list.html
+  }
+  
   
   @GetMapping(value = "/update")
   public String update(Model model,
