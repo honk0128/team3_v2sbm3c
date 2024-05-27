@@ -26,7 +26,9 @@ import com.zaxxer.hikari.HikariDataSource;
                             "dev.mvc.manager",
                             "dev.mvc.board",
                             "dev.mvc.loginlog",
-                            "dev.mvc.gpa"}) // DAO interface를 찾는 위치
+                            "dev.mvc.gpa",
+                            "dev.mvc.brereply",
+                            "dev.mvc.bookmark"}) // DAO interface를 찾는 위치
 public class DatabaseConfiguration {
     
     @Autowired

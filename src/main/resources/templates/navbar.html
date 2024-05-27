@@ -49,6 +49,7 @@
             >
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li class="nav-item"><a class="nav-link" th:href="@{|/bookmark/bm_list?accountno=${session.accountno}|}">북마크 목록</a></li>
               <li class="nav-item" th:if="${session.accountno != null}">
                 <a class="nav-link" href="/account/passwd_update_form">비밀 번호 변경</a>
               </li>
