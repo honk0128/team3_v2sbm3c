@@ -49,11 +49,10 @@
             >
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li class="nav-item"><a class="nav-link" th:href="@{|/bookmark/bm_list?accountno=${session.accountno}|}">북마크 목록</a></li>
               <li class="nav-item" th:if="${session.accountno != null}">
                 <a class="nav-link" href="/account/passwd_update_form">비밀 번호 변경</a>
               </li>
-              <li class="nav-item"><a class="nav-link" href="#">아이디 찾기</a></li>
+              <li class="nav-item"><a class="nav-link" href="/account/find_aid_form">아이디 찾기</a></li>
               <li class="nav-item"><a class="nav-link" href="#">비밀번호 찾기</a></li>
               <li class="nav-item" th:if="${session.accountno != null}">
                 <a class="nav-link" th:href="@{|/account/read?accountno=${session.accountno}|}">회원 정보 조회</a>
@@ -64,7 +63,6 @@
             </ul>
           </li>
 
-          <!-- 관리자 -->
           <li class="nav-item dropdown" th:if="${session.managerno >=1}">
             <a
               class="nav-link dropdown-toggle"
@@ -85,7 +83,7 @@
           </li>
 
           <!-- 댓글 -->
-          <li class="nav-item dropdown" th:if="${session.accountno >= 0 or session.managerno >= 0}">
+          <li class="nav-item dropdown" th:if="${session.accountno != null} and ${session.managerno != null}">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -93,7 +91,7 @@
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
-              th:text="댓글관리"
+              th:text="댓글 관리"
             >
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -107,7 +105,7 @@
           </li>
 
           <!-- Ai -->
-          <li class="nav-item dropdown" th:if="${session.accountno >= 0 or session.managerno >= 0}">
+          <li class="nav-item dropdown" th:if="${session.accountno != null} and ${session.managerno != null}">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -115,7 +113,7 @@
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
-              th:text="Ai질문"
+              th:text="Ai 질문"
             >
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -127,7 +125,7 @@
 
           <!-- 회원가입/로그인/로그아웃 -->
           <li class="nav-item">
-            <li class="nav-item"><a class="nav-link" href="/account/signin">회원 가입</a></li>
+            <li class="nav-item" th:if="${session.accountno == null} and ${session.managerno == null}"><a class="nav-link" href="/account/signin">회원 가입</a></li>
             <span th:if="${session.accountno == null} and ${session.managerno == null}"
               ><a class="nav-link" href="/account/login" th:text="@{|로그인|}"></a
             ></span>

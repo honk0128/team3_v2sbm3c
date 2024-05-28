@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html layout:decorate="~{layout}"> <!-- layout.html 상속-->
+
+<div layout:fragment="content">
+  <script>
+  window.onload = () => {
+    document.querySelector('#aname').addEventListener('keypress', (event) => {
+      if (event.key === 'Enter') {
+        document.getElementById('atel').focus();
+      }
+    });
+
+    document.querySelector('#atel').addEventListener('keypress', (event) => {
+      if (event.key === 'Enter') {
+        document.getElementById('btn_send').focus();
+      }
+    });
+  };
+
+  
+</script>
+
+
+  <div class="title_line">아이디 찾기</div>
+  <aside class="aside_right">
+    <a href="javascript:location.reload();">새로고침</a>
+    <span class='menu_divide'>│</span>
+    <a href='./list'>목록</a>
+  </aside>
+
+  <div class='menu_line'></div>
+
+  <div style="width: 60%; margin: 0px auto ">
+    <form name="frm" method="post" action="/account/find_aid">
+
+      <div class="form-group">
+        <label for="aname">성명*</label>
+        <input type='text' name='aname' id='aname' value='김아무개' required="required" placeholder="성명"
+          class="form-control form-control-sm" style="width: 30%;">
+        <span id='aname_msg'></span>
+      </div>
+
+      <div class="form-group">
+        <label for="atel">전화 번호*</label>
+        <input type='text' name='atel' id='atel' value='456-4567-4567' required="required" placeholder="전화번호"
+          class="form-control form-control-sm" style="width: 30%;">
+        예) 010-0000-0000
+        <span id='atel_msg'></span>
+      </div>
+      
+
+
+      <div class="content_body_bottom">
+        <button type="submit" class="btn btn-secondary btn-sm">ID 찾기</button>
+        <button type="button" onclick="history.back();" class="btn btn-secondary btn-sm">취소</button>
+      </div>
+
+
+    </form>
+  </div>
+
+</div>
+
+</html>
