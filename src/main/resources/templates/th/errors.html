@@ -1,0 +1,4 @@
+<div th:fragment="errorsFragment" class="alert alert-danger" role="alert" 
+      th:if="${#fields.hasAnyErrors()}">
+<div th:each = "err:${#lists.sort(#fields.allErrors())}" th:text = "${err}" ></div>
+</div>

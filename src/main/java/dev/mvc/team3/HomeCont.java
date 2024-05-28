@@ -38,7 +38,7 @@ public class HomeCont {
     ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
     model.addAttribute("menu", menu);
     
-    return "index"; // /templates/index.html  
+    return "th/index"; // /templates/index.html  
   }
   
 }

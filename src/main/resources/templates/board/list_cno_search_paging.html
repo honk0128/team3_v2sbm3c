@@ -9,18 +9,6 @@
       <span th:if="${word != ''}" th:text="|> ${word} (${search_count} 건)|" class="title_line_text"></span>
     </div>
 
-    <aside class="aside_right">
-      <span class="menu_divide">│</span>
-      <span th:if="${session.accountno >= 0} or ${session.managerno >= 0}">
-        <a th:href="@{|/board/create?crudcateno=${crudcateVO.crudcateno}|}">등록</a>
-        <span class="menu_devide">│</span>
-      </span>
-      <a href="javascript:location.reload();">새로고침</a>
-      <span class="menu_divide">│</span>
-      <a th:href="@{|./list_cno?crudcateno=${crudcateVO.crudcateno}&word=${word}&now_page=${now_page}|}">목록</a>
-      <span class="menu_divide">│</span>
-    </aside>
-
     <!-- /board/list_search_component.html 파일의 list_search_fragment import -->
     <div th:replace="~{board/list_search_component::list_search_fragment}"></div>
 

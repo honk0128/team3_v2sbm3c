@@ -71,7 +71,7 @@ public class ManagerCont {
    */
   @GetMapping(value="/signin") // http://localhost:9091/account/create
   public String create_form(Model model, ManagerVO managerVO) {
-    return "manager/create";    // /template/member/create.html
+    return "th/manager/create";    // /template/member/create.html
   }
   
   /**
@@ -102,7 +102,7 @@ public class ManagerCont {
       model.addAttribute("cnt", 0);
     }
     
-    return "manager/create"; // /templates/member/msg.html
+    return "th/manager/create"; // /templates/member/msg.html
   }
 
   /**
@@ -114,7 +114,7 @@ public class ManagerCont {
    */
   @GetMapping(value = "/login")
   public String login_form(Model model) {
-    return "manager/login"; // templates/member/login.html
+    return "th/manager/login"; // templates/member/login.html
   }
 
   /**
@@ -154,7 +154,7 @@ public class ManagerCont {
       return "redirect:/";
     } else {
       model.addAttribute("code", "login_fail");
-      return "account/msg";
+      return "th/account/msg";
     }
 
   }
@@ -178,7 +178,7 @@ public class ManagerCont {
 
     model.addAttribute("list", list);
 
-    return "manager/list"; // templates/member/list.html
+    return "th/manager/list"; // templates/member/list.html
   }else {
     return "redirect:/member/login_form_need";  // redirect
   } 
@@ -207,7 +207,7 @@ public class ManagerCont {
       model.addAttribute("managerVO", managerVO);
       System.out.println("mgrade: " + mgrade);
 
-      return "manager/read"; // templates/member/read.html
+      return "th/manager/read"; // templates/member/read.html
 
     } else if (mgrade.equals("admin")) {
       // System.out.println("-> read memberno: " + memberno);
@@ -215,7 +215,7 @@ public class ManagerCont {
       ManagerVO managerVO = this.managerProc.read(managerno);
       model.addAttribute("managerVO", managerVO);
 
-      return "manager/read"; // templates/account/read.html
+      return "th/manager/read"; // templates/account/read.html
     } else {
       return "redirect:/member/login_form_need"; // redirect
     }
@@ -247,7 +247,7 @@ public class ManagerCont {
     
     model.addAttribute("cnt", cnt);
     
-    return "manager/msg"; // /templates/member/msg.html
+    return "th/manager/msg"; // /templates/member/msg.html
   }
   
   /**
@@ -263,7 +263,7 @@ public class ManagerCont {
     ManagerVO managerVO = this.managerProc.read(managerno);
     model.addAttribute("managerVO", managerVO);
     
-    return "manager/delete";  // templates/member/delete.html
+    return "th/manager/delete";  // templates/member/delete.html
   }
   
   /**
@@ -280,7 +280,7 @@ public class ManagerCont {
       return "redirect:/manager/list";
     } else {
       model.addAttribute("code", "delete_fail");
-      return "manager/msg"; // /templates/member/msg.html
+      return "th/manager/msg"; // /templates/member/msg.html
     }
   }
 

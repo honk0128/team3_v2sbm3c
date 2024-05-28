@@ -1,7 +1,5 @@
 package dev.mvc.gpa;
 
-import java.util.ArrayList;
-
 public interface GpaProcInter {
   /**
    * 등록
@@ -18,13 +16,4 @@ public interface GpaProcInter {
      * @return
      */
     public GpaVO readById(String aid);
-    
-    
-    public ArrayList<GpaVO> list();
-
-    public ArrayList<GpaVO> avgscore(int boardno);
-    
-    public int update(GpaVO gpaVO);
-    
-    public int delete(int gpano);
 }
