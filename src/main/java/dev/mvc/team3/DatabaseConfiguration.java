@@ -21,15 +21,14 @@ import com.zaxxer.hikari.HikariDataSource;
 @MapperScan(basePackages= {"dev.mvc.account",
                             "dev.mvc.crudcate",
                             "dev.mvc.breply",
-                            "dev.mvc.brereply",
-                            "dev.mvc.recommend",
                             "dev.mvc.ai",
                             "dev.mvc.manager",
                             "dev.mvc.board",
                             "dev.mvc.loginlog",
                             "dev.mvc.gpa",
                             "dev.mvc.brereply",
-                            "dev.mvc.bookmark"}) // DAO interface를 찾는 위치
+                            "dev.mvc.bookmark",
+                            "dev.mvc.recommend"}) // DAO interface를 찾는 위치
 public class DatabaseConfiguration {
     
     @Autowired

@@ -67,6 +67,19 @@ public interface AccountProcInter {
   
   public String pagingBox(int movieno, int now_page, String word, String list_file, int search_count, int record_per_page, int page_per_blocK);
 
+  /**
+   * 아이디 찾기
+   * @param aid
+   * @return 일치하는 id 정보 있는지 확인
+   */
+  public int check_user(String aname, String atel);
+  
+  /**
+   * 아이디 출력
+   * @param aid
+   * @return 일치하는 id 정보 있는지 확인
+   */
+  public String find_aid(String aname, String atel);
   
 }
 

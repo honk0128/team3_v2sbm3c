@@ -55,13 +55,11 @@ SET BREPLYCONT = '수정', BREPLYIMG = null, BREPLYSAVED = null, BREPLYTHUMB = n
 WHERE BREPLYNO = 6;
 
 
-delete brereply;
-
-commit;
+delete breply;
 
 SELECT COUNT(*) as cnt 
 FROM BREPLY
-WHERE breplyno = 39 AND BREPLYPASSWD = 'fS/kjO+fuEKk06Zl7VYMhg==';
+WHERE breplyno = 39 AND BREPLYPASSWD = 'fS/kjO+fuEKk06Zl7VYMhg=='
 
 
 /**********************************/

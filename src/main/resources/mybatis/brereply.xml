@@ -35,8 +35,8 @@
 
   <select id="brereply_password_check" resultType="int" parameterType="HashMap">
     SELECT COUNT(*) as cnt 
-    FROM brereply
-    WHERE brereplyno = #{brereplyno} AND BREREPLYPASSWD = #{brereplypasswd}
+    FROM breply
+    WHERE breplyno = #{breplyno} AND BREPLYPASSWD = #{breplypasswd}
   </select>
 
 </mapper>

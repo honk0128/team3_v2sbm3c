@@ -568,54 +568,231 @@ a:active {
   border-radius: 10px;
 }
 
+/**
+메인페이지
+**/
+.main {
 
-/**별점 css */
-#starscore fieldset{
-    display: inline-block;
-    direction: rtl;
-    border:0;
-}
-
-#starscore starspan{
-  font-size: 150px;
-}
-
-#starscore fieldset legend{
-    text-align: right;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 370px;
+  height: 100%;
 }
 
-#starfont {
-            color: gold;              /* 글자 색상 */
-            font-size: 24px;          /* 글자 크기 */
-            font-weight: bold;        /* 글자 두께 */
-        }
+@media(max-width: 1000px) {
+  .slide figure {
+    width: 150px; /* 이미지 간격을 줄이기 위해 조정 */
+  }
+  
+  .fa-crown.gold{
+  color: rgb(255, 255, 128);
+  font-size: 30px;
+}
 
-#starscore input[type=radio]{
-    display: none;
-}
-#starscore label{
-    font-size: 3em;
-    color: transparent;
-    text-shadow: 0 0 0 #f0f0f0;
-}
-#starscore label:hover{
-    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
-}
-#starscore label:hover ~ label{
-    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
-}
-#starscore input[type=radio]:checked ~ label{
-    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
-}
-#reviewContents {
-    width: 100%;
-    height: 150px;
-    padding: 10px;
-    box-sizing: border-box;
-    border: solid 1.5px #D3D3D3;
-    border-radius: 5px;
-    font-size: 16px;
-    resize: none;
+.fa-crown.silver{
+  color: lightgrey;
+  font-size: 30px;
 }
 
 
+.fa-crown.brown{
+  color: brown;
+  font-size: 30px;
+}
+  
+  .rank{
+  position: relative;
+  top: 80px;
+  font-size: 20px;
+}
+
+  .slide figure img {
+    max-width: 80%; /* 이미지 크기 조정 */
+  }
+
+  /* 이미지의 3D 거리를 좁히기 위해 translateZ 값을 조정 */
+  .slide figure:nth-child(1) {
+    transform: rotateY(60deg) translateZ(200px); /* 수정된 값 */
+  }
+  .slide figure:nth-child(2) {
+    transform: rotateY(120deg) translateZ(200px); /* 수정된 값 */
+  }
+  .slide figure:nth-child(3) {
+    transform: rotateY(180deg) translateZ(200px); /* 수정된 값 */
+  }
+  .slide figure:nth-child(4) {
+    transform: rotateY(240deg) translateZ(200px); /* 수정된 값 */
+  }
+  .slide figure:nth-child(5) {
+    transform: rotateY(300deg) translateZ(200px); /* 수정된 값 */
+  }
+  .slide figure:nth-child(6) {
+    transform: rotateY(360deg) translateZ(200px); /* 수정된 값 */
+  }
+}
+
+
+.textarea {
+  height: 300px;
+  width: 100%;
+
+  position: absolute;
+  text-align: center;
+}
+
+.text {
+  color: black;
+  position: relative;
+  bottom: 400px;
+
+  font-size: 50px;
+}
+
+.textb {
+  color: black;
+  position: relative;
+  bottom: 350px;
+  font-size: 50px;
+  text-align: center;
+}
+
+.slideshow {
+  width: 400px;
+  
+  perspective: 1200px;
+  position: relative;
+}
+
+.slide {
+  width: 100%;
+  float: right;
+  animation: rotation 14s infinite linear;
+  transform-style: preserve-3d;
+}
+
+.slide figure {
+  width: 100%;
+  height: 205px;
+  position: absolute;
+}
+
+.slide figure:nth-child(1) {
+  transform: rotateY(60deg) translateZ(400px);
+}
+
+.slide figure:nth-child(2) {
+  transform: rotateY(120deg) translateZ(400px);
+}
+
+.slide figure:nth-child(3) {
+  transform: rotateY(180deg) translateZ(400px);
+}
+
+.slide figure:nth-child(4) {
+  transform: rotateY(240deg) translateZ(400px);
+}
+
+.slide figure:nth-child(5) {
+  transform: rotateY(300deg) translateZ(400px);
+}
+
+.slide figure:nth-child(6) {
+  transform: rotateY(360deg) translateZ(400px);
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  -webkit-box-reflect: below 10px
+    linear-gradient(transparent, transparent, #0005);
+  box-shadow: 0 0 8px #fff;
+}
+
+.slide:hover {
+  animation-play-state: paused;
+  cursor: pointer;
+}
+
+.slide img:hover {
+  transform: scale(1.2);
+  transition: all 300ms;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+.rank{
+  position: relative;
+  top: 80px;
+  font-size: 50px;
+}
+
+.fa-crown.gold{
+  color: rgb(255, 255, 128);
+  font-size: 50px;
+}
+
+.fa-crown.silver{
+  color: lightgrey;
+  font-size: 50px;
+}
+
+
+.fa-crown.brown{
+  color: brown;
+  font-size: 50px;
+}
+
+/**메인페이지 - 리뷰 */
+.review{
+  margin-top: 700px;
+  
+}
+
+
+  .review_title{
+   width: 100%;
+   height: 15%; 
+  
+  
+  }
+   
+    .review_title span{
+  font-size: large;
+  
+   color:#99cc00;
+  
+  }
+
+.review_content{
+  border: solid black 1px;
+  width: 90%;
+  height: 150px;
+ 
+ 
+}
+
+.review_img_room{
+   border: solid black 1px;
+   width: 20%;
+   float: left;
+   height: 100%;
+
+}
+
+.review_img{
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  text-align: center;
+  margin: auto;
+  
+  }
+  

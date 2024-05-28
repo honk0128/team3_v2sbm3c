@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import dev.mvc.account.AccountProcInter;
 import dev.mvc.board.Board;
@@ -75,63 +74,42 @@ public class BookmarkCont {
 
   
   @GetMapping(value = "/bm_list")
-  public String bm_list(HttpSession session, Model model, RedirectAttributes ra,
-          @RequestParam(name = "accountno", required = false) String accountnoStr,
-          @RequestParam(name = "word", defaultValue = "") String word,
-          @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-  
+  public String bm_list(HttpSession session, Model model,
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+
       // HttpSession에서 accountno를 가져옵니다.
-      Integer sessionAccountno = (Integer) session.getAttribute("accountno");
-  
-      if (sessionAccountno != null || accountnoStr != null) {
-          // 사용자 로그인 검증
-          Integer accountno = null;
-          if (accountnoStr != null && !accountnoStr.isEmpty()) {
-              try {
-                  accountno = Integer.parseInt(accountnoStr);
-              } catch (NumberFormatException e) {
-                  // accountno가 잘못된 형식인 경우, 로그인 필요 페이지로 리다이렉트
-                  ra.addAttribute("url", "/manager/login_cookie_need");
-                  return "redirect:/board/msg";
-              }
-          } else {
-              // accountno가 없는 경우, 로그인 필요 페이지로 리다이렉트
-              ra.addAttribute("url", "/manager/login_cookie_need");
-              return "redirect:/board/msg";
-          }
-  
-          // 이하 코드는 변경하지 않음
-          ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
-          model.addAttribute("menu", menu);
-  
-          word = Tool.checkNull(word).trim();
-  
-          HashMap<String, Object> map = new HashMap<>();
-          map.put("accountno", accountno);
-          map.put("word", word);
-          map.put("now_page", now_page);
-  
-          ArrayList<BookmarkVO> list = this.bookmarkProc.bm_list(map);
-          model.addAttribute("list", list);
-          model.addAttribute("word", word);
-  
-          int search_count = this.bookmarkProc.bm_list_count(map);
-          String paging = this.bookmarkProc.pagingBox(accountno, now_page, word, "/bookmark/bm_list", search_count,
-                  Board.RECORD_PER_PAGE, Board.PAGE_PER_BLOCK);
-          model.addAttribute("paging", paging);
-          model.addAttribute("now_page", now_page);
-  
-          model.addAttribute("search_count", search_count);
-  
-          int no = search_count - ((now_page - 1) * Board.RECORD_PER_PAGE);
-          model.addAttribute("no", no);
-  
-          return "bookmark/bm_list";
-      } else {
-          // 로그인한 사용자가 없는 경우
-          ra.addAttribute("url", "/manager/login_cookie_need");
-          return "redirect:/board/msg";
+      Integer accountno = (Integer) session.getAttribute("accountno");
+      if (accountno == null) {
+          // accountno가 없는 경우 처리 (예: 로그인 페이지로 리다이렉트)
+          return "redirect:/login";
       }
+
+      ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+      model.addAttribute("menu", menu);
+
+      word = Tool.checkNull(word).trim();
+
+      HashMap<String, Object> map = new HashMap<>();
+      map.put("accountno", accountno);
+      map.put("word", word);
+      map.put("now_page", now_page);
+
+      ArrayList<BookmarkVO> list = this.bookmarkProc.bm_list(map);
+      model.addAttribute("list", list);
+      model.addAttribute("word", word);
+
+      int search_count = this.bookmarkProc.bm_list_count(map);
+      String paging = this.bookmarkProc.pagingBox(accountno, now_page, word, "/bookmark/bm_list", search_count,
+          Board.RECORD_PER_PAGE, Board.PAGE_PER_BLOCK);
+      model.addAttribute("paging", paging);
+      model.addAttribute("now_page", now_page);
+
+      model.addAttribute("search_count", search_count);
+
+      int no = search_count - ((now_page - 1) * Board.RECORD_PER_PAGE);
+      model.addAttribute("no", no);
+
+      return "bookmark/bm_list";
   }
-  
 }
