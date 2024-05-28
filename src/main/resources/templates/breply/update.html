@@ -8,13 +8,13 @@
   </div>
   
   <aside class="aside_right">
-    <a href="../create">댓글 등록</a>
+    <a href="./create">댓글 등록</a>
     <span class='menu_divide' >│</span>
-    <a th:href="@{|../delete/${breplyVO.breplyno}|}">댓글 삭제</a>
-    <span class='menu_divide' >│</span>
-    <a href="./list}">댓글 목록</a>
+    <a th:href="@{|./delete/{breplyno}|}">댓글 삭제</a>
     <span class='menu_divide' >│</span>
     <a href="javascript:location.reload();">새로고침</a>
+    <span class='menu_divide' >│</span>
+    <a href="./list}">댓글 목록</a>
   </aside>
   
   <div class='menu_line'></div>

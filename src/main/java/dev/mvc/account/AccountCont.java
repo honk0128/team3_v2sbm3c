@@ -83,12 +83,6 @@ public class AccountCont {
 
   }
 
-  /**
-   * 회윈 가입 폼
-   * @param model
-   * @param accountVO
-   * @return
-   */
   @GetMapping(value = "/signin")
   public String signin_form(Model model, AccountVO accountVO) {
     return "account/create";
@@ -146,9 +140,6 @@ public class AccountCont {
       // ------------------------------------------------------------------------------
       // 파일 전송 코드 종료
       // ------------------------------------------------------------------------------
-      
-      String atel = accountVO.getAtel().trim();
-      accountVO.setAtel(atel);
 
       accountVO.setAgrade(15); // 기본 회원 15
       int cnt = this.accountProc.signin_account(accountVO);
@@ -291,7 +282,7 @@ public class AccountCont {
         session.setAttribute("agrade", "guest");
       }
 
-      return "index";
+      return "redirect:/";
     } else {
       model.addAttribute("code", "login_fail");
       return "account/msg";
@@ -319,60 +310,60 @@ public class AccountCont {
    */
   @PostMapping(value="/update_account")
   public String update_proc(Model model, AccountVO accountVO, RedirectAttributes ra) {
-      AccountVO accountVO_old = accountProc.read(accountVO.getAccountno());
-      
-      // -------------------------------------------------------------------
-      // 파일 삭제 시작
-      // -------------------------------------------------------------------
-      String file1saved = accountVO_old.getAprofile_imgsave();  // 실제 저장된 파일명
-      String thumb1 = accountVO_old.getAprofile_thum();       // 실제 저장된 preview 이미지 파일명
-      long size1 = 0;
-         
-      String upDir =  Profiles.getUploadDir(); // C:/kd/deploy/resort_v4sbm3c/contents/storage/
-      
-      // 파일을 변경할 때만 기존 이미지를 삭제하도록 수정
-      MultipartFile mf = accountVO.getAprofile_imgMF();
-      if (mf != null && !mf.isEmpty()) {
-          Tool.deleteFile(upDir, file1saved);  // 실제 저장된 파일삭제
-          Tool.deleteFile(upDir, thumb1);     // preview 이미지 삭제
-      }
-      // -------------------------------------------------------------------
-      // 파일 삭제 종료
-      // -------------------------------------------------------------------
-          
-      // -------------------------------------------------------------------
-      // 파일 전송 시작
-      // -------------------------------------------------------------------
-      String file1 = "";          // 원본 파일명 image
+    AccountVO accountVO_old = accountProc.read(accountVO.getAccountno());
+    
+    // -------------------------------------------------------------------
+    // 파일 삭제 시작
+    // -------------------------------------------------------------------
+    String file1saved = accountVO_old.getAprofile_imgsave();  // 실제 저장된 파일명
+    String thumb1 = accountVO_old.getAprofile_thum();       // 실제 저장된 preview 이미지 파일명
+    long size1 = 0;
+       
+    String upDir =  Profiles.getUploadDir(); // C:/kd/deploy/resort_v4sbm3c/contents/storage/
+    
+    Tool.deleteFile(upDir, file1saved);  // 실제 저장된 파일삭제
+    Tool.deleteFile(upDir, thumb1);     // preview 이미지 삭제
+    // -------------------------------------------------------------------
+    // 파일 삭제 종료
+    // -------------------------------------------------------------------
+        
+    // -------------------------------------------------------------------
+    // 파일 전송 시작
+    // -------------------------------------------------------------------
+    String file1 = "";          // 원본 파일명 image
 
-      // 전송 파일이 없어도 file1MF 객체가 생성됨.
-      // <input type='file' class="form-control" name='file1MF' id='file1MF' 
-      //           value='' placeholder="파일 선택">
-      if (mf != null && !mf.isEmpty()) {
-          file1 = mf.getOriginalFilename(); // 원본 파일명
-          size1 = mf.getSize();  // 파일 크기
-          
-          // 파일 저장 후 업로드된 파일명이 리턴됨, spring.jsp, spring_1.jpg...
-          file1saved = Upload.saveFileSpring(mf, upDir); 
-          
-          if (Tool.isImage(file1saved)) { // 이미지인지 검사
-              // thumb 이미지 생성후 파일명 리턴됨, width: 250, height: 200
-              thumb1 = Tool.preview(upDir, file1saved, 250, 200); 
-          }
-      } else { // 파일이 삭제만 되고 새로 올리지 않는 경우
-          file1 = accountVO_old.getAprofile_img();
-          file1saved = accountVO_old.getAprofile_imgsave();
-          thumb1 = accountVO_old.getAprofile_thum();
-          size1 = accountVO_old.getAprofile_size();
-      }
-      // -------------------------------------------------------------------
-      // 파일 전송 코드 종료
-      // -------------------------------------------------------------------
+    // 전송 파일이 없어도 file1MF 객체가 생성됨.
+    // <input type='file' class="form-control" name='file1MF' id='file1MF' 
+    //           value='' placeholder="파일 선택">
+    MultipartFile mf = accountVO.getAprofile_imgMF();
+        
+    file1 = mf.getOriginalFilename(); // 원본 파일명
+    size1 = mf.getSize();  // 파일 크기
+        
+    if (size1 > 0) { // 폼에서 새롭게 올리는 파일이 있는지 파일 크기로 체크 ★
+      // 파일 저장 후 업로드된 파일명이 리턴됨, spring.jsp, spring_1.jpg...
+      file1saved = Upload.saveFileSpring(mf, upDir); 
       
-      accountVO.setAprofile_img(file1);
-      accountVO.setAprofile_imgsave(file1saved);
-      accountVO.setAprofile_thum(thumb1);
-      accountVO.setAprofile_size(size1);
+      if (Tool.isImage(file1saved)) { // 이미지인지 검사
+        // thumb 이미지 생성후 파일명 리턴됨, width: 250, height: 200
+        thumb1 = Tool.preview(upDir, file1saved, 250, 200); 
+      }
+      
+    } else { // 파일이 삭제만 되고 새로 올리지 않는 경우
+      file1 = accountVO_old.getAprofile_img();
+      file1saved = accountVO_old.getAprofile_imgsave();
+      thumb1 = accountVO_old.getAprofile_thum();
+      size1 = accountVO_old.getAprofile_size();
+    }
+        
+    accountVO.setAprofile_img(file1);
+    accountVO.setAprofile_imgsave(file1saved);
+    accountVO.setAprofile_thum(thumb1);
+    accountVO.setAprofile_size(size1);
+    // -------------------------------------------------------------------
+    // 파일 전송 코드 종료
+    // -------------------------------------------------------------------
+    
     
     int cnt = this.accountProc.update_account(accountVO); // 수정
     
@@ -427,32 +418,4 @@ public class AccountCont {
       return "account/msg"; // /templates/member/msg.html
     }
   }
-  
-  
-  
-  @GetMapping(value = "/find_aid_form")
-  public String find_aid_form() {
-    return "account/find_aid_form";
- 
-
-  }
-  
-  @PostMapping(value = "/find_aid")
-  public String find_aid_proc(String aname, String atel, Model model, AccountVO accountVO) {
-    int cnt = this.accountProc.check_user(aname, atel);
-    
-    if (cnt == 1) {
-      String aid = this.accountProc.find_aid(aname, atel);
-      model.addAttribute("code", "find_success");
-        model.addAttribute("aid", aid);
-        model.addAttribute("aname", aname);
-        
-        return "account/find_aid";
-    }else {
-      model.addAttribute("code", "find_fail");
-      return "account/find_aid";
-    }
-  }
-  
- 
 }

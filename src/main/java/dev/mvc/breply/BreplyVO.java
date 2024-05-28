@@ -54,8 +54,4 @@ public class BreplyVO {
   /** 댓글 비밀번호 */
   @NotEmpty(message="비밀번호를 설정해주세요.")
   private String breplypasswd;
-  
-  private int accountno;
-
-  private int boardnono;
 }

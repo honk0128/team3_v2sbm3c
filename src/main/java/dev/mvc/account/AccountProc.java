@@ -190,41 +190,4 @@ public class AccountProc implements AccountProcInter {
     return str.toString(); 
   }
 
-  @Override
-  public int check_user(String aname, String atel) {
-    
-    HashMap<String, Object> map = new HashMap<>();
-    
-    map.put("aname", aname);
-    map.put("atel", atel);
-    
-    System.out.println("map: " + map);
-    
-    System.out.println("aname: " + aname);
-//    System.out.println("atel: " + atel);
-    
-    int cnt = this.accountDAO.check_user(map);
-    System.out.println("->cnt: " + cnt);
-    return cnt;
-  }
-
-  @Override
-  public String find_aid(String aname, String atel) {
-
-      
-    HashMap<String, Object> map = new HashMap<>();
-      
-    map.put("aname", aname);
-    map.put("atel", atel);
-      
-    System.out.println("map: " + map);
-      
-    System.out.println("aname: " + aname);
-//    System.out.println("atel: " + atel);
-      
-      String aid = this.accountDAO.find_aid(map);
-      System.out.println("->aid: " + aid);
-      return aid;
-    }
-  }
-  
+}
