@@ -3,7 +3,6 @@ package dev.mvc.board;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.catalina.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -19,7 +18,6 @@ import dev.mvc.account.AccountProcInter;
 import dev.mvc.crudcate.CrudcateProcInter;
 import dev.mvc.crudcate.CrudcateVO;
 import dev.mvc.crudcate.CrudcateVOMenu;
-import dev.mvc.manager.ManagerProc;
 import dev.mvc.manager.ManagerProcInter;
 import dev.mvc.tool.Tool;
 import dev.mvc.tool.Upload;

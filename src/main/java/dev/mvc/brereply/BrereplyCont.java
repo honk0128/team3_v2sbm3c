@@ -1,6 +1,7 @@
 package dev.mvc.brereply;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,6 +19,7 @@ import dev.mvc.breply.BreplyProcInter;
 import dev.mvc.breply.BreplyVO;
 import dev.mvc.tool.Tool;
 import dev.mvc.tool.Upload;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @RequestMapping("/brereply")
@@ -165,82 +167,99 @@ public class BrereplyCont {
   }
 
   @PostMapping(value="/brereply_update")
-  public String update_process(Model model, BrereplyVO brereplyVO, Integer brereplyno, RedirectAttributes ra) {
+  public String update_process(Model model, BrereplyVO brereplyVO, Integer brereplyno, RedirectAttributes ra, HttpSession session) {
     BrereplyVO brereplyVO_old = brereplyProc.brereply_read(brereplyVO.getBrereplyno());
-    // BreplyVO breplycont = 
-    
-    // -------------------------------------------------------------------
-    // 파일 삭제 시작
-    // -------------------------------------------------------------------
-    String file1saved = brereplyVO_old.getBrereplysave();  // 실제 저장된 파일명
-    String thumb1 = brereplyVO_old.getBrereplythumb();       // 실제 저장된 preview 이미지 파일명
-    long size1 = 0;
-       
-    String upDir =  Brereply.getUploadDir(); // C:/kd/deploy/resort_v4sbm3c/contents/storage/
-    
-    Tool.deleteFile(upDir, file1saved);  // 실제 저장된 파일삭제
-    Tool.deleteFile(upDir, thumb1);     // preview 이미지 삭제
-    // -------------------------------------------------------------------
-    // 파일 삭제 종료
-    // -------------------------------------------------------------------
-        
-    // -------------------------------------------------------------------
-    // 파일 전송 시작
-    // -------------------------------------------------------------------
-    String file1 = "";          // 원본 파일명 image
 
-    // 전송 파일이 없어도 file1MF 객체가 생성됨.
-    // <input type='file' class="form-control" name='file1MF' id='file1MF' 
-    //           value='' placeholder="파일 선택">
-    MultipartFile mf = brereplyVO.getFileMF();
+    if (session.getAttribute("accountno") != null || session.getAttribute("managerno") != null) { // 회원 로그인
+      HashMap<String, Object> map = new HashMap<String, Object>();
+      map.put("brereplyno", brereplyVO.getBrereplyno());
+      map.put("brereplypasswd", brereplyVO.getBrereplypasswd());
+
+      int cnt = this.breplyProc.password_check(map);
+      System.out.println("cnt: " + cnt);
+
+      if (cnt == 1) { // 비밀번호 확인
+        // BreplyVO breplycont = 
         
-    file1 = mf.getOriginalFilename(); // 원본 파일명
-    size1 = mf.getSize();  // 파일 크기
+        // -------------------------------------------------------------------
+        // 파일 삭제 시작
+        // -------------------------------------------------------------------
+        String file1saved = brereplyVO_old.getBrereplysave();  // 실제 저장된 파일명
+        String thumb1 = brereplyVO_old.getBrereplythumb();       // 실제 저장된 preview 이미지 파일명
+        long size1 = 0;
+          
+        String upDir =  Brereply.getUploadDir(); // C:/kd/deploy/resort_v4sbm3c/contents/storage/
         
-    if (size1 > 0) { // 폼에서 새롭게 올리는 파일이 있는지 파일 크기로 체크 ★
-      // 파일 저장 후 업로드된 파일명이 리턴됨, spring.jsp, spring_1.jpg...
-      file1saved = Upload.saveFileSpring(mf, upDir); 
-      
-      if (Tool.isImage(file1saved)) { // 이미지인지 검사
-        // thumb 이미지 생성후 파일명 리턴됨, width: 250, height: 200
-        thumb1 = Tool.preview(upDir, file1saved, 250, 200); 
+        Tool.deleteFile(upDir, file1saved);  // 실제 저장된 파일삭제
+        Tool.deleteFile(upDir, thumb1);     // preview 이미지 삭제
+        // -------------------------------------------------------------------
+        // 파일 삭제 종료
+        // -------------------------------------------------------------------
+            
+        // -------------------------------------------------------------------
+        // 파일 전송 시작
+        // -------------------------------------------------------------------
+        String file1 = "";          // 원본 파일명 image
+
+        // 전송 파일이 없어도 file1MF 객체가 생성됨.
+        // <input type='file' class="form-control" name='file1MF' id='file1MF' 
+        //           value='' placeholder="파일 선택">
+        MultipartFile mf = brereplyVO.getFileMF();
+            
+        file1 = mf.getOriginalFilename(); // 원본 파일명
+        size1 = mf.getSize();  // 파일 크기
+            
+        if (size1 > 0) { // 폼에서 새롭게 올리는 파일이 있는지 파일 크기로 체크 ★
+          // 파일 저장 후 업로드된 파일명이 리턴됨, spring.jsp, spring_1.jpg...
+          file1saved = Upload.saveFileSpring(mf, upDir); 
+          
+          if (Tool.isImage(file1saved)) { // 이미지인지 검사
+            // thumb 이미지 생성후 파일명 리턴됨, width: 250, height: 200
+            thumb1 = Tool.preview(upDir, file1saved, 250, 200); 
+          }
+          
+        } else { // 파일이 삭제만 되고 새로 올리지 않는 경우
+          file1="";
+          file1saved="";
+          thumb1="";
+          size1=0;
+        }
+            
+        brereplyVO.setBrereplyimg(file1);
+        brereplyVO.setBrereplysave(file1saved);
+        brereplyVO.setBrereplythumb(thumb1);
+        brereplyVO.setBrereplysize(size1);
+        // -------------------------------------------------------------------
+        // 파일 전송 코드 종료
+        // -------------------------------------------------------------------
+        model.addAttribute("brereplyVO", brereplyVO);
+        System.out.println("cont: "+brereplyVO.getBrereplycont());
+        
+        cnt = this.brereplyProc.brereply_update(brereplyVO); // 수정
+        System.out.println("cnt: " + cnt);
+        
+        if (cnt == 1) {
+          model.addAttribute("code", "update_success");
+          model.addAttribute("breplycont", brereplyVO.getBrereplycont());
+          model.addAttribute("breplypasswd", brereplyVO.getBrereplypasswd());
+
+          ra.addAttribute("breplyno", brereplyVO.getBrereplyno());
+          
+          return "redirect:/brereply/brereply_list?brereplyno=" + brereplyno; // request -> param으로 접근 전환
+        } else {
+          model.addAttribute("code", "update_fail");
+        }
+        
+        model.addAttribute("cnt", cnt);
+        
+        return "member/msg"; // /templates/member/msg.html
+      } else {
+        ra.addFlashAttribute("code", "not_exist_passwd");
+        return "redirect:/brereply/msg";
       }
-      
-    } else { // 파일이 삭제만 되고 새로 올리지 않는 경우
-      file1="";
-      file1saved="";
-      thumb1="";
-      size1=0;
-    }
-        
-    brereplyVO.setBrereplyimg(file1);
-    brereplyVO.setBrereplysave(file1saved);
-    brereplyVO.setBrereplythumb(thumb1);
-    brereplyVO.setBrereplysize(size1);
-    // -------------------------------------------------------------------
-    // 파일 전송 코드 종료
-    // -------------------------------------------------------------------
-    model.addAttribute("brereplyVO", brereplyVO);
-    System.out.println("cont: "+brereplyVO.getBrereplycont());
-    
-    int cnt = this.brereplyProc.brereply_update(brereplyVO); // 수정
-    System.out.println("cnt: " + cnt);
-    
-    if (cnt == 1) {
-      model.addAttribute("code", "update_success");
-      model.addAttribute("breplycont", brereplyVO.getBrereplycont());
-      model.addAttribute("breplypasswd", brereplyVO.getBrereplypasswd());
-
-      ra.addAttribute("breplyno", brereplyVO.getBrereplyno());
-      
-      return "redirect:/brereply/brereply_list?brereplyno=" + brereplyno; // request -> param으로 접근 전환
     } else {
-      model.addAttribute("code", "update_fail");
+      return "redirect:/account/login";
     }
-    
-    model.addAttribute("cnt", cnt);
-    
-    return "member/msg"; // /templates/member/msg.html
   }
   
   @GetMapping(value = "/brereply_delete")
@@ -252,18 +271,22 @@ public class BrereplyCont {
   }
   
   @PostMapping(value = "/brereply_delete")
-    public String delete_process(Model model,
+    public String delete_process(Model model, HttpSession session,
                         Integer brereplyno) {
     BrereplyVO brereplyVO = this.brereplyProc.brereply_read(brereplyno);
     model.addAttribute("brereplyVO", brereplyVO);
 
-    int cnt = this.brereplyProc.brereply_delete(brereplyno);
-    System.out.println("cnt : " + cnt);
-    if(cnt == 1) {
-      return "redirect:/brereply/brereply_list?brereplyno=" + brereplyno;
+    if (session.getAttribute("accountno") != null || session.getAttribute("managerno") != null) { // 회원 로그인
+      int cnt = this.brereplyProc.brereply_delete(brereplyno);
+      System.out.println("cnt : " + cnt);
+      if(cnt == 1) {
+        return "redirect:/brereply/brereply_list?brereplyno=" + brereplyno;
+      } else {
+        model.addAttribute("code", "delete_fail");
+          return "breply/msg";
+      }
     } else {
-      model.addAttribute("code", "delete_fail");
-        return "breply/msg";
+      return "redirect:/account/login";
     }
   }
 }
