@@ -13,31 +13,35 @@
   </insert>
 
   <!-- list_all -->
-<select id="list_all" resultType="dev.mvc.board.BoardVO">
-    SELECT boardno, accountno, managerno, crudcateno, 
-            btitle, bcontent, bdate, btag, bphoto, bphotosaved, bthumb, bsize, breplycnt, bview, brecom, bvisible, tagno
-    FROM board
-    <where>
-        <if test="word != null and word != ''">
-            AND (UPPER(btitle) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(bcontent) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(btag) LIKE '%' || UPPER(#{word}) || '%')
-        </if>
-    </where>
-    ORDER BY boardno DESC
-</select>
+  <select id="list_all" resultType="dev.mvc.board.BoardVO">
+    SELECT * FROM (
+        SELECT 
+            boardno, accountno, managerno, crudcateno, btitle, bcontent, bdate, btag, 
+            LOWER(bphoto) as bphoto, bphotosaved, bthumb, bsize, breplycnt, bview, brecom, 
+            bvisible, tagno, byoutube, rownum as r 
+        FROM (
+            SELECT 
+                boardno, accountno, managerno, crudcateno, btitle, bcontent, bdate, btag, 
+                LOWER(bphoto) as bphoto, bphotosaved, bthumb, bsize, breplycnt, bview, 
+                brecom, bvisible, tagno, byoutube
+            FROM board 
+            ORDER BY boardno DESC
+        )
+    ) 
+    WHERE <![CDATA[ r >= #{start_num} AND r <= #{end_num} ]]>
+  </select>
 
   <!-- list_all 검색 레코드 갯수 -->
   <select id="list_all_sc" resultType="int" parameterType="HashMap">
     SELECT COUNT(*) as cnt
     FROM board
-    <where>
       <if test="word != null and word != ''">
           AND (UPPER(btitle) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(bcontent) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(btag) LIKE '%' || UPPER(#{word}) || '%')
       </if>
-    </where>
+      ORDER BY boardno DESC
   </select>   
 
-
-    <!-- list_cno -->
+  <!-- list_cno -->
   <select id="list_cno" resultType="dev.mvc.board.BoardVO" parameterType="int">
     SELECT  boardno, accountno, managerno, crudcateno, 
             btitle, bcontent, bdate, btag, LOWER(bphoto) as bphoto, bphotosaved, bthumb, bsize, breplycnt, bview, brecom, bvisible, tagno
@@ -117,5 +121,78 @@
     )
     WHERE <![CDATA[ r >= #{start_num} AND r <= #{end_num} ]]>
   </select>
+
+  <!-- 패스워드 검사 -->
+  <select id="password_check" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt 
+    FROM board
+    WHERE boardno = #{boardno} AND bpasswd=#{bpasswd}
+  </select>
+
+  <!-- 글 수정 -->
+  <update id="update_board" parameterType="dev.mvc.board.BoardVO">
+    UPDATE board
+    SET btitle=#{btitle}, bcontent=#{bcontent}, btag=#{btag}, bvisible=#{bvisible}
+    WHERE boardno = #{boardno}
+  </update>
+
+  <!-- 파일 수정 -->
+  <update id="update_file" parameterType="dev.mvc.board.BoardVO">
+    UPDATE board
+    SET bphoto=#{bphoto}, bphotosaved=#{bphotosaved}, bthumb=#{bthumb}, bsize=#{bsize}
+    WHERE boardno = #{boardno}
+  </update>  
+
+  <!-- 글 삭제 -->
+  <delete id="delete" parameterType="int">
+    DELETE FROM board
+    WHERE boardno=#{boardno}
+  </delete>
+
+    <!-- GPA 테이블의 레코드 삭제 -->
+  <delete id="delete_gpa" parameterType="int">
+      DELETE FROM GPA
+      WHERE boardno=#{boardno}
+  </delete>
+
+  <!-- RECOMMEND 테이블의 레코드 삭제 -->
+  <delete id="delete_recommend" parameterType="int">
+      DELETE FROM RECOMMEND
+      WHERE boardno=#{boardno}
+  </delete>
+
+  <!-- BOOKMARK 테이블의 레코드 삭제 -->
+  <delete id="delete_bookmark" parameterType="int">
+      DELETE FROM BOOKMARK
+      WHERE boardno=#{boardno}
+  </delete>
+    
+  <!-- FK cateno 컬럼에 대응하는 필수 SQL -->
+  <!-- 특정 카테고리에 속한 레코드 갯수를 리턴 -->
+  <select id="count_cno" resultType="int" parameterType="int">
+    SELECT COUNT(*) as cnt 
+    FROM board 
+    WHERE crudcateno=#{crudcateno}
+  </select>
+  
+  <!-- 특정 카테고리에 속한 모든 레코드 삭제 -->
+  <delete id="delete_cno" parameterType="int">
+    DELETE FROM board
+    WHERE crudcateno=#{crudcateno}
+  </delete>
+
+  <!-- FK memberno 컬럼에 대응하는 필수 SQL -->
+  <!-- 특정 카테고리에 속한 레코드 갯수를 리턴 -->
+  <select id="count_userno" resultType="int" parameterType="int">
+    SELECT COUNT(*) as cnt 
+    FROM board 
+    WHERE accountno=#{accountno} and managerno=#{managerno}
+  </select>
+  
+  <!-- 특정 카테고리에 속한 모든 레코드 삭제 -->
+  <delete id="delete_userno" parameterType="int">
+    DELETE FROM board
+    WHERE accountno=#{accountno} and managerno=#{managerno}
+  </delete>
 
 </mapper>

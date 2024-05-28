@@ -12,12 +12,17 @@
   <table class="table table-striped" style='width: 100%;'>
     <colgroup>
       <col style='width: 10%;'/>
-      <col style='width: 80%;'/>
+      <col style='width: 25%;'/>
+      <col style='width: 45%;'/>
+      <col style='width: 10%;'/>
       <col style='width: 10%;'/>
     </colgroup>
+
     <tr>
       <th class='th_bs'>파일</th>
       <th class='th_bs'>제목</th>
+      <th class='th_bs'>내용</th>
+      <th class='th_bs'>등록일</th>
       <th class='th_bs'>출력모드</th>
     </tr>
     
@@ -37,20 +42,19 @@
           <img src="/board/images/aaa.jpg" style="width: 120px; height: 90px;">
         </div>
       </td>
-      <td class='td_left'>
+      <td class='td_basic' style="vertical-align: middle; text-align: center">
         <span th:text="${boardVO.btitle}" style="font-weight: bold;"></span>
-        <span th:text="|&nbsp;${boardVO.bdate.substring(0, 10)}|"></span><br>
-
-        <span th:if="${boardVO.bcontent.length() > 160 }" 
-                  th:text="|${boardVO.bcontent.substring(0, 160) }...|"></span>
-        <span th:if="${boardVO.bcontent.length() <= 160 }" 
-                  th:text="|${boardVO.bcontent}|"></span>
-        
       </td>
-      <td>
+      <td class="td_basic" style="vertical-align: middle; text-align: center"> 
+        <span th:if="${boardVO.bcontent.length() > 160 }" th:text="|${boardVO.bcontent.substring(0, 160) }...|"></span>
+        <span th:if="${boardVO.bcontent.length() <= 160 }" th:text="|${boardVO.bcontent}|"></span>
+      </td>
+      <td class="td_basic" style="vertical-align: middle; text-align: center"> <span th:text="|&nbsp;${boardVO.bdate.substring(0, 10)}|"></span></td>
+      <td class="td_basic" style="vertical-align: middle; text-align: center">
         <span th:text="${boardVO.bvisible}" style="font-weight: bold;"></span>
       </td>
     </tr>
+
 
     <tr th:if="${list.size() == 0}">
       <td colspan="2" style="text-align: center;">관련 글이 등록되지 않았습니다.</td>

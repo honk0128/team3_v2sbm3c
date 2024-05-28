@@ -6,42 +6,42 @@
   <script>
     window.onload = () => {
       document.querySelector('#aid').addEventListener('keypress', (event) => {
-      // document.getElementById('apasswd').addEventListener('keypress', (event) => {
+      // document.getElementById('passwd').addEventListener('keypress', (event) => {
         if(event.key === 'Enter') { // ===: 타입까지 확인
           document.getElementById('btn_checkID').focus();
         }
       }); 
   
       document.querySelector('#apasswd').addEventListener('keypress', (event) => {
-      // document.getElementById('apasswd').addEventListener('keypress', (event) => {
+      // document.getElementById('passwd').addEventListener('keypress', (event) => {
         if(event.key === 'Enter') {
           document.getElementById('apasswd2').focus();
         }
       }); 
   
       document.querySelector('#apasswd2').addEventListener('keypress', (event) => {
-      // document.getElementById('apasswd').addEventListener('keypress', (event) => {
+      // document.getElementById('passwd').addEventListener('keypress', (event) => {
         if(event.key === 'Enter') {
           document.getElementById('aname').focus();
         }
       }); 
   
       document.querySelector('#aname').addEventListener('keypress', (event) => {
-      // document.getElementById('apasswd').addEventListener('keypress', (event) => {
+      // document.getElementById('passwd').addEventListener('keypress', (event) => {
         if(event.key === 'Enter') {
           document.getElementById('atel').focus();
         }
       });
       
       document.querySelector('#atel').addEventListener('keypress', (event) => {
-      // document.getElementById('apasswd').addEventListener('keypress', (event) => {
+      // document.getElementById('passwd').addEventListener('keypress', (event) => {
         if(event.key === 'Enter') {
           document.getElementById('btn_DaumPostcode').focus();
         }
       }); 
       
       document.querySelector('#address2').addEventListener('keypress', (event) => {
-      // document.getElementById('apasswd').addEventListener('keypress', (event) => {
+      // document.getElementById('passwd').addEventListener('keypress', (event) => {
         if(event.key === 'Enter') {
           document.getElementById('btn_send').focus();
         }
@@ -141,8 +141,9 @@
   
         return false;  // 회원 가입 진행 중지
       }
+      
   
-      document.getElementById('frm').submit(); // required="required" 작동 안됨.
+       document.getElementById('frm').submit(); // required="required" 작동 안됨.
     }    
   </script>
 
@@ -150,7 +151,7 @@
   <aside class="aside_right">
     <a href="javascript:location.reload();">새로고침</a>
     <span class='menu_divide' >│</span> 
-    <a href='./create'>회원 가입</a>
+    <a href='/manager/signin'>관리자 회원 가입</a>
     <span class='menu_divide' >│</span> 
     <a href='./list'>목록</a>
   </aside> 
@@ -213,12 +214,7 @@
         <label for="address2" style="width: 100%;">상세 주소</label>
         <input type='text' name='address2' id='address2' value='' placeholder="상세 주소"
                   class="form-control form-control-sm">
-      </div>   
-
-      <div>
-        <label>이미지</label>
-        <input type='file' class="form-control" name='aprofile_imgMF' id='aprofile_imgMF' value='' placeholder="파일 선택">
-      </div>
+      </div>    
 
 <!-- ------------------------------ DAUM 우편번호 API 시작 ------------------------------ -->
     <div>
@@ -309,6 +305,11 @@
 
     </div>
 <!-- ------------------------------ DAUM 우편번호 API 종료 ------------------------------ -->
+
+      <div>
+       <label>이미지</label>
+       <input type='file' class="form-control" name='aprofile_imgMF' id='aprofile_imgMF' value='' placeholder="파일 선택">
+      </div>  
 
       <div class="content_body_bottom">
         <button type="button" onclick="send();" class="btn btn-secondary btn-sm">가입</button>

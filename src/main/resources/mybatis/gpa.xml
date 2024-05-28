@@ -13,6 +13,31 @@
     SELECT ACCOUNTNO FROM ACCOUNT WHERE AID = #{aid}
 </select>
   
+ 
+   <select id="list" parameterType="dev.mvc.gpa.GpaVO">
+  SELECT GPANO, GPASCORE, ACCOUNTNO, BOARDNO, GPADATE
+  FROM GPA
+  ORDER BY GPANO ASC
+  </select>
+  
+  <select id="avgscore" parameterType="dev.mvc.gpa.GpaVO">
+  SELECT ROUND(AVG(GPASCORE), 0) AS avg_gpascore
+FROM GPA
+WHERE boardno = #{boardno}
+  </select>
+  
+   <delete id="delete" parameterType="dev.mvc.gpa.GpaVO">
+    DELETE FROM GPA WHERE GPANO=#{gpano}
+  </delete>
+  
+  
+  <update id="update" parameterType="dev.mvc.gpa.GpaVO">
+    UPDATE GPA
+    SET GPASCORE = #{gpascore}
+    WHERE GPANO = #{gpano}
+    
+  </update>
+  
 </mapper>
 
 
