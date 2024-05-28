@@ -49,10 +49,10 @@ public class BrereplyCont {
    */
   @GetMapping("/brereply_create")
   public String replycreate(Model model, BrereplyVO brereplyVO,
-                            Integer breplyno) {
-      BreplyVO breplyVO = this.breplyProc.read(brereplyVO.getBreplyno());
-      System.out.println("breplyVO : " + breplyVO);
-      return "/brereply/brereply_create";
+                            Integer breplyno, Integer accountno) {
+    BreplyVO breplyVO = this.breplyProc.read(breplyno); 
+    System.out.println("breplyVO : " + breplyVO);
+    return "/brereply/brereply_create";
   }
 
 
@@ -60,64 +60,69 @@ public class BrereplyCont {
    * 등록 프로세스
    */
   @PostMapping(value = "/brereply_create")
-  public String brereply_create(Model model, @Valid BrereplyVO brereplyVO, Integer breplyno, BindingResult bindingResult,
+  public String brereply_create(Model model, @Valid BrereplyVO brereplyVO, Integer breplyno, BindingResult bindingResult, HttpSession session,
                             RedirectAttributes ra) {
     if (bindingResult.hasErrors()) {
       return "redirect:/breply/read/{breplyno}";
     }
 
-    // ------------------------------------------------------------------------------
-    // 파일 전송 코드 시작
-    // ------------------------------------------------------------------------------
-    String file1 = "";
-    String file1saved = "";
-    String thumb1 = "";
+    if (session.getAttribute("accountno") != null || session.getAttribute("managerno") != null) { // 회원 로그인
+      // ------------------------------------------------------------------------------
+      // 파일 전송 코드 시작
+      // ------------------------------------------------------------------------------
+      String file1 = "";
+      String file1saved = "";
+      String thumb1 = "";
 
-    String upDir =  Brereply.getUploadDir();
-    System.out.println("-> upDir: " + upDir);
-    
-    MultipartFile mf = brereplyVO.getFileMF();
-    
-    file1 = mf.getOriginalFilename();
-    System.out.println("-> 원본 파일명 산출 file1: " + file1);
-    
-    long size1 = mf.getSize();
-    if (size1 > 0) {
-      if (Tool.checkUploadFile(file1) == true) {
-        file1saved = Upload.saveFileSpring(mf, upDir); 
-        
-        if (Tool.isImage(file1saved)) {
-          thumb1 = Tool.preview(upDir, file1saved, 200, 150);
+      String upDir =  Brereply.getUploadDir();
+      System.out.println("-> upDir: " + upDir);
+      
+      MultipartFile mf = brereplyVO.getFileMF();
+      
+      file1 = mf.getOriginalFilename();
+      System.out.println("-> 원본 파일명 산출 file1: " + file1);
+      
+      long size1 = mf.getSize();
+      if (size1 > 0) {
+        if (Tool.checkUploadFile(file1) == true) {
+          file1saved = Upload.saveFileSpring(mf, upDir); 
+          
+          if (Tool.isImage(file1saved)) {
+            thumb1 = Tool.preview(upDir, file1saved, 200, 150);
+          }
+
+          brereplyVO.setBrereplyimg(file1);
+          brereplyVO.setBrereplysave(file1saved);
+          brereplyVO.setBrereplythumb(thumb1);
+          brereplyVO.setBrereplysize(size1);
+
+        } else {
+          ra.addFlashAttribute("code", "check_upload_file_fail");
+          ra.addFlashAttribute("cnt", 0);
+          ra.addFlashAttribute("url", "/Breply/msg");
+          return "redirect:/Breply/msg";
         }
-
-        brereplyVO.setBrereplyimg(file1);
-        brereplyVO.setBrereplysave(file1saved);
-        brereplyVO.setBrereplythumb(thumb1);
-        brereplyVO.setBrereplysize(size1);
-
       } else {
-        ra.addFlashAttribute("code", "check_upload_file_fail");
-        ra.addFlashAttribute("cnt", 0);
-        ra.addFlashAttribute("url", "/Breply/msg");
-        return "redirect:/Breply/msg";
+        System.out.println("-> 글만 등록");
+      }
+      
+      // ------------------------------------------------------------------------------
+      // 파일 전송 코드 종료
+      // ------------------------------------------------------------------------------
+
+      int cnt = this.brereplyProc.brereply_create(brereplyVO);
+      System.out.println("-> cnt: " + cnt);
+
+      model.addAttribute("cnt", cnt);
+      if(cnt ==1) {
+        System.out.println("breplyno: " + breplyno);
+        return "redirect:/brereply/brereply_list";
+      } else {
+        model.addAttribute("code", "code");
+        return "breply/msg";
       }
     } else {
-      System.out.println("-> 글만 등록");
-    }
-    
-    // ------------------------------------------------------------------------------
-    // 파일 전송 코드 종료
-    // ------------------------------------------------------------------------------
-
-    int cnt = this.brereplyProc.brereply_create(brereplyVO);
-    System.out.println("-> cnt: " + cnt);
-
-    model.addAttribute("cnt", cnt);
-    if(cnt ==1) {
-      return "redirect:/brereply/brereply_list?breplyno=" + breplyno;
-    } else {
-      model.addAttribute("code", "code");
-      return "breply/msg";
+      return "redirect:/account/login";
     }
   }
 
@@ -179,7 +184,6 @@ public class BrereplyCont {
       System.out.println("cnt: " + cnt);
 
       if (cnt == 1) { // 비밀번호 확인
-        // BreplyVO breplycont = 
         
         // -------------------------------------------------------------------
         // 파일 삭제 시작

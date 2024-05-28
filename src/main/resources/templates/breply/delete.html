@@ -8,11 +8,13 @@
   </div>
   
   <aside class="aside_right">
-    <a href="./create">등록</a>
+    <a href="../create">댓글 등록</a>
+    <span class='menu_divide' >│</span>
+    <a th:href="@{|../update/${breplyVO.breplyno}|}">댓글 수정</a>
+    <span class='menu_divide' >│</span>
+    <a href="../list">댓글 목록</a>
     <span class='menu_divide' >│</span>
     <a href="javascript:location.reload();">새로고침</a>
-    <span class='menu_divide' >│</span>
-    <a href="./list">기본 목록형</a>
   </aside>
   
   <div class='menu_line'></div>

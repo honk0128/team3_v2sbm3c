@@ -48,6 +48,13 @@ ORDER BY BREPLYNO ASC;
 
 SELECT * FROM breply;
 
+select * from recommend;
+
+delete recommend;
+commit;
+
+select * from account;
+
 commit; 
 
 UPDATE BREPLY
