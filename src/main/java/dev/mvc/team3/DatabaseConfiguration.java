@@ -22,6 +22,7 @@ import com.zaxxer.hikari.HikariDataSource;
                             "dev.mvc.crudcate",
                             "dev.mvc.breply",
                             "dev.mvc.brereply",
+                            "dev.mvc.recommend",
                             "dev.mvc.ai",
                             "dev.mvc.manager",
                             "dev.mvc.board",
