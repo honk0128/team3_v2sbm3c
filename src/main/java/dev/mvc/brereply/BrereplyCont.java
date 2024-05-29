@@ -66,7 +66,9 @@ public class BrereplyCont {
       return "redirect:/breply/read/{breplyno}";
     }
 
-    if (session.getAttribute("accountno") != null || session.getAttribute("managerno") != null) { // 회원 로그인
+    Integer accountno = (Integer) session.getAttribute("accountno");
+    if (accountno != null || session.getAttribute("managerno") != null) { // 회원 로그인
+      brereplyVO.setAccountno(accountno);
       // ------------------------------------------------------------------------------
       // 파일 전송 코드 시작
       // ------------------------------------------------------------------------------
@@ -116,7 +118,7 @@ public class BrereplyCont {
       model.addAttribute("cnt", cnt);
       if(cnt ==1) {
         System.out.println("breplyno: " + breplyno);
-        return "redirect:/brereply/brereply_list";
+        return "redirect:/brereply/brereply_list?breplyno=" + breplyno;
       } else {
         model.addAttribute("code", "code");
         return "th/breply/msg";
@@ -133,8 +135,8 @@ public class BrereplyCont {
    * @return
    */
   @GetMapping(value = "/brereply_list")
-  public String brereply_list(Model model, BrereplyVO brereplyVO) {
-    ArrayList<BrereplyVO> list = this.brereplyProc.brereply_list();
+  public String brereply_list(Model model, BrereplyVO brereplyVO, Integer breplyno) {
+    ArrayList<BrereplyVO> list = this.brereplyProc.brereply_list(breplyno);
     model.addAttribute("list", list);
 
     return "th/brereply/brereply_list";

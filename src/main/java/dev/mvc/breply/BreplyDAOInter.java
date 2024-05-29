@@ -12,12 +12,19 @@ public interface BreplyDAOInter {
    */
   public int replycreate(BreplyVO breplyVO);
 
+  // /**
+  //  * 댓글 목록
+  //  * select id="reply_list" resultType="dev.mvc.reply.breplyVO"
+  //  * @return
+  //  */
+  // public ArrayList<BreplyVO> reply_list();
+
   /**
    * 댓글 목록
    * select id="reply_list" resultType="dev.mvc.reply.breplyVO"
    * @return
    */
-  public ArrayList<BreplyVO> reply_list();
+  public ArrayList<BreplyVO> reply_list(int boardno);
 
   /**
    * 댓글 조회

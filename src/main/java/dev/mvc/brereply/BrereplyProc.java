@@ -30,9 +30,15 @@ public class BrereplyProc implements BrereplyProcInter{
     return cnt;
   }
 
+  // @Override
+  // public ArrayList<BrereplyVO> brereply_list() {
+  //   ArrayList<BrereplyVO> list = this.brereplyDAO.brereply_list();
+  //   return list;
+  // }
+
   @Override
-  public ArrayList<BrereplyVO> brereply_list() {
-    ArrayList<BrereplyVO> list = this.brereplyDAO.brereply_list();
+  public ArrayList<BrereplyVO> brereply_list(int breplyno) {
+    ArrayList<BrereplyVO> list = this.brereplyDAO.brereply_list(breplyno);
     return list;
   }
 

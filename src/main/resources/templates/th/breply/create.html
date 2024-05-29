@@ -5,6 +5,7 @@
 <div layout:fragment="content">
   <div class='title_line'> 댓글 등록</div>
   <form name="frm" th:object="${breplyVO}" method="post" action="/breply/create" enctype="multipart/form-data">    
+    <input type="hidden" name="boardno" th:value="${breplyVO.boardno}"/>
 
     <!-- <div th:replace="~{errors::errorsFragment}"></div> -->
 

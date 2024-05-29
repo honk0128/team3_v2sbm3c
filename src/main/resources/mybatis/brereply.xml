@@ -8,9 +8,16 @@
   </insert>
 
   <!-- 대댓글 목록 -->
-  <select id="brereply_list" resultType="dev.mvc.brereply.BrereplyVO">
+  <!-- <select id="brereply_list" resultType="dev.mvc.brereply.BrereplyVO">
     SELECT brereplyno, brereplycont, brereplydate, brereplyimg, brereplysave, brereplythumb, brereplysize
     FROM brereply
+  </select> -->
+
+  <!-- 대댓글 목록 -->
+  <select id="brereply_list" resultType="dev.mvc.brereply.BrereplyVO" parameterType="int">
+    SELECT brereplyno, brereplycont, brereplydate, brereplyimg, brereplysave, brereplythumb, brereplysize
+    FROM brereply
+    WHERE breplyno = #{breplyno}
   </select>
 
   <!-- 대댓글 조회 -->
@@ -27,7 +34,7 @@
     WHERE brereplyno = #{brereplyno}
   </update>
 
-  <!-- 대댓글 수정 -->
+  <!-- 대댓글 삭제 -->
   <delete id="brereply_delete" parameterType="int">
     delete brereply
     where brereplyno = #{brereplyno}

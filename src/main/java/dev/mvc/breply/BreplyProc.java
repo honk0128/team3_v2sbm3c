@@ -31,8 +31,8 @@ public class BreplyProc implements BreplyProcInter{
   }
 
   @Override
-  public ArrayList<BreplyVO> reply_list() {
-    ArrayList<BreplyVO> list = this.breplyDAO.reply_list();
+  public ArrayList<BreplyVO> reply_list(int boardno) {
+    ArrayList<BreplyVO> list = this.breplyDAO.reply_list(boardno);
     return list;
   }
 

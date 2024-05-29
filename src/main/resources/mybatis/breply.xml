@@ -4,15 +4,22 @@
 
   <!-- 댓글 입력 -->
   <insert id="replycreate" parameterType="dev.mvc.breply.BreplyVO">
-    INSERT INTO breply(BREPLYNO, BREPLYCONT, BREPLYIMG, BREPLYSAVED, BREPLYTHUMB, BREPLYSIZE, BREPLYDATE, BREPLYPASSWD)
-    VALUES(breply_seq.nextval, #{breplycont}, #{breplyimg}, #{breplysaved}, #{breplythumb}, #{breplysize}, sysdate, #{breplypasswd})
+    INSERT INTO breply(BREPLYNO, BREPLYCONT, BREPLYIMG, BREPLYSAVED, BREPLYTHUMB, BREPLYSIZE, BREPLYDATE, BREPLYPASSWD, boardno, accountno)
+    VALUES(breply_seq.nextval, #{breplycont}, #{breplyimg}, #{breplysaved}, #{breplythumb}, #{breplysize}, sysdate, #{breplypasswd}, #{boardno}, #{accountno})
   </insert>
 
   <!-- 댓글 목록 -->
-  <select id="reply_list" resultType="dev.mvc.breply.BreplyVO">
+  <!-- <select id="reply_list" resultType="dev.mvc.breply.BreplyVO">
     SELECT BREPLYNO, BREPLYCONT, BREPLYIMG, BREPLYSAVED, BREPLYTHUMB, BREPLYSIZE, BREPLYDATE, BREPLYPASSWD
     FROM breply
     ORDER BY BREPLYNO ASC
+  </select> -->
+
+  <!-- 댓글 목록 -->
+  <select id="reply_list" resultType="dev.mvc.breply.BreplyVO" parameterType="int">
+    SELECT BREPLYNO, BREPLYCONT, BREPLYIMG, BREPLYSAVED, BREPLYTHUMB, BREPLYSIZE, BREPLYDATE, BREPLYPASSWD
+    FROM breply
+    WHERE boardno = #{boardno}
   </select>
 
   <select id="read" resultType="dev.mvc.breply.BreplyVO" parameterType="int">
@@ -20,18 +27,6 @@
     FROM breply
     WHERE breplyno = #{breplyno}
   </select>
-
-  <!-- 댓글(글) 수정 -->
-  <!-- <update id="update_contents" parameterType="dev.mvc.breply.BreplyVO">
-    UPDATE BREPLY
-    SET BREPLYCONT = #{breplycont}, BREPLYDATE = sysdate
-    WHERE BREPLYNO = #{breplyno}
-  </update> -->
-  <!-- <update id="update_contents" parameterType="dev.mvc.breply.BreplyVO">
-    UPDATE BREPLY
-    SET BREPLYCONT = #{breplycont, jdbcType=CLOB}, BREPLYDATE = sysdate
-    WHERE BREPLYNO = #{breplyno}
-  </update> -->
 
   <!-- 댓글 수정 -->
   <update id="update" parameterType="dev.mvc.breply.BreplyVO">

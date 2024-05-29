@@ -3,6 +3,8 @@ package dev.mvc.brereply;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import dev.mvc.breply.BreplyVO;
+
 // import java.util.ArrayList;
 // import java.util.HashMap;
 
@@ -15,13 +17,18 @@ public interface BrereplyProcInter {
    */
   public int brereply_create(BrereplyVO brereplyVO);
 
+  // /**
+  //  * 댓글 목록
+  //  * @return
+  //  */
+  // public ArrayList<BrereplyVO> brereply_list();
+
   /**
    * 댓글 목록
    * @return
    */
-  public ArrayList<BrereplyVO> brereply_list();
-
-
+  public ArrayList<BrereplyVO> brereply_list(int breplyno);
+  
   /**
    * 대댓글 조회
    * @param brereplyVO

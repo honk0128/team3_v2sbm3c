@@ -43,6 +43,7 @@
           <FORM name='frm' method='POST' action='/breply/update' enctype="multipart/form-data">
             <!--<input type="hidden" name="cateno" th:value="${cateVO.cateno }">-->
             <input type="hidden" name="breplyno" th:value="${breplyVO.breplyno}">
+            <input type="hidden" name="boardno" th:value="${boardVO.boardno}">
 
             <textarea type="text" name="breplycont" id="breplycont"style='font-size: 1.5em; width: 600px;' th:text="${breplyVO.breplycont}"></textarea>
                 

@@ -55,7 +55,7 @@ SET BREPLYCONT = '수정', BREPLYIMG = null, BREPLYSAVED = null, BREPLYTHUMB = n
 WHERE BREPLYNO = 6;
 
 
-delete brereply;
+delete breply;
 
 commit;
 
