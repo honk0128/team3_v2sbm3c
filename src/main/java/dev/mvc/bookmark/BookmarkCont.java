@@ -126,7 +126,7 @@ public class BookmarkCont {
           int no = search_count - ((now_page - 1) * Board.RECORD_PER_PAGE);
           model.addAttribute("no", no);
   
-          return "bookmark/bm_list";
+          return "th/bookmark/bm_list";
       } else {
           // 로그인한 사용자가 없는 경우
           ra.addAttribute("url", "/manager/login_cookie_need");

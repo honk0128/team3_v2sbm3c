@@ -87,7 +87,7 @@ public class BoardCont {
     CrudcateVO crudcateVO = this.crudcateProc.read(crudcateno); // create.jsp에 카테고리 정보를 출력하기위한 목적
     model.addAttribute("crudcateVO", crudcateVO);
 
-    return "board/create"; // /templates/board/create.html
+    return "th/board/create"; // /templates/board/create.html
   }
 
   /**
@@ -212,7 +212,7 @@ public class BoardCont {
       int no = search_count - ((now_page - 1) * Board.RECORD_PER_PAGE);
       model.addAttribute("no", no);
 
-      return "board/list_all";
+      return "th/board/list_all";
     } else {
       return "redirect:/manager/login_form_need";
     }
@@ -252,7 +252,7 @@ public class BoardCont {
     model.addAttribute("word", word);
     model.addAttribute("now_page", now_page);
 
-    return "board/read";
+    return "th/board/read";
   }
 
   /**
@@ -275,7 +275,7 @@ public class BoardCont {
     // model.addAttribute("word", word);
     // model.addAttribute("now_page", now_page);
     
-    return "board/youtube"; 
+    return "th/board/youtube"; 
   }
 
 
@@ -344,7 +344,7 @@ public class BoardCont {
     int no = search_count - ((now_page - 1) * Board.RECORD_PER_PAGE);
     model.addAttribute("no", no);
 
-    return "board/list_cno_search_paging";
+    return "th/board/list_cno_search_paging";
   }
 
   /**
@@ -379,7 +379,7 @@ public class BoardCont {
           // 작성자 또는 관리자일 경우
           if ((sessionAccountno != null && sessionAccountno.equals(boardVO.getAccountno())) || 
               (sessionManagerno != null && sessionManagerno >= 1)) {
-              return "/board/update_board";
+              return "th/board/update_board";
           }
       }
   
@@ -492,7 +492,7 @@ public class BoardCont {
     CrudcateVO crudcateVO = this.crudcateProc.read(boardVO.getCrudcateno());
     model.addAttribute("crudcateVO", crudcateVO);
 
-    return "/board/update_file";
+    return "th/board/update_file";
 
   }
 
@@ -632,7 +632,7 @@ public class BoardCont {
               CrudcateVO crudcateVO = this.crudcateProc.read(boardVO.getCrudcateno());
               model.addAttribute("crudcateVO", crudcateVO);
   
-              return "/board/delete"; // forward
+              return "th/board/delete"; // forward
           } else {
               // 작성자도 관리자도 아닌 경우
               ra.addFlashAttribute("code", "not_authorized");

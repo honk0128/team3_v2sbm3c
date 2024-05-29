@@ -56,7 +56,7 @@ public class BreplyCont {
    */
   @GetMapping("/create")
   public String replycreate(Model model, BreplyVO breplyVO) {
-      return "/breply/create";
+      return "th/breply/create";
   }
 
   /**
@@ -76,7 +76,7 @@ public class BreplyCont {
                             @RequestParam(name="word", defaultValue = "") String word,
                             @RequestParam(name="now_page", defaultValue = "1") int now_page) {
     if (bindingResult.hasErrors()) {
-      return "breply/create";
+      return "th/breply/create";
     }
 
     if (session.getAttribute("accountno") != null || session.getAttribute("managerno") != null) { // 회원 로그인
@@ -131,7 +131,7 @@ public class BreplyCont {
         return "redirect:/breply/list";
       } else {
         model.addAttribute("code", "code");
-        return "breply/msg";
+        return "th/breply/msg";
       }
     } else {
       return "redirect:/account/login";
@@ -149,7 +149,7 @@ public class BreplyCont {
     ArrayList<BreplyVO> list = this.breplyProc.reply_list();
     model.addAttribute("list", list);
 
-    return "breply/list";
+    return "th/breply/list";
   }
 
   /**
@@ -174,7 +174,7 @@ public class BreplyCont {
 
     model.addAttribute("word", word);
     
-    return "breply/read";
+    return "th/breply/read";
   }
   
   /**
@@ -188,7 +188,7 @@ public class BreplyCont {
 
     System.out.println("cont: " + breplyVO.getBreplycont());;
 
-    return "breply/update";
+    return "th/breply/update";
   }
 
   
@@ -293,7 +293,7 @@ public class BreplyCont {
     
     BreplyVO breplyVO = this.breplyProc.read(breplyno);
     model.addAttribute("breplyVO", breplyVO);
-    return "breply/delete";
+    return "th/breply/delete";
   }
   
   @PostMapping(value = "/delete")
@@ -319,7 +319,7 @@ public class BreplyCont {
         return "redirect:/breply/list";
       } else {
         ra.addFlashAttribute("code", "delete_fail");
-        return "breply/msg";
+        return "th/breply/msg";
       }
       // } else {
       //   ra.addFlashAttribute("code", "not_exist_passwd");

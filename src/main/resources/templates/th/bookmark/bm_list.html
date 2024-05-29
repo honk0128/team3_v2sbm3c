@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html layout:decorate="~{th/layout}">
+  <!-- layout.html 상속-->
+  <div layout:fragment="content">
+    <div class="title_line">
+      <span th:text="${session.aid}" class="title_line_text"></span>
+      > <span th:text="${session.aname}" class="title_line_text"></span>
+      <span th:if="${word != ''}" th:text="|> ${word} (${search_count} 건)|" class="title_line_text"></span>
+    </div>
+
+    <aside class="aside_right">
+      <a href="javascript:location.reload();">새로고침</a>
+      <span class="menu_divide">│</span>
+    </aside>
+
+    <!-- /bookmark/bm_list_search_component.html 파일의 list_search_fragment import -->
+    <div th:replace="~{th/bookmark/bm_list_search_component::list_search_fragment}"></div>
+
+    <div class="menu_line"></div>
+
+    <div style="width: 100%">
+      <input type="hidden" id="accountno" th:value="${session.accountno}" />
+
+      <!-- 북마크 스트립트 -->
+      <script>
+        // 북마크 제거
+        async function deleteBookmark(boardno, accountno) {
+          if (confirm("북마크를 삭제하시겠습니까?")) {
+            const response = await fetch("/bookmark/delete", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                accountno: accountno,
+                boardno: boardno,
+              }),
+            });
+
+            const result = await response.json();
+            alert(result.message);
+            if (response.ok) {
+              // 성공적으로 삭제되었을 경우 리스트 페이지로 리디렉트
+            } else {
+              // 삭제에 실패한 경우 필요한 처리
+            }
+          }
+        }
+      </script>
+
+      <!-- 북마크 table 시작 -->
+      <table class="table table-striped" style="width: 100%">
+        <colgroup>
+          <col style="width: 5%" />
+          <col style="width: 10%" />
+          <col style="width: 65%" />
+          <col style="width: 10%" />
+          <col style="width: 10%" />
+        </colgroup>
+        <tr>
+          <th class="th_bs">순서</th>
+          <th class="th_bs">게시글 번호</th>
+          <th class="th_bs">북마크 링크</th>
+          <th class="th_bs">등록일</th>
+          <th class="th_bs">기타</th>
+        </tr>
+
+        <tr
+          th:each="bookmarkVO, status:${list}"
+          th:attr="onclick=|location.href='/bookmark/bm_list?accoutno=${bookmarkVO.accountno}&word=${word}&now_page=${now_page}'|"
+          style="cursor: pointer; height: 90px"
+        >
+          <td class="td_basic" style="vertical-align: middle; text-align: center">
+            <span th:text="${no - status.index}"></span>
+          </td>
+          <td class="td_basic" style="vertical-align: middle; text-align: center">
+            <span th:text="${bookmarkVO.boardno}"> </span>
+          </td>
+          <td class="td_basic" style="vertical-align: middle; text-align: center">
+            <a th:href="@{|/board/read?boardno=${bookmarkVO.boardno}&word=&now_page=|}">
+              <span th:text="${bookmarkVO.bookmarkurl}" style="font-weight: bold"></span
+            ></a>
+          </td>
+          <td class="td_basic" style="vertical-align: middle; text-align: center">
+            <span th:text="|&nbsp;${bookmarkVO.bmdate.substring(0,10)}|" style="font-weight: bold"></span>
+          </td>
+          <td class="td_basic" style="vertical-align: middle; text-align: center">
+            <button type="button" th:onclick="|deleteBookmark(${bookmarkVO.boardno}, ${session.accountno})|">북마크 삭제</button>
+          </td>
+        </tr>
+
+        <tr th:if="${list.size() == 0}">
+          <td colspan="4" style="text-align: center">북마크가 등록되지 않았습니다.</td>
+        </tr>
+      </table>
+    </div>
+    <!-- 북마크 table 종료 -->
+
+    <!-- 페이지 버튼 목록 출력 시작 -->
+    <div class="bottom_menu" th:utext="${paging}"></div>
+    <!-- 페이지 버튼 목록 출력 종료 -->
+  </div>
+</html>

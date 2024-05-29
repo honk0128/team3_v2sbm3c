@@ -41,13 +41,13 @@ public class AiCont {
   // create 폼 출력
   @RequestMapping(value="/create", method=RequestMethod.GET) // http://localhost:9091/ai/create
   public String create(Model model, AiVO aiVO) {
-    return "ai/create"; // /templates/ai/create.html
+    return "th/ai/create"; // /templates/ai/create.html
   }
   
   // create 폼 출력
   @RequestMapping(value="/msg", method=RequestMethod.GET) // http://localhost:9091/ai/create
   public String msg(Model model, AiVO aiVO) {
-    return "ai/msg"; // /templates/ai/create.html
+    return "th/ai/msg"; // /templates/ai/create.html
   }
 
   @RequestMapping(value="/msg.do", method=RequestMethod.GET)
@@ -138,7 +138,7 @@ System.out.println(searchno);
     
     System.out.println(aiVO.getText_search());
     
-    return "ai/update";
+    return "th/ai/update";
   }
   
   @PostMapping(value = "/update")
@@ -200,7 +200,7 @@ System.out.println(searchno);
 
     model.addAttribute("list", list);
 
-    return "ai/list"; // templates/member/list.html
+    return "th/ai/list"; // templates/member/list.html
   }
   
   
@@ -213,7 +213,7 @@ System.out.println(searchno);
     model.addAttribute("aiVO", aiVO);
     
     
-    return "/ai/delete";
+    return "th/ai/delete";
   }
   
   @PostMapping(value = "/delete")

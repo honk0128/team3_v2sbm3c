@@ -66,7 +66,7 @@ public class HomeCont {
     
 //    model.addAttribute("search_count", search_count);
 //    
-    return "index"; // /templates/index.html  
+    return "th/index"; // /templates/index.html  
   }
   
 }

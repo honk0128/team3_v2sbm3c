@@ -52,7 +52,7 @@ public class BrereplyCont {
                             Integer breplyno, Integer accountno) {
     BreplyVO breplyVO = this.breplyProc.read(breplyno); 
     System.out.println("breplyVO : " + breplyVO);
-    return "/brereply/brereply_create";
+    return "th/brereply/brereply_create";
   }
 
 
@@ -119,7 +119,7 @@ public class BrereplyCont {
         return "redirect:/brereply/brereply_list";
       } else {
         model.addAttribute("code", "code");
-        return "breply/msg";
+        return "th/breply/msg";
       }
     } else {
       return "redirect:/account/login";
@@ -137,7 +137,7 @@ public class BrereplyCont {
     ArrayList<BrereplyVO> list = this.brereplyProc.brereply_list();
     model.addAttribute("list", list);
 
-    return "brereply/brereply_list";
+    return "th/brereply/brereply_list";
   }
 
   /**
@@ -157,7 +157,7 @@ public class BrereplyCont {
 
     model.addAttribute("brereplyVO", brereplyVO);
     
-    return "brereply/brereply_read";
+    return "th/brereply/brereply_read";
   }
   
   
@@ -168,7 +168,7 @@ public class BrereplyCont {
 
     System.out.println("cont: " + brereplyVO.getBrereplycont());;
 
-    return "brereply/brereply_update";
+    return "th/brereply/brereply_update";
   }
 
   @PostMapping(value="/brereply_update")
@@ -256,7 +256,7 @@ public class BrereplyCont {
         
         model.addAttribute("cnt", cnt);
         
-        return "member/msg"; // /templates/member/msg.html
+        return "th/member/msg"; // /templates/member/msg.html
       } else {
         ra.addFlashAttribute("code", "not_exist_passwd");
         return "redirect:/brereply/msg";
@@ -271,7 +271,7 @@ public class BrereplyCont {
     
     BrereplyVO brereplyVO = this.brereplyProc.brereply_read(brereplyno);
     model.addAttribute("brereplyVO", brereplyVO);
-    return "brereply/brereply_delete";
+    return "th/brereply/brereply_delete";
   }
   
   @PostMapping(value = "/brereply_delete")
@@ -287,7 +287,7 @@ public class BrereplyCont {
         return "redirect:/brereply/brereply_list?brereplyno=" + brereplyno;
       } else {
         model.addAttribute("code", "delete_fail");
-          return "breply/msg";
+          return "th/breply/msg";
       }
     } else {
       return "redirect:/account/login";

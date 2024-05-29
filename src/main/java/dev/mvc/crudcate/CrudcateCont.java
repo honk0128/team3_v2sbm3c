@@ -61,7 +61,7 @@ public class CrudcateCont {
       int no = (search_count - (now_page - 1) * this.record_per_page);
       model.addAttribute("no", no);   
 
-      return "crudcate/list_search";
+      return "th/crudcate/list_search";
     }
     
     int cnt = this.crudcateProc.create(crudcateVO); 
@@ -76,7 +76,7 @@ public class CrudcateCont {
     }
     
     model.addAttribute("cnt", cnt);
-    return "crudcate/msg";
+    return "th/crudcate/msg";
   }
 
   /**
@@ -110,7 +110,7 @@ public class CrudcateCont {
     int no = (search_count - (now_page - 1) * this.record_per_page);
     model.addAttribute("no", no);
 
-    return "crudcate/read";
+    return "th/crudcate/read";
   }
   
   /**
@@ -144,7 +144,7 @@ public class CrudcateCont {
     int no = (search_count - (now_page - 1) * this.record_per_page);
     model.addAttribute("no", no);
 
-    return "crudcate/update";
+    return "th/crudcate/update";
   }
 
   /**
@@ -175,7 +175,7 @@ public class CrudcateCont {
     int no = (search_count - (now_page - 1) * this.record_per_page);
     model.addAttribute("no", no);
 
-    return "/crudcate/update"; // 다시 수정 폼으로 이동
+    return "th/crudcate/update"; // 다시 수정 폼으로 이동
     }
       
     int cnt = this.crudcateProc.update(crudcateVO); // 수정
@@ -183,7 +183,7 @@ public class CrudcateCont {
       return "redirect:/crudcate/update/" + crudcateVO.getCrudcateno() + "?word=" + Tool.encode(word) + "&now_page=" + now_page;
     } else {
       model.addAttribute("code", "update_fail");
-      return "crudcate/msg"; // /templates/crudcate/msg.html
+      return "th/crudcate/msg"; // /templates/crudcate/msg.html
     }
   }
 
@@ -218,7 +218,7 @@ public class CrudcateCont {
     int no = (search_count - (now_page - 1) * this.record_per_page);
     model.addAttribute("no", no);
 ;
-    return "crudcate/delete";
+    return "th/crudcate/delete";
   }
 
   /**
@@ -250,7 +250,7 @@ public class CrudcateCont {
       return "redirect:/crudcate/list_search?word=" + Tool.encode(word) + "&now_page=" + now_page;
     } else {
       model.addAttribute("code", "delete_fail");
-      return "crudcate/msg"; // /templates/crudcate/msg.html
+      return "th/crudcate/msg"; // /templates/crudcate/msg.html
     }
   }
   
@@ -307,6 +307,6 @@ public class CrudcateCont {
     int no = (search_count - (now_page - 1) * this.record_per_page);
     model.addAttribute("no", no);
 
-    return "/crudcate/list_search"; // /templates/crudcate/list_search.html
+    return "th/crudcate/list_search"; // /templates/crudcate/list_search.html
   }
 }

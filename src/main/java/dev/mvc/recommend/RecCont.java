@@ -36,14 +36,14 @@ public class RecCont {
   public String rec_up(Model model, @PathVariable(name="recono") Integer recono) {
     
     this.recProcInter.reco_up(recono);
-    return "brereply/rec_up";
+    return "th/brereply/rec_up";
   }
 
   @GetMapping(value = "/rec_down")
   public String rec_down(Model model, @PathVariable(name="recono") Integer recono) {
     
     this.recProcInter.reco_down(recono);
-    return "brereply/rec_down";
+    return "th/brereply/rec_down";
   }
   
 }

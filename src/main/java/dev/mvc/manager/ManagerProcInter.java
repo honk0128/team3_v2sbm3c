@@ -42,13 +42,20 @@ public interface ManagerProcInter {
    * @return true: 사용자
    */
   public boolean isMember(HttpSession session);
+  
+  /**
+   * 로그인된 회원+관리자 계정인지 검사.
+   * @param session
+   * @return true: 사용자
+   */
+  public boolean isMemberAdmin(HttpSession session);
 
   /**
    * 로그인된 회원 관리자 계정인지 검사.
    * @param session
    * @return true: 사용자
    */
-  public boolean isMemberAdmin(HttpSession session);
+  public boolean isAdmin(HttpSession session);
   
   
   /**

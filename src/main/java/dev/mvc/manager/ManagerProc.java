@@ -48,7 +48,7 @@ public class ManagerProc implements ManagerProcInter {
     ManagerVO managerVO = this.managerDAO.readById(mid);
     return managerVO;
   }
-
+  
   /**
    * 회원인지 검사
    */
@@ -59,23 +59,23 @@ public class ManagerProc implements ManagerProcInter {
     String mgrade = (String) session.getAttribute("mgrade");
 
     if (agrade != null) {
-      if (agrade.equals("admin") || agrade.equals("member")) {
+      if (agrade.equals("account")) {
         sw = true; // 로그인 한 경우
       }
     } else if (mgrade != null) {
-      if (mgrade.equals("admin") || mgrade.equals("member")) {
+      if (mgrade.equals("account")) {
         sw = true;
       }
     }
 
     return sw;
   }
-
+  
   /**
-   * 관리자, 회원인지 검사
+   * 관리자 인지 검사
    */
   @Override
-  public boolean isMemberAdmin(HttpSession session) {
+  public boolean isAdmin(HttpSession session) {
     boolean sw = false; // 로그인하지 않은 것으로 초기화
     String agrade = (String) session.getAttribute("grade");
     String mgrade = (String) session.getAttribute("mgrade");
@@ -87,6 +87,28 @@ public class ManagerProc implements ManagerProcInter {
     } else if (mgrade != null) {
       if (mgrade.equals("admin")) {
         sw = true; // 로그인 한 경우
+      }
+    }
+
+    return sw;
+  }
+
+  /**
+   * 회원인지 관리자 인지 검사
+   */
+  @Override
+  public boolean isMemberAdmin(HttpSession session) {
+    boolean sw = false; // 로그인하지 않은 것으로 초기화
+    String agrade = (String) session.getAttribute("agrade");
+    String mgrade = (String) session.getAttribute("mgrade");
+
+    if (agrade != null) {
+      if (agrade.equals("admin") || agrade.equals("account")) {
+        sw = true; // 로그인 한 경우
+      }
+    } else if (mgrade != null) {
+      if (mgrade.equals("admin") || mgrade.equals("account")) {
+        sw = true;
       }
     }
 
