@@ -69,20 +69,6 @@ public interface AccountDAOInter {
   
   public String pagingBox(int now_page, String word, String list_file, int search_count, int record_per_page, int page_per_blocK);
   
-  /**
-   * 아이디 찾기
-   * @param aid
-   * @return 일치하는 id 정보 있는지 확인
-   */
-  public int check_user(Map <String, Object> map);
-  
-  /**
-   * 아이디 출력
-   * @param aid
-   * @return 일치하는 id 정보 있는지 확인
-   */
-  public String find_aid(Map <String, Object> map);
-  
 }
  
 

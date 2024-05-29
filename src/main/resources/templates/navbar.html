@@ -16,7 +16,6 @@
 
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          
           <!-- 게시판 분류 -->
           <li class="nav-item dropdown" th:each="crudcateVOMenu:${menu}">
             <a
@@ -49,20 +48,29 @@
             >
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li class="nav-item" th:if="${session.accountno != null}">
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  th:if="${session.accountno != null} or ${session.managerno != null}"
+                  th:href="@{|/bookmark/bm_list?accountno=${session.accountno}|}"
+                  >북마크 목록</a
+                >
+              </li>
+              <li class="nav-item" th:if="${session.managerno != null or session.accountno != null}">
                 <a class="nav-link" href="/account/passwd_update_form">비밀 번호 변경</a>
               </li>
-              <li class="nav-item"><a class="nav-link" href="/account/find_aid_form">아이디 찾기</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">아이디 찾기</a></li>
               <li class="nav-item"><a class="nav-link" href="#">비밀번호 찾기</a></li>
-              <li class="nav-item" th:if="${session.accountno != null}">
+              <li class="nav-item" th:if="${session.managerno != null or session.accountno != null}">
                 <a class="nav-link" th:href="@{|/account/read?accountno=${session.accountno}|}">회원 정보 조회</a>
               </li>
-              <li class="nav-item" th:if="${session.accountno != null}">
+              <li class="nav-item" th:if="${session.managerno != null or session.accountno != null}">
                 <a class="nav-link" th:href="@{|/account/delete?accountno=${session.accountno}|}">회원 정보 삭제</a>
               </li>
             </ul>
           </li>
 
+          <!-- 관리자 -->
           <li class="nav-item dropdown" th:if="${session.managerno >=1}">
             <a
               class="nav-link dropdown-toggle"
@@ -83,7 +91,7 @@
           </li>
 
           <!-- 댓글 -->
-          <li class="nav-item dropdown" th:if="${session.accountno != null} and ${session.managerno != null}">
+          <li class="nav-item dropdown" th:if="${session.managerno != null or session.accountno != null}">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -91,7 +99,7 @@
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
-              th:text="댓글 관리"
+              th:text="댓글관리"
             >
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -105,7 +113,7 @@
           </li>
 
           <!-- Ai -->
-          <li class="nav-item dropdown" th:if="${session.accountno != null} and ${session.managerno != null}">
+          <li class="nav-item dropdown" th:if="${session.managerno != null or session.accountno != null}">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -113,7 +121,7 @@
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
-              th:text="Ai 질문"
+              th:text="Ai질문"
             >
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -124,16 +132,15 @@
           </li>
 
           <!-- 회원가입/로그인/로그아웃 -->
-          <li class="nav-item">
-            <li class="nav-item" th:if="${session.accountno == null} and ${session.managerno == null}"><a class="nav-link" href="/account/signin">회원 가입</a></li>
-            <span th:if="${session.accountno == null} and ${session.managerno == null}"
-              ><a class="nav-link" href="/account/login" th:text="@{|로그인|}"></a
-            ></span>
-            <span th:if="${session.accountno != null} or ${session.managerno != null}"
-              ><a class="nav-link" href="/account/logout" th:text="@{|${session.accountno != null ? session.aid : session.mid} 로그아웃|}"></a
-            ></span>
-          </li>
-
+          <span class="nav-item" th:if="${session.accountno == null} and ${session.managerno == null}"
+            ><a class="nav-link" href="/account/signin">회원 가입</a></span
+          >
+          <span th:if="${session.accountno == null} and ${session.managerno == null}"
+            ><a class="nav-link" href="/account/login" th:text="@{|로그인|}"></a
+          ></span>
+          <span th:if="${session.managerno != null} or ${session.accountno != null}"
+            ><a class="nav-link" href="/account/logout" th:text="@{|${session.accountno != null ? session.aid : session.mid} 로그아웃|}"></a
+          ></span>
         </ul>
       </div>
     </div>

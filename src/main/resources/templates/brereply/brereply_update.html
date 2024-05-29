@@ -27,7 +27,7 @@
         <img th:src="@{|/brereply/storage/${brereplyVO.brereplythumb}|}" style="width: 90%;">
         </div>
 
-        <div th:if="${((brereplyVO.brereplyimg.endsWith('jpg') or brereplyVO.brereplyimg.endsWith('png')  or brereplyVO.brereplyimg.endsWith('gif')) == false) and (brereplyVO.size1 > 0)}"
+        <div th:if="${((brereplyVO.brereplyimg.endsWith('jpg') or brereplyVO.brereplyimg.endsWith('png')  or brereplyVO.brereplyimg.endsWith('gif')) == false) and (brereplyVO.brereplysize > 0)}"
              class="display_table" style='width: 50%; float: left;'>
           <div class="display_table_cell">
             <span th:text="${brereplyVO.brereplyimg}"></span>

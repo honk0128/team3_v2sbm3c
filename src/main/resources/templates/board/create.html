@@ -11,7 +11,7 @@
     <div class="menu_line"></div>
 
     <form name="frm" method="post" th:object="${boardVO}" action="./create" enctype="multipart/form-data">
-      <input type="hidden" name="crudcateno" th:value="${param.crudcateno}" />
+      <input type="text" name="crudcateno" th:value="${boardVO.crudcateno}" />
 
       <div>
         <label>제목</label>
@@ -39,7 +39,13 @@
       </div>
       <div class="content_body_bottom">
         <button type="submit" class="btn btn-secondary btn-sm">등록</button>
-        <button type="button" th:attr="onclick=|location.href='./list_cno'|" class="btn btn-secondary btn-sm">목록</button>
+        <button
+          type="button"
+          onclick="location.href='./list_cno?crudcateno=' + document.querySelector('[name=crudcateno]').value"
+          class="btn btn-secondary btn-sm"
+        >
+          목록
+        </button>
       </div>
     </form>
   </div>

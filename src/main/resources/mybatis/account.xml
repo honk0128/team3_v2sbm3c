@@ -92,19 +92,5 @@
     </if>
     ORDER BY accountno ASC
   </select>
-  
-
-  
-  <select id="check_user" resultType="int" parameterType="Map">
-    SELECT COUNT(*) as cnt
-    FROM ACCOUNT
-    WHERE aname=#{aname} and atel=#{atel}
-  </select>
-  
-    <select id="find_aid" resultType="String" parameterType="Map">
-    SELECT aid
-    FROM ACCOUNT
-    WHERE aname=#{aname} and atel=#{atel}
-  </select>
 
 </mapper>
