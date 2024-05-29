@@ -10,6 +10,7 @@
 
   <aside class="aside_right">
     <a href="javascript:location.reload();">새로고침</a>
+    <a th:href="@{|/gpa/create?boardno=${boardVO.boardno}|}">| 별점등록</a>
     
     
   </aside> 
@@ -37,9 +38,15 @@
       
        <fieldset>
          
+         
+         <td th:if="${gpaVO == null}" class='td_basic'>
+          <span>별점을 등록해주세요</span>
+        </td>
+        
+       <div th:if="${gpaVO != null}">  
         <td class='td_basic'>
           <span th:each="star : ${#numbers.sequence(1, gpaVO.avg_gpascore)}" name="reviewStar" id="starfont">★</span>
-        </td>
+          </td>
          
        
       <td class='td_basic'>
@@ -50,13 +57,15 @@
     <img src='/member/images/delete.png' title='삭제' class="icon">
 </a>
       </td>
+      </div>
       </fieldset>
     </tr>
   </table>
    
   <div class='bottom_menu'>
     <button type='button' onclick="location.reload();" class="btn btn-primary btn-sm">새로 고침</button>
-  </div>
+    
+      </div>
 </div>
 </div>
 </html>
