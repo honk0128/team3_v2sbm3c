@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
-<html layout:decorate="~{th/layout}"> <!-- layout.html 상속-->
+
+<html layout:decorate="~{th/layout}"> 
 <head>
   <link href="/css/style.css" rel="Stylesheet" type="text/css"> <!-- /static 기준 -->
 </head>
@@ -46,7 +47,7 @@
         </td>
          <td class='td_basic' th:text="${gpaVO.accountno}"></td>
       
-              <td class='td_basic' th:text="${gpaVO.boardno}"></td>
+              <td class='td_basic' th:text="${boardVO.boardno}"></td>
       <td class='td_basic' th:text="${gpaVO.gpadate}"></td>
        
       <td class='td_basic'>
