@@ -22,6 +22,7 @@
 <!-- ----------------------------------------- -->
  
   <form action="./confirm.do" method="post">
+    <input type="hidden" name="no" th:value="${no}"> 
     <p>문자 메시지 전송후 처리되는 파일입니다.</p>
     예)<br>
     전송된 인증된 번호를 입력해주세요<br>

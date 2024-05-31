@@ -10,10 +10,13 @@
  
 <body>
   <div style='margin: 50px;'>
-    <form name="smsForm" action="./proc.do" method="post">
+    <form name="smsForm" action="sms/proc.do" method="post">
       <input type="hidden" name="action" value="go"> 
       <input type="hidden" name="smsType" value="S"> <!-- 발송 타입 -->
       <input type="hidden" name="subject" value=""> <!-- 장문(LMS)인 경우(한글30자이내) -->
+      <input type="hidden" name="aid" th:value="${aid}"> 
+      <input type="hidden" name="aname" th:value="${aname}"> 
+      <input type="hidden" name="no" th:value="${no}"> 
       
       <!-- 정상적으로 문자가 전송되고 나서 이동할 주소 -->
       <input type="hidden" name="returnurl" maxlength="64" value="./proc_next.do" size="80">

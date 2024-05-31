@@ -83,6 +83,13 @@ public interface AccountProcInter {
   public String find_aid(String aname, String atel);
   
   /**
+   * 회원 번호 찾기
+   * @param map
+   * @return
+   */
+  public int accountno_return(HashMap<String, Object> map);
+  
+  /**
    * 비밀번호 찾기(유저 확인)
    * @param aid
    * @param aname
@@ -90,6 +97,20 @@ public interface AccountProcInter {
    * @return
    */
   public int check_user_passwd(String aid, String aname);
+  
+  /**
+   * 현재 패스워드 검사
+   * @param map
+   * @return 0: 일치하지 않음, 1: 일치함
+   */
+  public int passwd_check(HashMap<String, Object> map);
+  
+  /**
+   * 패스워드 변경
+   * @param map
+   * @return 변경된 패스워드 갯수
+   */
+  public int passwd_update(HashMap<String, Object> map);
   
 }
 

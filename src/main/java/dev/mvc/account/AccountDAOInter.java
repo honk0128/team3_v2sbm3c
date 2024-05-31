@@ -84,11 +84,31 @@ public interface AccountDAOInter {
   public String find_aid(Map <String, Object> map);
   
   /**
+   * 회원 번호 찾기
+   * @param map
+   * @return
+   */
+  public int accountno_return(HashMap<String, Object> map);
+  
+  /**
    * 비밀번호 찾기(유저 확인)
    * @param aid
    * @return 일치하는 id 정보 있는지 확인
    */
   public int check_user_passwd(Map <String, Object> map);
+  
+  /**
+   * 현재 패스워드 검사
+   * @param map
+   */
+  public int passwd_check(HashMap<String, Object> map);
+  
+  /**
+   * 패스워드 변경
+   * @param map
+   * @return 변경된 패스워드 갯수
+   */
+  public int passwd_update(HashMap<String, Object> map);
   
 }
  

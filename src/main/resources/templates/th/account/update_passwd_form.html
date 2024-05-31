@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html layout:decorate="~{th/layout}"> <!-- layout.html 상속-->
+
+<div layout:fragment="content">
+<script>
+      window.onload = () => {
+        document.querySelector('#current_apasswd').addEventListener('keypress', (event) => {
+          if (event.key === 'Enter') {
+            document.getElementById('apasswd').focus();
+          }
+        });
+
+        document.querySelector('#apasswd').addEventListener('keypress', (event) => {
+          if (event.key === 'Enter') {
+            document.getElementById('apasswd2').focus();
+          }
+        });
+
+        document.querySelector('form[name="frm"]').addEventListener('submit', (event) => {
+          let apasswd = document.getElementById('apasswd');
+          let apasswd2 = document.getElementById('apasswd2');
+          let apasswd2_msg = document.getElementById('apasswd2_msg');
+          
+
+          if (apasswd.value != apasswd2.value) {
+            
+            
+            apasswd2_msg.innerHTML = '입력된 비밀번호가 일치하지 않습니다.';
+            apasswd2_msg.classList.add('span_warning');
+            apasswd2_msg.style.color = 'red'; // 메시지 색상 추가
+            apasswd.focus(); // 첫번째 비밀번호로 포커스 설정
+
+            event.preventDefault(); // 폼 제출 중지
+          }
+        });
+      };
+    </script>
+
+
+  <div class="title_line">비밀번호 변경</div>
+  <aside class="aside_right">
+    <a href="javascript:location.reload();">새로고침</a>
+    <span class='menu_divide'>│</span>
+    <a href='./list'>목록</a>
+  </aside>
+
+  <div class='menu_line'></div>
+
+  <div style="width: 60%; margin: 0px auto ">
+    <form name="frm" method="post" action="/update_passwd">
+      <input type="hidden" name="no" th:value="${session.no}">
+      <div class="form-group">
+        <label for="aname">현재 비밀번호*</label>
+        <input type='password' name='current_apasswd' id='current_apasswd' value='' required="required"
+          placeholder="현재 비밀번호" class="form-control form-control-sm" style="width: 30%;">
+      </div>
+
+      <div class="form-group">
+        <label for="apasswd">변경할 비밀번호*</label>
+        <input type='password' name='apasswd' id='apasswd' value='' required="required" placeholder="변경할 비밀번호"
+          class="form-control form-control-sm" style="width: 30%;">
+      </div>
+      
+      <div class="form-group">
+        <label for="apasswd2">변경할 비밀번호 확인*</label>
+        <input type='password' name='apasswd2' id='apasswd2' value='' required="required" placeholder="변경할 비밀번호 확인"
+          class="form-control form-control-sm" style="width: 30%;">
+          <span id='apasswd2_msg'></span>  
+      </div>
+
+
+
+
+
+
+      <div class="content_body_bottom">
+        <button type="submit" class="btn btn-secondary btn-sm">비밀번호 변경</button>
+        <button type="button" onclick="history.back();" class="btn btn-secondary btn-sm">취소</button>
+      </div>
+
+
+    </form>
+  </div>
+
+</div>
+
+</html>

@@ -1,5 +1,6 @@
 package dev.mvc.sms;
 
+import java.util.HashMap;
 import java.util.Random;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import dev.mvc.account.AccountProcInter;
 import dev.mvc.account.AccountVO;
+import dev.mvc.tool.Security;
 
 @Controller
 public class SMSCont {
@@ -24,23 +27,34 @@ public class SMSCont {
   @Qualifier("dev.mvc.account.AccountProc")
   private AccountProcInter accountProc;
   
+  @Autowired
+  Security security;
+  
   public SMSCont() {
     System.out.println("-> SMSCont created.");
   }
   
-  @GetMapping(value = "/find_passwd_form")
-  public String find_passwd_form() {
-    
-    return "th/account/find_passwd_form";
-
-  }
-  
   @PostMapping(value = "/find_passwd")
-  public String find_passwd_proc(String aname, String aid, AccountVO accountVO, Model model) {
+  public String find_passwd_proc(HttpSession session, String aname, String aid, AccountVO accountVO, Model model,
+      RedirectAttributes ra) {
     int cnt = this.accountProc.check_user_passwd(aid, aname);
+    
     if (cnt == 1){
     model.addAttribute("aid", accountVO.getAid());
     model.addAttribute("aname", accountVO.getAname());
+    
+    
+//    System.out.println(aid);
+//    System.out.println(aname);
+    
+    HashMap<String, Object> map = new HashMap<String, Object>();
+    map.put("aid", aid);
+    map.put("aname", aname);
+    int no = this.accountProc.accountno_return(map);
+//    System.out.println("no: " + no);
+    model.addAttribute("no", no);
+    
+    session.setAttribute("no", no);
     
     return "sms/form";
     }else {
@@ -55,7 +69,12 @@ public class SMSCont {
    * @return
    */
   @RequestMapping(value = {"/sms/form.do"}, method=RequestMethod.GET)
-  public ModelAndView form() {
+  public ModelAndView form(HttpSession session) {
+    
+    int no = (int)session.getAttribute("no");
+    System.out.println("->no: " + no);
+    
+
     ModelAndView mav = new ModelAndView();
     mav.setViewName("/sms/form");  // /WEB-INF/views/sms/form.jsp
     
@@ -73,6 +92,11 @@ public class SMSCont {
    */
   @RequestMapping(value = {"/sms/proc.do"}, method=RequestMethod.POST)
   public ModelAndView proc(HttpSession session, HttpServletRequest request) {
+    
+    int no = (int)session.getAttribute("no");
+    System.out.println("->->no: " + no);
+
+    
     ModelAndView mav = new ModelAndView();
     
     // ------------------------------------------------------------------------------------------------------
@@ -106,7 +130,13 @@ public class SMSCont {
    * @return
    */
   @RequestMapping(value = {"/sms/proc_next.do"}, method=RequestMethod.GET)
-  public ModelAndView proc_next() {
+  public ModelAndView proc_next(HttpSession session) {
+    
+    int no = (int)session.getAttribute("no");
+    System.out.println("->->->no: " + no);
+   
+    
+    
     ModelAndView mav = new ModelAndView();
     mav.setViewName("/sms/proc_next");  // /WEB-INF/views/sms/proc_next.jsp
     
@@ -122,6 +152,10 @@ public class SMSCont {
    */
   @RequestMapping(value = {"/sms/confirm.do"}, method=RequestMethod.POST)
   public ModelAndView confirm(HttpSession session, String auth_no) {
+    
+    int no = (int)session.getAttribute("no");
+    System.out.println("->->->->no: " + no);
+    
     ModelAndView mav = new ModelAndView();
     
     String session_auth_no = (String)session.getAttribute("auth_no"); // 사용자에게 전송된 번호 session에서 꺼냄
@@ -131,6 +165,12 @@ public class SMSCont {
     if (session_auth_no.equals(auth_no)) {
       msg = "ID공개 페이지나 패스워드 분실시 새로운 패스워드 입력 화면으로 이동합니다.<br><br>";
       msg +="패스워드 수정 화면등 출력";
+      
+      
+      mav.setViewName("th/account/update_passwd_form");  // /WEB-INF/views/sms/confirm.jsp
+      
+      return mav;
+      
     } else {
       msg = "입력된 번호가 일치하지않습니다. 다시 인증 번호를 요청해주세요.";
       msg += "<br><br><A href='./form.do'>인증번호 재요청</A>"; 
@@ -140,6 +180,38 @@ public class SMSCont {
     mav.setViewName("/sms/confirm");  // /WEB-INF/views/sms/confirm.jsp
     
     return mav;
+  }
+  
+  @PostMapping(value = "/update_passwd")
+  public String update_passwd_proc(HttpSession session, Model model, String current_apasswd, String apasswd) {
+    HashMap<String, Object> map = new HashMap<String, Object>();
+    int no = (int)session.getAttribute("no");
+//    System.out.println("->->->->->accountno: " + accountno);
+//    System.out.println("->current_apasswd" + current_apasswd);
+    map.put("accountno", no);
+    map.put("apasswd", this.security.aesEncode(current_apasswd));
+//    System.out.println(map);
+    
+    int cnt = this.accountProc.passwd_check(map);
+  
+//    System.out.println("->>cnt: " + cnt);
+    
+    if (cnt == 1) {
+
+      HashMap<String, Object> map_new_passwd = new HashMap<String, Object>();
+      map_new_passwd.put("accountno", no);
+      map_new_passwd.put("apasswd", this.security.aesEncode(apasswd)); // 새로운 패스워드
+      
+      int passwd_change_cnt = this.accountProc.passwd_update(map_new_passwd);
+      if(passwd_change_cnt == 1) {
+        model.addAttribute("code", "find_success");
+      }else {
+        model.addAttribute("code", "find_passwd_fail");
+      }
+        return "th/account/update_passwd";
+    }else {
+      return "th/account/update_passwd";
+    }
   }
   
   

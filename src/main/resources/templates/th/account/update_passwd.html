@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html layout:decorate="~{th/layout}"> <!-- layout.html 상속-->
+<div layout:fragment="content">
+  <div class="title_line">비밀번호 찾기 > 알림</div>
+  <div class="message">
+    <fieldset class="fieldset_basic">
+      <ul>
+        <li th:switch="${code}" class="li_none">
+          <div th:case="find_success">
+            <span class="span_success" th:text="'비밀번호 변경이 완료되었습니다. 변경된 비밀번호로 로그인 해주세요'"></span><br>
+            <button type='button'
+                         th:attr="onclick=|location.href='/account/login'|" 
+                         class="btn btn-primary btn-sm">로그인</button>
+                         
+          </div>
+          
+          <div th:case="find_passwd_fail">
+            <span class="span_fail">기존 비밀번호가 일치하지 않습니다. 다시 시도해주세요.</span><br>
+            <button type='button'
+                         th:attr="onclick=|location.href='/account/passwd_update_form'|"
+                         class="btn btn-primary btn-sm">다시 시도</button>
+          </div>
+          
+          
+        
+        <li class="li_none">
+          <div th:if="${cnt == 0}">
+            <button type="button" onclick="history.back()" class="btn btn-secondary btn-sm">다시 시도</button>
+          </div>
+          <div th:if="${cnt == 1}">
+            <button type="button" onclick="location.href='/'" class="btn btn-secondary btn-sm">닫기</button>
+          </div>
+        </li>
+      </ul>
+    </fieldset>
+  </div>
+</div>
+</html>
+
+

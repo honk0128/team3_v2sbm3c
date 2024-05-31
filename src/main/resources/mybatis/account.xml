@@ -107,10 +107,32 @@
     WHERE aname=#{aname} and atel=#{atel}
   </select>
   
-  <select id="check_user_passwd" resultType="int" parameterType="Map">
+      <!-- 회원번호 찾기 -->
+  <select id="accountno_return" resultType="int" parameterType="map">
+    SELECT accountno
+    FROM ACCOUNT
+    WHERE aid=#{aid} and aname=#{aname}
+  </select>
+  
+  <!-- 유저 검사(passwd)  -->
+  <select id="check_user_passwd" resultType="int" parameterType="HashMap">
     SELECT COUNT(*) as cnt
     FROM ACCOUNT
     WHERE aid =#{aid} and aname=#{aname}
   </select>
+  
+    <!--  현재 패스워드 검사 -->
+  <select id="passwd_check" parameterType="HashMap" resultType="int">
+    SELECT COUNT(accountno) as cnt
+    FROM account
+    WHERE accountno=#{accountno} AND apasswd=#{apasswd}
+  </select>
+   
+  <!-- 패스워드 변경 -->
+  <update id="passwd_update" parameterType="HashMap">
+    UPDATE account
+    SET apasswd=#{apasswd}
+    WHERE accountno=#{accountno}
+  </update>
 
 </mapper>

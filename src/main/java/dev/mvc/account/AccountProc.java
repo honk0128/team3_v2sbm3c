@@ -233,6 +233,12 @@ public class AccountProc implements AccountProcInter {
     System.out.println("->aid: " + aid);
     return aid;
   }
+  
+  @Override
+  public int accountno_return(HashMap<String, Object> map) {
+    int no = this.accountDAO.accountno_return(map);
+    return no;
+  }
 
   @Override
   public int check_user_passwd(String aid, String aname) {
@@ -246,6 +252,18 @@ public class AccountProc implements AccountProcInter {
 
     int cnt = this.accountDAO.check_user_passwd(map);
     System.out.println("->cnt: " + cnt);
+    return cnt;
+  }
+  
+  @Override
+  public int passwd_check(HashMap<String, Object> map) {
+    int cnt = this.accountDAO.passwd_check(map);
+    return cnt;
+  }
+
+  @Override
+  public int passwd_update(HashMap<String, Object> map) {
+    int cnt = this.accountDAO.passwd_update(map);
     return cnt;
   }
 }
