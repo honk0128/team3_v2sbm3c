@@ -248,7 +248,9 @@ public class AccountCont {
    * @return 회원 정보
    */
   @GetMapping(value = "/login")
-  public String login_form(Model model) {
+  public String login_form(Model model, String url) {
+    model.addAttribute("url", url); // 로그인 후 이동할 주소
+
     return "th/account/login"; // templates/member/login.html
   }
 
@@ -260,7 +262,7 @@ public class AccountCont {
    * @return 회원 정보
    */
   @PostMapping(value = "/login_account")
-  public String login_proc(HttpSession session, HttpServletRequest request, Model model, String aid, String apasswd, LoginlogVO loginlogVO) {
+  public String login_proc(HttpSession session, HttpServletRequest request, Model model, String aid, String apasswd, LoginlogVO loginlogVO, String url) {
     HashMap<String, Object> map = new HashMap<String, Object>();
     map.put("aid", aid);
     map.put("apasswd", this.security.aesEncode(apasswd));
@@ -297,6 +299,11 @@ public class AccountCont {
         session.setAttribute("agrade", "account");
       } else if (accountVO.getAgrade() >= 21) {
         session.setAttribute("agrade", "guest");
+      }
+
+      if (url.length() > 0) {
+        System.out.println("url: " + url);
+        return "redirect:" + url;
       }
 
       return "redirect:/";

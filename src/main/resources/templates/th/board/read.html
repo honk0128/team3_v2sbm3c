@@ -10,6 +10,20 @@
 
     <!-- 북마크 스크립트 -->
     <script>
+      window.onload = () => {
+        let content_tag = document.getElementById('content');
+        let content = document.getElementById('content').value;
+        
+        content_tag.addEventListener('click', () => {
+          let aid = '[[${session.aid}]]';
+          
+          if(aid == '') {
+            alert('로그인 후 이용가능합니다.');
+            location.href="/account/login?url=/board/read?boardno=[[${boardVO.boardno}]]%26word=[[${word}]]%26now_page=[[${now_page}]]";
+          }
+        });
+      }
+
       // URL 파라미터에서 특정 값을 추출하는 함수
       function getParameterByName(name, url = window.location.href) {
         name = name.replace(/[\[\]]/g, "\\$&");
@@ -160,6 +174,29 @@
       </ul>
       <!-- /cate/list_all_component.html 파일의 list_all_fragment import -->
       <div th:replace="~{th/gpa/avgscore :: avgscore}"></div>
+
+      <li class="li_none">
+        <!-- ------------------------------ 댓글 영역 시작 ------------------------------ -->
+       
+        <DIV style='width: 100%; margin: 0px auto; clear:both; text-align:center;'>
+          <FORM name='frm_reply' id='frm_reply'> <!-- 댓글 등록 폼 -->
+            <input type='hidden' name='boardno' id='boardno' value='${boardno}'>
+            <textarea name='content' id='content' style='width: 100%; height: 60px;' class="form-control" placeholder="댓글 작성, 로그인해야 등록 할 수 있습니다." autofocus='autofocus'></textarea><br>
+            <button type='button' id='btn_create'>&nbsp;&nbsp;등&nbsp;&nbsp;록&nbsp;&nbsp;</button>
+          </FORM>
+          <DIV id='reply_list' data-replypage='1'>  <!-- 댓글 목록 -->
+            등록된 댓글이 없습니다.
+          
+          </DIV>
+          <DIV id='reply_list_btn' style='border: none'>
+              <button id='btn_add' style='width: 100%;'>더보기 ▽</button>
+          </DIV>  
+        
+      </DIV>
+
+      <!-- ------------------------------ 댓글 영역 종료 ------------------------------  -->
+      </li>
+      
     </fieldset>
   </div>
 </html>
