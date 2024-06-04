@@ -56,7 +56,8 @@ public class GpaCont {
         
   }
   
-  
+ 
+
   
   @PostMapping(value="/create")
   public String creategpa(@RequestParam("reviewStar") int star,@RequestParam("boardno") int boardno, Model model, GpaVO gpaVO, HttpSession session, String aid, RedirectAttributes ra, BoardVO boardVO) {

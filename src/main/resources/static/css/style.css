@@ -8,6 +8,8 @@
   font-style: normal;
 }
 
+
+ 
 /* 모든 태그에 적용 */
 * {
   font-family: "SokchoBadaDotum";
@@ -17,9 +19,90 @@
   color: #555555;
 }
 
+/**navbar 글씨 색깔 변경 */
+
+/**navbar 글씨 색깔 변경 */
+
+.navbar.scrolled {
+ position: fixed;
+  width: 100%;
+  top: 0;
+  background-color: rgb(0, 128, 0) !important;
+  color: white !important;
+  border: 0px !important;
+  z-index: 999;
+  
+}
+
+.navbar.scrolled a{
+   color: white !important;
+}
+
+
+.container-fluid a{
+  color: white;
+}
+
+.navbar{
+  position: fixed;
+  width: 100%;
+  top: 0;
+  background-color: rgba( 255, 255, 255, 0 ) !important;
+  border: 0px !important;
+  
+}
+
+.navbar a{
+   color: black !important;
+   font-size: 20px;
+}
+
+.navbarimgroom{
+  height: 350px;
+  position: relative;
+ 
+ }
+
+
+.navbarimg{
+  width: 100%;
+  height: 350px;
+  
+  
+}
+
+
+
 .container_main {
-  width: 98%;
+  width: 100%;
   margin: 5px auto;
+  
+}
+
+.navbarimgroom h1{
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate( -50%, -50% );
+  color: rgb(255, 255, 255);
+  
+  
+}
+
+
+
+.navbarimgroom input{
+  text-align: center;
+  position: absolute;
+  width: 30%;
+  height: 50px;
+  top: 55%;
+  left: 50%;
+  transform: translate( -50%, -50% );
+  
+  z-index: 2;
+  border-radius: 25px 25px 25px 25px;
+  
 }
 
 /* 이미지 사용시 경로 지정
@@ -633,6 +716,85 @@ a:active {
   font-size: 50px;
 }
 
+.youtube-carousel-wrap {
+  width: 100%; 
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: nowrap;
+}
+.youtube-carousel-main {
+  width:960px;
+  height: 540px;
+}
+.youtube-carousel-gallery {
+  width: 20%;
+  overflow-y: auto; /* 스크롤이 필요한 경우만 스크롤이 표시됩니다. */
+  height: 540px;
+  position: relative;
+  margin-left: 5px;
+}
+.youtube-carousel-main iframe {
+  width: 100%;
+  height: 100%;
+}
+.youtube-control {
+  width: 100%;
+  height: 125px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  cursor: pointer;
+  margin-bottom: 5px;
+  position: relative;
+  box-sizing: border-box;
+}
+.youtube-caption {
+  font-size: 18px;
+  font-family: inherit;
+  color: white;
+  background: rgba(0,0,0,0.6);
+  position:absolute; bottom: 0;
+  left: 0; width: 100%;
+  margin: 0; padding: 10px;
+  box-sizing: border-box;
+}
+.growBusiness-vid {
+  background-image: url('https://img.youtube.com/vi/ZV7fxqdmEiI/hqdefault.jpg');
+}
+.timothys-vid {
+  background-image: url('https://img.youtube.com/vi/7WaHKkz1OwA/hqdefault.jpg');
+}
+.watermark-vid {
+  background-image: url('https://img.youtube.com/vi/AR6oP5flxdQ/hqdefault.jpg');
+}
+.taborHill-vid {
+  background-image: url('https://img.youtube.com/vi/eGC9kolY0Bg/hqdefault.jpg');
+}
+.gravityBrew-vid {
+  background-image: url('https://img.youtube.com/vi/i98Np2Rzdas/hqdefault.jpg');
+}
+@media only screen and (max-width: 1210px) {
+  .youtube-carousel-wrap {
+    flex-wrap: wrap;
+  }
+  .youtube-carousel-gallery, .youtube-carousel-main {
+    width: 100%;
+  }
+  .youtube-carousel-gallery {
+    overflow-y: auto;
+    height: auto;
+    margin-top: 5px;
+    white-space: nowrap;
+  }
+  .youtube-control {
+    width: 260px;
+    height: 135px;
+    display: inline-block;
+  }
+}
+
 /**
 메인페이지_슬라이더
 **/
@@ -646,7 +808,7 @@ a:active {
 }
 
 @media(max-width: 1000px) {
-  .slide figure {
+  .slidea figure {
     width: 150px; /* 이미지 간격을 줄이기 위해 조정 */
   }
   
@@ -672,27 +834,28 @@ a:active {
   font-size: 20px;
 }
 
-  .slide figure img {
+  .slidea figure img {
     max-width: 80%; /* 이미지 크기 조정 */
   }
+  
 
   /* 이미지의 3D 거리를 좁히기 위해 translateZ 값을 조정 */
-  .slide figure:nth-child(1) {
+  .slidea figure:nth-child(1) {
     transform: rotateY(60deg) translateZ(200px); /* 수정된 값 */
   }
-  .slide figure:nth-child(2) {
+  .slidea figure:nth-child(2) {
     transform: rotateY(120deg) translateZ(200px); /* 수정된 값 */
   }
-  .slide figure:nth-child(3) {
+  .slidea figure:nth-child(3) {
     transform: rotateY(180deg) translateZ(200px); /* 수정된 값 */
   }
-  .slide figure:nth-child(4) {
+  .slidea figure:nth-child(4) {
     transform: rotateY(240deg) translateZ(200px); /* 수정된 값 */
   }
-  .slide figure:nth-child(5) {
+  .slidea figure:nth-child(5) {
     transform: rotateY(300deg) translateZ(200px); /* 수정된 값 */
   }
-  .slide figure:nth-child(6) {
+  .slidea figure:nth-child(6) {
     transform: rotateY(360deg) translateZ(200px); /* 수정된 값 */
   }
 }
@@ -729,44 +892,44 @@ a:active {
   position: relative;
 }
 
-.slide {
+.slidea {
   width: 100%;
   float: right;
   animation: rotation 14s infinite linear;
   transform-style: preserve-3d;
 }
 
-.slide figure {
+.slidea figure {
   width: 100%;
   height: 205px;
   position: absolute;
 }
 
-.slide figure:nth-child(1) {
+.slidea figure:nth-child(1) {
   transform: rotateY(60deg) translateZ(400px);
 }
 
-.slide figure:nth-child(2) {
+.slidea figure:nth-child(2) {
   transform: rotateY(120deg) translateZ(400px);
 }
 
-.slide figure:nth-child(3) {
+.slidea figure:nth-child(3) {
   transform: rotateY(180deg) translateZ(400px);
 }
 
-.slide figure:nth-child(4) {
+.slidea figure:nth-child(4) {
   transform: rotateY(240deg) translateZ(400px);
 }
 
-.slide figure:nth-child(5) {
+.slidea figure:nth-child(5) {
   transform: rotateY(300deg) translateZ(400px);
 }
 
-.slide figure:nth-child(6) {
+.slidea figure:nth-child(6) {
   transform: rotateY(360deg) translateZ(400px);
 }
 
-.slide img {
+.slidea img {
   width: 100%;
   height: 100%;
   -webkit-box-reflect: below 10px
@@ -774,12 +937,12 @@ a:active {
   box-shadow: 0 0 8px #fff;
 }
 
-.slide:hover {
+.slidea:hover {
   animation-play-state: paused;
   cursor: pointer;
 }
 
-.slide img:hover {
+.slidea img:hover {
   transform: scale(1.2);
   transition: all 300ms;
 }
@@ -861,3 +1024,184 @@ a:active {
   
   }
   
+  
+  /**메인 페이지 - 무빙박스 */
+  /* Global */
+
+
+.box-fluid img { max-width:100%; }
+
+.box-fluid a {
+  -webkit-transition: all 150ms ease;
+  -moz-transition: all 150ms ease;
+  -ms-transition: all 150ms ease;
+  -o-transition: all 150ms ease;
+  transition: all 150ms ease; 
+}
+.box-fluid a:hover {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; /* IE 8 */
+  filter: alpha(opacity=50); /* IE7 */
+  opacity: 0.6;
+  text-decoration: none;
+}
+
+.carousel-control-prev {
+  
+}
+
+.carousel-control-prev-icon{
+  
+}
+
+.fa-backward{
+  font-size: 50px;
+}
+
+.carousel-item {
+  transition: transform 0.6s ease; /* 슬라이드 전환에 사용할 애니메이션 속성 설정 */
+}
+
+.carousel-item-next {
+  transform: translateX(100%); /* 다음 슬라이드가 오른쪽에 위치하도록 설정 */
+}
+
+.carousel-item.active {
+  transform: translateX(0); /* 현재 활성화된 슬라이드의 위치 설정 */
+}
+
+.carousel-item-prev {
+  transform: translateX(-100%); /* 이전 슬라이드가 왼쪽에 위치하도록 설정 */
+}
+  
+.thumbnail{
+  width: 240px;
+  height: 150px;
+  
+  margin:10px;
+ border: 1px solid rgb(192, 192, 192); 
+  padding: 5px; 
+  background-color: white; 
+  border-radius: 25px, 25px, 25px, 25px;
+}
+
+.thumbnail img {
+  -webkit-box-reflect: none !important;
+}
+
+.col-md-3{
+ 
+}
+
+.caption {
+  position: relative; /* 절대 위치로 설정하여 이미지 위에 오게 합니다. */
+  bottom: 0px; /* 이미지의 하단에 위치하도록 설정 */
+  background-color: rgba(0, 0, 0, 0); /* 배경색 설정 */
+  width: 240px; /* 컨테이너의 너비를 이미지와 같게 설정 */
+  padding: 10px; /* 내부 여백 설정 */
+  background-color: white;
+  color: white; /* 텍스트 색상 설정 */
+}
+
+@media(max-width: 1000px) {
+  
+  .caption {
+  position: relative; /* 절대 위치로 설정하여 이미지 위에 오게 합니다. */
+  bottom: 0px; /* 이미지의 하단에 위치하도록 설정 */
+  background-color: rgba(0, 0, 0, 0); /* 배경색 설정 */
+  width: 100%; /* 컨테이너의 너비를 이미지와 같게 설정 */
+  padding: 10px; /* 내부 여백 설정 */
+  
+  color: white; /* 텍스트 색상 설정 */
+}
+  }
+
+.caption h4 {
+    font-size: 1rem;
+    color: #444;
+    }
+    .caption p {
+        font-size: 0.75rem;
+        color: #999;
+        }
+        .btn.btn-mini {
+            font-size: 0.63rem;
+            }
+
+ .carousel.slide {
+    width: 100%;
+    float: right;
+    animation: none; /* animation 속성을 없애서 돌지 않게 합니다. */
+    transform-style: preserve-3d;
+} 
+  
+.control-box {
+    text-align: right;
+    width: 100%;
+    position: relative;
+    
+    }
+   
+  
+  .carousel-control-prev{
+   position: absolute;
+   left: 45%;
+    width: 50px;
+    height: 50px;
+    background-color: #777777;
+  }
+  
+  .carousel-control-next{
+    position: absolute;
+   right: 45%;
+    width: 50px;
+    height: 50px;
+    background-color: #777777;
+  }
+  
+  .slide:hover {
+  animation-play-state: paused;
+  cursor: pointer;
+}
+  
+ 
+.carousel-indicators li {
+      background-color: #007bff; /* 배경 색상 */
+      width: 20px; /* 너비 */
+      height: 20px; /* 높이 */
+      border-radius: 50%; /* 둥근 모서리 */
+      margin: 5px; /* 간격 */
+    }
+
+    .carousel-indicators .active {
+      background-color: #ffc107; /* 활성 상태의 배경 색상 */
+      width: 20px; /* 활성 상태의 너비 */
+      height: 20px; /* 활성 상태의 높이 */
+    }
+ 
+ .carousel-title{
+   text-align: left;
+   height: 100px;
+   background-color: #f9f9f9;
+   border: 1px solid black;
+ }
+ 
+ .carousel-title h3{
+   margin-top: 20px;
+ }
+ 
+  .carousel-title h3, p{
+   margin-left: 30px;
+ }
+ 
+ 
+ 
+.slide img {
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 0 8px #fff;
+} 
+  
+ .boxbody{
+   height: 500px;
+   border: 1px solid black;
+ } 

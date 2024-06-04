@@ -1,148 +1,160 @@
-<div th:fragment="navbarFragment">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/">레시피 ver 1.0</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNavDropdown"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <!-- 게시판 분류 -->
-          <li class="nav-item dropdown" th:each="crudcateVOMenu:${menu}">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdownMenuLink"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              th:text="${crudcateVOMenu.name}"
+  <head>
+  <link href="/css/style.css" rel="Stylesheet" type="text/css"> <!-- /static 기준 -->
+  
+  </head>
+  <body>
+    
+  
+  <div th:fragment="navbarFragment">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">레시피 ver 1.0</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+  
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <!-- 게시판 분류 -->
+            <li class="nav-item dropdown" th:each="crudcateVOMenu:${menu}">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                th:text="${crudcateVOMenu.name}"
+              >
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li th:each="crudcateVO:${crudcateVOMenu.list_namesubs}">
+                  <a class="dropdown-item" th:href="@{|/board/list_cno?crudcateno=${crudcateVO.crudcateno}|}" th:text="${crudcateVO.namesub}"></a>
+                </li>
+              </ul>
+            </li>
+  
+            <!-- 회원 -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                th:text="회원"
+              >
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    th:if="${session.accountno != null} or ${session.managerno != null}"
+                    th:href="@{|/bookmark/bm_list?accountno=${session.accountno}|}"
+                    >북마크 목록</a
+                  >
+                </li>
+                <li class="nav-item" th:if="${session.managerno != null or session.accountno != null}">
+                  <a class="nav-link" href="/account/passwd_update_form">비밀 번호 변경</a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="/account/find_aid_form">아이디 찾기</a></li>
+                <li class="nav-item"><a class="nav-link" href="/account/find_passwd_form">비밀번호 찾기</a></li>
+                <li class="nav-item" th:if="${session.managerno != null or session.accountno != null}">
+                  <a class="nav-link" th:href="@{|/account/read?accountno=${session.accountno}|}">회원 정보 조회</a>
+                </li>
+                <li class="nav-item" th:if="${session.managerno != null or session.accountno != null}">
+                  <a class="nav-link" th:href="@{|/account/delete?accountno=${session.accountno}|}">회원 정보 삭제</a>
+                </li>
+              </ul>
+            </li>
+  
+            <!-- 관리자 -->
+            <li class="nav-item dropdown" th:if="${session.managerno >=1}">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                th:text="관리자"
+              >
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li class="nav-item"><a class="nav-link" th:href="@{/crudcate/list_search}">카테고리 전체 목록</a></li>
+                <li class="nav-item"><a class="nav-link" href="/board/list_all">전체 글 목록</a></li>
+                <li class="nav-item"><a class="nav-link" href="/account/list">회원 목록</a></li>
+                <li class="nav-item"><a class="nav-link" href="/manager/list">관리자 목록</a></li>
+              </ul>
+            </li>
+  
+            <!-- 댓글 -->
+            <li class="nav-item dropdown" th:if="${session.managerno != null or session.accountno != null}">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                th:text="댓글관리"
+              >
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li class="nav-item">
+                  <a class="nav-link" th:href="@{/breply/create}">댓글 등록</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" th:href="@{/breply/list}">댓글 목록</a>
+                </li>
+              </ul>
+            </li>
+  
+            <!-- Ai -->
+            <li class="nav-item dropdown" th:if="${session.managerno != null or session.accountno != null}">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                th:text="Ai질문"
+              >
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li class="nav-item">
+                  <a class="nav-link" th:href="@{/ai/create}">AI 질문</a>
+                </li>
+              </ul>
+            </li>
+  
+            <!-- 회원가입/로그인/로그아웃 -->
+            
+            <span class="nav-item" th:if="${session.accountno == null} and ${session.managerno == null}"
+              ><a class="nav-link" href="/account/signin">회원 가입</a></span
             >
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li th:each="crudcateVO:${crudcateVOMenu.list_namesubs}">
-                <a class="dropdown-item" th:href="@{|/board/list_cno?crudcateno=${crudcateVO.crudcateno}|}" th:text="${crudcateVO.namesub}"></a>
-              </li>
-            </ul>
-          </li>
-
-          <!-- 회원 -->
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdownMenuLink"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              th:text="회원"
-            >
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  th:if="${session.accountno != null} or ${session.managerno != null}"
-                  th:href="@{|/bookmark/bm_list?accountno=${session.accountno}|}"
-                  >북마크 목록</a
-                >
-              </li>
-              <li class="nav-item" th:if="${session.managerno != null or session.accountno != null}">
-                <a class="nav-link" href="/account/passwd_update_form">비밀 번호 변경</a>
-              </li>
-              <li class="nav-item"><a class="nav-link" href="/account/find_aid_form">아이디 찾기</a></li>
-              <li class="nav-item"><a class="nav-link" href="/account/find_passwd_form">비밀번호 찾기</a></li>
-              <li class="nav-item" th:if="${session.managerno != null or session.accountno != null}">
-                <a class="nav-link" th:href="@{|/account/read?accountno=${session.accountno}|}">회원 정보 조회</a>
-              </li>
-              <li class="nav-item" th:if="${session.managerno != null or session.accountno != null}">
-                <a class="nav-link" th:href="@{|/account/delete?accountno=${session.accountno}|}">회원 정보 삭제</a>
-              </li>
-            </ul>
-          </li>
-
-          <!-- 관리자 -->
-          <li class="nav-item dropdown" th:if="${session.managerno >=1}">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdownMenuLink"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              th:text="관리자"
-            >
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li class="nav-item"><a class="nav-link" th:href="@{/crudcate/list_search}">카테고리 전체 목록</a></li>
-              <li class="nav-item"><a class="nav-link" href="/board/list_all">전체 글 목록</a></li>
-              <li class="nav-item"><a class="nav-link" href="/account/list">회원 목록</a></li>
-              <li class="nav-item"><a class="nav-link" href="/manager/list">관리자 목록</a></li>
-            </ul>
-          </li>
-
-          <!-- 댓글 -->
-          <li class="nav-item dropdown" th:if="${session.managerno != null or session.accountno != null}">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdownMenuLink"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              th:text="댓글관리"
-            >
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li class="nav-item">
-                <a class="nav-link" th:href="@{/breply/create}">댓글 등록</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" th:href="@{/breply/list}">댓글 목록</a>
-              </li>
-            </ul>
-          </li>
-
-          <!-- Ai -->
-          <li class="nav-item dropdown" th:if="${session.managerno != null or session.accountno != null}">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdownMenuLink"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              th:text="Ai질문"
-            >
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li class="nav-item">
-                <a class="nav-link" th:href="@{/ai/create}">AI 질문</a>
-              </li>
-            </ul>
-          </li>
-
-          <!-- 회원가입/로그인/로그아웃 -->
-          <span class="nav-item" th:if="${session.accountno == null} and ${session.managerno == null}"
-            ><a class="nav-link" href="/account/signin">회원 가입</a></span
-          >
-          <span th:if="${session.accountno == null} and ${session.managerno == null}"
-            ><a class="nav-link" href="/account/login" th:text="@{|로그인|}"></a
-          ></span>
-          <span th:if="${session.managerno != null} or ${session.accountno != null}"
-            ><a class="nav-link" href="/account/logout" th:text="@{|${session.accountno != null ? session.aid : session.mid} 로그아웃|}"></a
-          ></span>
-        </ul>
+            <span th:if="${session.accountno == null} and ${session.managerno == null}"
+              ><a class="nav-link" href="/account/login" th:text="@{|로그인|}"></a
+            ></span>
+            <span th:if="${session.managerno != null} or ${session.accountno != null}"
+              ><a class="nav-link" href="/account/logout" th:text="@{|${session.accountno != null ? session.aid : session.mid} 로그아웃|}"></a
+            ></span>
+            
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
-</div>
+    </nav>
+  </div>
+  
+  
+  </body>

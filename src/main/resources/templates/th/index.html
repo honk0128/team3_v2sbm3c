@@ -3,6 +3,7 @@
 <head>
   <link href="/css/style.css" rel="stylesheet" type="text/css"> <!-- /static 기준 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>
     $(document).ready(function() {
@@ -12,8 +13,7 @@
       const totalReviews = $(".review_item").length;
       
       
-  console.log("total: ", totalReviews);
-  console.log("review item: ",  $(".review_item"));
+
       function showMoreReviews() {
        $(".review_item").hide(); // 모든 리뷰 숨기기
        currentCount = reviewsPerPage + addreviewpage;
@@ -34,14 +34,23 @@
 </head>
 
 <body>
-  <div layout:fragment="content" style="width: 80%; margin: 50px auto; text-align: center;">
-    <img src="/images/main.jpg" style="width: 70%;"> <!-- /static/images/main.jpg -->
+  <div layout:fragment="content" style="width: 100%; margin: 50px auto; text-align: center;">
+  <div class="boxbody">
+  <div th:replace="~{th/mobingbox :: mobingbox}"></div>
+  </div>
+    
+  
+  
+  <div th:replace="~{th/youtube :: youtube}"></div>
+  
   <h2 class="rank"><i class="fa-solid fa-crown gold"></i>금주의 랭킹</h2>
     <div class="main"> 
       
+      
+      
       <section class="slideshow"> 
         
-        <div class="slide"> 
+        <div class="slidea"> 
           
           <figure>
             <a href="/WinStudy">

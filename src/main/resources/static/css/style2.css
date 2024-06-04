@@ -1,0 +1,133 @@
+/**메인 페이지 - 무빙박스 */
+  /* Global */
+
+
+.box-fluid img { max-width:100%; }
+
+.box-fluid a {
+  -webkit-transition: all 150ms ease;
+  -moz-transition: all 150ms ease;
+  -ms-transition: all 150ms ease;
+  -o-transition: all 150ms ease;
+  transition: all 150ms ease; 
+}
+.box-fluid a:hover {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; /* IE 8 */
+  filter: alpha(opacity=50); /* IE7 */
+  opacity: 0.6;
+  text-decoration: none;
+}
+
+.carousel-control-prev {
+  position: absolute; /* 절대 위치로 설정하여 부모 요소에 상대적으로 위치 */
+  top: 50%; /* 슬라이드 영역의 위쪽에서 50% 위치 */
+  transform: translateY(-50%); /* 수직으로 중앙으로 이동 */
+  left: -150px; /* 왼쪽에서 20px 위치 */
+}
+
+.carousel-control-prev-icon{
+  color: #000000;
+}
+
+.fa-backward{
+  font-size: 50px;
+}
+
+.carousel-item {
+  transition: transform 0.6s ease; /* 슬라이드 전환에 사용할 애니메이션 속성 설정 */
+}
+
+.carousel-item-next {
+  transform: translateX(100%); /* 다음 슬라이드가 오른쪽에 위치하도록 설정 */
+}
+
+.carousel-item.active {
+  transform: translateX(0); /* 현재 활성화된 슬라이드의 위치 설정 */
+}
+
+.carousel-item-prev {
+  transform: translateX(-100%); /* 이전 슬라이드가 왼쪽에 위치하도록 설정 */
+}
+  
+.thumbnail{
+  width: 240px;
+  height: 150px;
+  
+  margin:10px;
+ border: 1px solid rgb(192, 192, 192); 
+  padding: 5px; 
+  background-color: white; 
+  border-radius: 25px, 25px, 25px, 25px;
+}
+
+
+
+.col-md-3{
+ 
+}
+
+.caption {
+  position: relative; /* 절대 위치로 설정하여 이미지 위에 오게 합니다. */
+  bottom: 0px; /* 이미지의 하단에 위치하도록 설정 */
+  background-color: rgba(0, 0, 0, 0); /* 배경색 설정 */
+  width: 240px; /* 컨테이너의 너비를 이미지와 같게 설정 */
+  padding: 10px; /* 내부 여백 설정 */
+  
+  color: white; /* 텍스트 색상 설정 */
+}
+
+@media(max-width: 1000px) {
+  
+  .caption {
+  position: relative; /* 절대 위치로 설정하여 이미지 위에 오게 합니다. */
+  bottom: 0px; /* 이미지의 하단에 위치하도록 설정 */
+  background-color: rgba(0, 0, 0, 0); /* 배경색 설정 */
+  width: 100%; /* 컨테이너의 너비를 이미지와 같게 설정 */
+  padding: 10px; /* 내부 여백 설정 */
+  
+  color: white; /* 텍스트 색상 설정 */
+}
+  }
+
+.caption h4 {
+    font-size: 1rem;
+    color: #444;
+    }
+    .caption p {
+        font-size: 0.75rem;
+        color: #999;
+        }
+        .btn.btn-mini {
+            font-size: 0.63rem;
+            }
+
+ .carousel.slide {
+    width: 100%;
+    float: right;
+    animation: none; /* animation 속성을 없애서 돌지 않게 합니다. */
+    transform-style: preserve-3d;
+} 
+  
+.control-box {
+    text-align: right;
+    width: 100%;
+    }
+    .carousel-control{
+        background: #666;
+        border: 0px;
+        border-radius: 0px;
+        display: inline-block;
+        font-size: 34px;
+        font-weight: 200;
+        line-height: 18px;
+        opacity: 0.5;
+        padding: 4px 10px 0px;
+        position: static;
+        height: 30px;
+        width: 15px;
+        } 
+  
+ .boxbody{
+   height: 500px;
+   border: 1px solid black;
+ } 
