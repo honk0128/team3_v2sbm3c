@@ -50,6 +50,8 @@ ORDER BY BREPLYNO ASC;
 
 SELECT * FROM breply;
 
+delete breply;
+
 commit; 
 
 UPDATE BREPLY
