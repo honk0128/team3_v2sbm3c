@@ -3,6 +3,7 @@ package dev.mvc.breply;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -22,11 +23,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import jakarta.servlet.http.HttpSession;
 // import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @RequestMapping("/breply")
@@ -50,99 +54,120 @@ public class BreplyCont {
     return url;
   }
 
-  /**
-   * 등록 폼
-   * @param model
-   * @param breplyVO
-   * @return
-   */
-  @GetMapping("/create")
-  public String replycreate(Model model, BreplyVO breplyVO, Integer boardno) {
-    BoardVO boardVO = this.boardProc.read(boardno);
-    System.out.println("boardVO: " + boardVO);
-    return "th/breply/create";
-  }
-
-  /**
-   * 등록 처리
-   * @param model
-   * @param breplyVO
-   * @param bindingResult
-   * @param ra
-   * @param word
-   * @param now_page
-   * @return
-   */
   @PostMapping(value = "/create")
-  public String replycreate(Model model, @Valid BreplyVO breplyVO, BindingResult bindingResult,
-                            Integer boardno,
-                            RedirectAttributes ra,
-                            HttpSession session) {
-    if (bindingResult.hasErrors()) {
-      return "th/breply/create";
-    }
+public String create(HttpSession session, Model model, BreplyVO breplyVO, RedirectAttributes ra, @RequestParam(value = "file1MF", required = false) MultipartFile file1MF) {
+    System.out.println("-> 수신 데이터:" + breplyVO.toString());
 
-    Integer accountno = (Integer) session.getAttribute("accountno");
-    if (accountno != null || session.getAttribute("managerno") != null) { // 회원 로그인
-      breplyVO.setAccountno(accountno);
-
-      // ------------------------------------------------------------------------------
-      // 파일 전송 코드 시작
-      // ------------------------------------------------------------------------------
-      String file1 = "";
-      String file1saved = "";
-      String thumb1 = "";
-
-      String upDir =  Breply.getUploadDir();
-      System.out.println("-> upDir: " + upDir);
-      
-      MultipartFile mf = breplyVO.getFile1MF();
-      
-      file1 = mf.getOriginalFilename();
-      System.out.println("-> 원본 파일명 산출 file1: " + file1);
-      
-      long size1 = mf.getSize();
-      if (size1 > 0) {
-        if (Tool.checkUploadFile(file1) == true) {
-          file1saved = Upload.saveFileSpring(mf, upDir); 
-          
-          if (Tool.isImage(file1saved)) {
-            thumb1 = Tool.preview(upDir, file1saved, 200, 150);
-          }
-
-          breplyVO.setBreplyimg(file1);
-          breplyVO.setBreplysaved(file1saved);
-          breplyVO.setBreplythumb(thumb1);
-          breplyVO.setBreplysize(size1);
-
-        } else {
-          ra.addFlashAttribute("code", "check_upload_file_fail");
-          ra.addFlashAttribute("cnt", 0);
-          ra.addFlashAttribute("url", "/Breply/msg");
-          return "redirect:/Breply/msg";
+    if (session.getAttribute("accountno") != null || session.getAttribute("managerno") != null) {
+        if (session.getAttribute("accountno") != null) {
+            Integer accountno = (Integer) session.getAttribute("accountno");
+            breplyVO.setAccountno(accountno);
+            System.out.println("accountno: " + accountno);
+        } else if (session.getAttribute("managerno") != null) {
+            Integer managerno = (Integer) session.getAttribute("managerno");
+            breplyVO.setManagerno(managerno);
+            System.out.println("managerno: " + managerno);
         }
-      } else {
-        System.out.println("-> 글만 등록");
-      }
-      
-      // ------------------------------------------------------------------------------
-      // 파일 전송 코드 종료
-      // ------------------------------------------------------------------------------
+        if (file1MF != null && !file1MF.isEmpty()) {
+            String uploadedFileName = Upload.saveFileSpring(file1MF, Breply.getUploadDir());
+            breplyVO.setBreplyimg(file1MF.getOriginalFilename());
+            breplyVO.setBreplysaved(uploadedFileName);
+            breplyVO.setBreplythumb(Tool.preview(Breply.getUploadDir(), uploadedFileName, 200, 150));
+            breplyVO.setBreplysize(file1MF.getSize());
+        }
 
-      int cnt = this.breplyProc.replycreate(breplyVO);
-      System.out.println("-> cnt: " + cnt);
+        int cnt = this.breplyProc.replycreate(breplyVO);
 
-      model.addAttribute("cnt", cnt);
-      if(cnt ==1) {
-        return "redirect:/breply/list?boardno=" + boardno;
-      } else {
-        model.addAttribute("code", "code");
-        return "th/breply/msg";
-      }
+        JSONObject json = new JSONObject();
+        json.put("res", cnt);
+
+        return json.toString();
     } else {
-      return "redirect:/account/login";
+        return "redirect:/account/login";
     }
-  }
+}
+  
+
+  // /**
+  //  * 등록 처리
+  //  * @param model
+  //  * @param breplyVO
+  //  * @param bindingResult
+  //  * @param ra
+  //  * @param word
+  //  * @param now_page
+  //  * @return
+  //  */
+  // @PostMapping(value = "/create")
+  // public String replycreate(Model model, @Valid BreplyVO breplyVO, BindingResult bindingResult,
+  //                           Integer boardno,
+  //                           RedirectAttributes ra,
+  //                           HttpSession session) {
+  //   if (bindingResult.hasErrors()) {
+  //     return "th/breply/create";
+  //   }
+
+  //   Integer accountno = (Integer) session.getAttribute("accountno");
+  //   if (accountno != null || session.getAttribute("managerno") != null) { // 회원 로그인
+  //     breplyVO.setAccountno(accountno);
+
+  //     // ------------------------------------------------------------------------------
+  //     // 파일 전송 코드 시작
+  //     // ------------------------------------------------------------------------------
+  //     String file1 = "";
+  //     String file1saved = "";
+  //     String thumb1 = "";
+
+  //     String upDir =  Breply.getUploadDir();
+  //     System.out.println("-> upDir: " + upDir);
+      
+  //     MultipartFile mf = breplyVO.getFile1MF();
+      
+  //     file1 = mf.getOriginalFilename();
+  //     System.out.println("-> 원본 파일명 산출 file1: " + file1);
+      
+  //     long size1 = mf.getSize();
+  //     if (size1 > 0) {
+  //       if (Tool.checkUploadFile(file1) == true) {
+  //         file1saved = Upload.saveFileSpring(mf, upDir); 
+          
+  //         if (Tool.isImage(file1saved)) {
+  //           thumb1 = Tool.preview(upDir, file1saved, 200, 150);
+  //         }
+
+  //         breplyVO.setBreplyimg(file1);
+  //         breplyVO.setBreplysaved(file1saved);
+  //         breplyVO.setBreplythumb(thumb1);
+  //         breplyVO.setBreplysize(size1);
+
+  //       } else {
+  //         ra.addFlashAttribute("code", "check_upload_file_fail");
+  //         ra.addFlashAttribute("cnt", 0);
+  //         ra.addFlashAttribute("url", "/Breply/msg");
+  //         return "redirect:/Breply/msg";
+  //       }
+  //     } else {
+  //       System.out.println("-> 글만 등록");
+  //     }
+      
+  //     // ------------------------------------------------------------------------------
+  //     // 파일 전송 코드 종료
+  //     // ------------------------------------------------------------------------------
+
+  //     int cnt = this.breplyProc.replycreate(breplyVO);
+  //     System.out.println("-> cnt: " + cnt);
+
+  //     model.addAttribute("cnt", cnt);
+  //     if(cnt ==1) {
+  //       return "redirect:/breply/list?boardno=" + boardno;
+  //     } else {
+  //       model.addAttribute("code", "code");
+  //       return "th/breply/msg";
+  //     }
+  //   } else {
+  //     return "redirect:/account/login";
+  //   }
+  // }
 
   /**
    * 댓글 목록

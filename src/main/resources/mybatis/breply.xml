@@ -4,8 +4,8 @@
 
   <!-- 댓글 입력 -->
   <insert id="replycreate" parameterType="dev.mvc.breply.BreplyVO">
-    INSERT INTO breply(BREPLYNO, BREPLYCONT, BREPLYIMG, BREPLYSAVED, BREPLYTHUMB, BREPLYSIZE, BREPLYDATE, BREPLYPASSWD, boardno, accountno)
-    VALUES(breply_seq.nextval, #{breplycont}, #{breplyimg}, #{breplysaved}, #{breplythumb}, #{breplysize}, sysdate, #{breplypasswd}, #{boardno}, #{accountno})
+    INSERT INTO breply(BREPLYNO, BREPLYCONT, BREPLYIMG, BREPLYSAVED, BREPLYTHUMB, BREPLYSIZE, BREPLYDATE, BREPLYPASSWD, boardno, accountno, managerno)
+    VALUES(breply_seq.nextval, #{breplycont}, #{breplyimg}, #{breplysaved}, #{breplythumb}, #{breplysize}, sysdate, #{breplypasswd}, #{boardno}, #{accountno}, #{managerno})
   </insert>
 
   <!-- 댓글 목록 -->
@@ -22,6 +22,7 @@
     WHERE boardno = #{boardno}
   </select>
 
+  <!-- 댓글 읽기 -->
   <select id="read" resultType="dev.mvc.breply.BreplyVO" parameterType="int">
     SELECT BREPLYNO, BREPLYCONT, BREPLYIMG, BREPLYSAVED, BREPLYTHUMB, BREPLYSIZE, BREPLYDATE, BREPLYPASSWD
     FROM breply

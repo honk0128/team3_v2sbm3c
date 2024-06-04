@@ -57,5 +57,7 @@ public class BreplyVO {
 
   private int accountno;
 
+  private int managerno;
+
   private int boardno;
 }

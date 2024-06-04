@@ -9,6 +9,7 @@ CREATE TABLE BREPLY(
 		BREPLYDATE                    		DATE		 NOT NULL,
 		BREPLYPASSWD                  		VARCHAR2(200)		 NOT NULL,
 		ACCOUNTNO                     		NUMBER(10)		 NULL ,
+        MANAGERNO                     		NUMBER(10)		 NULL ,
 		BOARDNO                       		NUMBER(10)		 NULL ,
   FOREIGN KEY (BOARDNO) REFERENCES BOARD (BOARDNO)
 );
@@ -23,6 +24,7 @@ COMMENT ON COLUMN BREPLY.BREPLYSIZE is '댓글 파일 사이즈';
 COMMENT ON COLUMN BREPLY.BREPLYDATE is '게시판댓글등록일';
 COMMENT ON COLUMN BREPLY.BREPLYPASSWD is '게시판댓글비밀번호';
 COMMENT ON COLUMN BREPLY.ACCOUNTNO is '유저 번호';
+COMMENT ON COLUMN BREPLY.MANAGERNO is '관리자 번호';
 COMMENT ON COLUMN BREPLY.BOARDNO is '게시판번호';
 
 DROP SEQUENCE breply_seq;
@@ -56,6 +58,10 @@ WHERE BREPLYNO = 6;
 
 
 delete breply;
+
+select * from loginlog;
+
+delete loginlog;
 
 commit;
 

@@ -7,23 +7,68 @@
       > <span th:text="${crudcateVO.namesub}" class="title_line_text"></span>
       > 글 조회
     </div>
+    <!-- 댓글 스크립트 -->
+    <script>
+      window.onload = () => {
+          let content_tag = document.getElementById('breplycont');
+          let password_tag = document.getElementById('breplypasswd');
+          let file_tag = document.getElementById('file1MF');
+          let btn_create_tag = document.getElementById('btn_create'); // 댓글 등록
+
+          content_tag.addEventListener('click', () => {
+            let aid = '[[${session.aid}]]';
+            let mid = '[[${session.mid}]]';
+            if (aid == '' && mid == '') {
+              alert('로그인 후 이용 가능합니다.');
+              location.href="/account/login?url=/board/read?boardno=[[${boardVO.boardno}]]%26word=[[${word}]]%26now_page=[[${now_page}]]";
+            }
+          });
+  
+          btn_create_tag.addEventListener('click', () => {
+
+            let content = content_tag.value.trim();
+            let breplypasswd = password_tag.value.trim();
+            let file = file_tag.files[0];
+
+            if (content.length == 0) {
+              alert('내용을 입력해주세요.');
+            } else {
+              if (breplypasswd.length == 0) {
+                alert('비밀번호를 설정해주세요.');
+              } else {
+                let formData = new FormData();
+                formData.append('boardno', '[[${boardVO.boardno}]]');
+                formData.append('breplycont', content);
+                formData.append('breplypasswd', breplypasswd);
+                if (file) { // 파일이 존재할 경우에만 추가
+                  formData.append('file1MF', file);
+                }
+
+                fetch("/breply/create", {
+                    method: "post",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // 등록 후 처리
+                    content_tag.value = '';
+                    password_tag.value = '';
+                    file_tag.value = '';
+                    content_tag.focus();
+                    // list_by_contentsno_join();
+                })
+                .catch(error => {
+                    console.error('댓글 등록 실패:', error);
+                });
+              }
+            }
+          });
+      }
+  </script>
+  
 
     <!-- 북마크 스크립트 -->
     <script>
-      window.onload = () => {
-        let content_tag = document.getElementById('content');
-        let content = document.getElementById('content').value;
-        
-        content_tag.addEventListener('click', () => {
-          let aid = '[[${session.aid}]]';
-          
-          if(aid == '') {
-            alert('로그인 후 이용가능합니다.');
-            location.href="/account/login?url=/board/read?boardno=[[${boardVO.boardno}]]%26word=[[${word}]]%26now_page=[[${now_page}]]";
-          }
-        });
-      }
-
       // URL 파라미터에서 특정 값을 추출하는 함수
       function getParameterByName(name, url = window.location.href) {
         name = name.replace(/[\[\]]/g, "\\$&");
@@ -179,11 +224,19 @@
         <!-- ------------------------------ 댓글 영역 시작 ------------------------------ -->
        
         <DIV style='width: 100%; margin: 0px auto; clear:both; text-align:center;'>
-          <FORM name='frm_reply' id='frm_reply'> <!-- 댓글 등록 폼 -->
+          <form name='frm_reply' id='frm_reply' enctype="multipart/form-data"> <!-- 댓글 등록 폼 -->
             <input type='hidden' name='boardno' id='boardno' value='${boardno}'>
-            <textarea name='content' id='content' style='width: 100%; height: 60px;' class="form-control" placeholder="댓글 작성, 로그인해야 등록 할 수 있습니다." autofocus='autofocus'></textarea><br>
+          
+            <!-- 댓글 입력 창 -->
+            <textarea name='breplycont' id='breplycont' style='width: 100%; height: 60px;' class="form-control" placeholder="댓글 작성, 로그인해야 등록 할 수 있습니다." autofocus='autofocus'></textarea>
+          
+            <div style="margin:5px auto; width: 80%; display: flex; align-items: center;">
+                <input type='file' class="form-control" name='file1MF' id='file1MF' style="width: 60%;" placeholder="파일 선택">
+                <input type="password" name="breplypasswd" id="breplypasswd" value="" class="form-control" style="width: 20%;" placeholder="비밀번호를 입력해주세요">
+            </div>
+          
             <button type='button' id='btn_create'>&nbsp;&nbsp;등&nbsp;&nbsp;록&nbsp;&nbsp;</button>
-          </FORM>
+          </form>
           <DIV id='reply_list' data-replypage='1'>  <!-- 댓글 목록 -->
             등록된 댓글이 없습니다.
           
