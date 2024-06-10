@@ -1,255 +1,309 @@
 <!DOCTYPE html>
 <html layout:decorate="~{th/layout}">
-  <!-- layout.html 상속-->
-  <div layout:fragment="content">
-    <div class="title_line">
-      <span th:text="${crudcateVO.name}" class="title_line_text"></span>
-      > <span th:text="${crudcateVO.namesub}" class="title_line_text"></span>
-      > 글 조회
-    </div>
-    <!-- 댓글 스크립트 -->
-    <script>
-      window.onload = () => {
-          let content_tag = document.getElementById('breplycont');
-          let password_tag = document.getElementById('breplypasswd');
-          let file_tag = document.getElementById('file1MF');
-          let btn_create_tag = document.getElementById('btn_create'); // 댓글 등록
 
-          content_tag.addEventListener('click', () => {
-            let aid = '[[${session.aid}]]';
-            let mid = '[[${session.mid}]]';
-            if (aid == '' && mid == '') {
-              alert('로그인 후 이용 가능합니다.');
-              location.href="/account/login?url=/board/read?boardno=[[${boardVO.boardno}]]%26word=[[${word}]]%26now_page=[[${now_page}]]";
-            }
-          });
-  
-          btn_create_tag.addEventListener('click', () => {
+<head>
+  <style>
+    .highlight {
+      color: blue;
+      cursor: pointer;
+    }
 
-            let content = content_tag.value.trim();
-            let breplypasswd = password_tag.value.trim();
-            let file = file_tag.files[0];
+    .tooltip {
+      display: none;
+    }
+  </style>
+</head>
 
-            if (content.length == 0) {
-              alert('내용을 입력해주세요.');
-            } else {
-              if (breplypasswd.length == 0) {
-                alert('비밀번호를 설정해주세요.');
-              } else {
-                let formData = new FormData();
-                formData.append('boardno', '[[${boardVO.boardno}]]');
-                formData.append('breplycont', content);
-                formData.append('breplypasswd', breplypasswd);
-                if (file) { // 파일이 존재할 경우에만 추가
-                  formData.append('file1MF', file);
-                }
 
-                fetch("/breply/create", {
-                    method: "post",
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // 등록 후 처리
-                    content_tag.value = '';
-                    password_tag.value = '';
-                    file_tag.value = '';
-                    content_tag.focus();
-                    // list_by_contentsno_join();
-                })
-                .catch(error => {
-                    console.error('댓글 등록 실패:', error);
-                });
-              }
-            }
-          });
-      }
+<!-- layout.html 상속-->
+<div layout:fragment="content">
+  <div class="title_line">
+    <span th:text="${crudcateVO.name}" class="title_line_text"></span>
+    > <span th:text="${crudcateVO.namesub}" class="title_line_text"></span>
+    > 글 조회
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tooltip = document.getElementById('tooltip');
+
+      document.querySelectorAll('.highlight').forEach(item => {
+        item.addEventListener('click', event => {
+          const word = item.getAttribute('data-word');
+          fetch(`/board/api/meaning`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({voca: word})
+          })
+            .then(response => response.json())
+            .then(data => {
+              console.log(word);
+              tooltip.textContent = data.meaning;
+              tooltip.style.display = 'block';
+              tooltip.style.left = `${event.pageX}px`;
+              tooltip.style.top = `${event.pageY}px`;
+            });
+        });
+      });
+
+      document.addEventListener('click', event => {
+        if (!event.target.classList.contains('highlight')) {
+          tooltip.style.display = 'none';
+        }
+      });
+    });
   </script>
-  
+  <!-- 댓글 스크립트 -->
+  <script>
+    window.onload = () => {
+      let content_tag = document.getElementById('breplycont');
+      let password_tag = document.getElementById('breplypasswd');
+      let file_tag = document.getElementById('file1MF');
+      let btn_create_tag = document.getElementById('btn_create'); // 댓글 등록
 
-    <!-- 북마크 스크립트 -->
-    <script>
-      // URL 파라미터에서 특정 값을 추출하는 함수
-      function getParameterByName(name, url = window.location.href) {
-        name = name.replace(/[\[\]]/g, "\\$&");
-        let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-          results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return "";
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
-      }
-
-      // 북마크 추가
-      async function addBookmark() {
-        const currentUrl = window.location.href; // 현재 페이지의 URL
-        const accountNo = document.getElementById("accountNo").value;
-        const boardno = getParameterByName("boardno");
-
-        try {
-          const response = await fetch("/bookmark/add", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              accountno: accountNo,
-              bookmarkurl: currentUrl,
-              boardno: boardno,
-            }),
-          });
-
-          const result = await response.json();
-          if (response.ok) {
-            alert(result.message);
-          } else {
-            alert("이미 북마크에 등록되어 있습니다.");
-          }
-        } catch (error) {
-          console.error("북마크 저장에 실패했습니다.", error);
-          alert("북마크 저장에 실패했습니다.");
+      content_tag.addEventListener('click', () => {
+        let aid = '[[${session.aid}]]';
+        let mid = '[[${session.mid}]]';
+        if (aid == '' && mid == '') {
+          alert('로그인 후 이용 가능합니다.');
+          location.href = "/account/login?url=/board/read?boardno=[[${boardVO.boardno}]]%26word=[[${word}]]%26now_page=[[${now_page}]]";
         }
-      }
+      });
 
-      // 북마크 삭제
-      async function deleteBookmark() {
-        const accountno = document.getElementById("accountNo").value;
-        const boardno = getParameterByName("boardno");
+      btn_create_tag.addEventListener('click', () => {
 
-        if (confirm("북마크를 삭제하시겠습니까?")) {
-          const response = await fetch("/bookmark/delete", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              accountno: accountno,
-              boardno: boardno,
-            }),
-          });
+        let content = content_tag.value.trim();
+        let breplypasswd = password_tag.value.trim();
+        let file = file_tag.files[0];
 
-          const result = await response.json();
+        if (content.length == 0) {
+          alert('내용을 입력해주세요.');
+        } else {
+          if (breplypasswd.length == 0) {
+            alert('비밀번호를 설정해주세요.');
+          } else {
+            let formData = new FormData();
+            formData.append('boardno', '[[${boardVO.boardno}]]');
+            formData.append('breplycont', content);
+            formData.append('breplypasswd', breplypasswd);
+            if (file) { // 파일이 존재할 경우에만 추가
+              formData.append('file1MF', file);
+            }
+
+            fetch("/breply/create", {
+              method: "post",
+              body: formData
+            })
+              .then(response => response.json())
+              .then(data => {
+                // 등록 후 처리
+                content_tag.value = '';
+                password_tag.value = '';
+                file_tag.value = '';
+                content_tag.focus();
+                // list_by_contentsno_join();
+              })
+              .catch(error => {
+                console.error('댓글 등록 실패:', error);
+              });
+          }
+        }
+      });
+    }
+  </script>
+
+
+  <!-- 북마크 스크립트 -->
+  <script>
+    // URL 파라미터에서 특정 값을 추출하는 함수
+    function getParameterByName(name, url = window.location.href) {
+      name = name.replace(/[\[\]]/g, "\\$&");
+      let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return "";
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    // 북마크 추가
+    async function addBookmark() {
+      const currentUrl = window.location.href; // 현재 페이지의 URL
+      const accountNo = document.getElementById("accountNo").value;
+      const boardno = getParameterByName("boardno");
+
+      try {
+        const response = await fetch("/bookmark/add", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            accountno: accountNo,
+            bookmarkurl: currentUrl,
+            boardno: boardno,
+          }),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
           alert(result.message);
-          if (result.result) {
-            // 성공적으로 삭제되었을 경우 필요한 처리
-          } else {
-            // 삭제에 실패한 경우 필요한 처리
-          }
+        } else {
+          alert("이미 북마크에 등록되어 있습니다.");
+        }
+      } catch (error) {
+        console.error("북마크 저장에 실패했습니다.", error);
+        alert("북마크 저장에 실패했습니다.");
+      }
+    }
+
+    // 북마크 삭제
+    async function deleteBookmark() {
+      const accountno = document.getElementById("accountNo").value;
+      const boardno = getParameterByName("boardno");
+
+      if (confirm("북마크를 삭제하시겠습니까?")) {
+        const response = await fetch("/bookmark/delete", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            accountno: accountno,
+            boardno: boardno,
+          }),
+        });
+
+        const result = await response.json();
+        alert(result.message);
+        if (result.result) {
+          // 성공적으로 삭제되었을 경우 필요한 처리
+        } else {
+          // 삭제에 실패한 경우 필요한 처리
         }
       }
-    </script>
+    }
+  </script>
 
-    <aside class="aside_right" th:if="${session.managerno >= 1 || session.accountno == boardVO.accountno}">
-      <a th:href="@{|/board/create?crudcateno=${boardVO.crudcateno}|}">등록</a>
-      <span class="menu_divide">│</span>
-      <a th:href="@{|/board/update_board?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}">글 수정</a>
-      <span class="menu_divide">│</span>
-      <a th:href="@{|./update_file?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}">파일 수정</a>
-      <span class="menu_divide">│</span>
-      <a th:href="@{|/board/youtube?crudcateno=${boardVO.crudcateno}&boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}">Youtube</a>
-      <span class="menu_divide">│</span>
-      <a th:href="@{|./delete?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}&crudcateno=${boardVO.crudcateno}|}">삭제</a>
-      <span class="menu_divide">│</span>
-      <button onclick="addBookmark()">북마크 추가</button>
-      <span class="menu_divide">│</span>
-      <button onclick="deleteBookmark()">북마크 삭제</button>
-      <span class="menu_divide">│</span>
-      <a href="javascript:location.reload();">새로고침</a>
-      <span class="menu_divide">│</span>
-      <a th:href="@{|./list_cno?crudcateno=${crudcateVO.crudcateno}&word=${word}&now_page=${now_page}|}">목록</a>
-      <span class="menu_divide">│</span>
-    </aside>
 
-    <aside class="aside_right" th:unless="${session.managerno >= 1 || session.accountno == boardVO.accountno}">
-      <span class="menu_divide">│</span>
-      <a href="javascript:location.reload();">새로고침</a>
-      <span class="menu_divide">│</span>
-      <a th:href="@{|./list_cno?crudcateno=${crudcateVO.crudcateno}&word=${word}&now_page=${now_page}|}">목록</a>
-      <span class="menu_divide">│</span>
-      <a th:href="@{|/breply/create?boardno=${boardVO.boardno}|}">댓글</a>
-      <span class="menu_divide">│</span>
-      <a th:href="@{|/breply/list?boardno=${boardVO.boardno}|}">댓글 목록</a>
-      <span class="menu_divide">│</span>
 
-      <button onclick="addBookmark()" th:if="${session.managerno != null or session.accountno != null}">북마크 추가</button>
-      <span class="menu_divide" th:if="${session.managerno != null or session.accountno != null}">│</span>
-      <button onclick="deleteBookmark()" th:if="${session.managerno != null or session.accountno != null}">북마크 삭제</button>
-      <span class="menu_divide" th:if="${session.managerno != null or session.accountno != null}">│</span>
-    </aside>
+  <aside class="aside_right" th:if="${session.managerno >= 1 || session.accountno == boardVO.accountno}">
+    <a th:href="@{|/board/create?crudcateno=${boardVO.crudcateno}|}">등록</a>
+    <span class="menu_divide">│</span>
+    <a th:href="@{|/board/update_board?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}">글 수정</a>
+    <span class="menu_divide">│</span>
+    <a th:href="@{|./update_file?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}">파일 수정</a>
+    <span class="menu_divide">│</span>
+    <a
+      th:href="@{|/board/youtube?crudcateno=${boardVO.crudcateno}&boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}">Youtube</a>
+    <span class="menu_divide">│</span>
+    <a
+      th:href="@{|./delete?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}&crudcateno=${boardVO.crudcateno}|}">삭제</a>
+    <span class="menu_divide">│</span>
+    <button onclick="addBookmark()">북마크 추가</button>
+    <span class="menu_divide">│</span>
+    <button onclick="deleteBookmark()">북마크 삭제</button>
+    <span class="menu_divide">│</span>
+    <a href="javascript:location.reload();">새로고침</a>
+    <span class="menu_divide">│</span>
+    <a th:href="@{|./list_cno?crudcateno=${crudcateVO.crudcateno}&word=${word}&now_page=${now_page}|}">목록</a>
+    <span class="menu_divide">│</span>
+  </aside>
 
-    <div class="menu_line"></div>
-    <input type="hidden" name="crudcateno" th:value="${param.crudcateno}" />
-    <input type="hidden" id="accountNo" th:value="${session.accountno}" />
-    <!-- 계정 번호를 설정 -->
+  <aside class="aside_right" th:unless="${session.managerno >= 1 || session.accountno == boardVO.accountno}">
+    <span class="menu_divide">│</span>
+    <a href="javascript:location.reload();">새로고침</a>
+    <span class="menu_divide">│</span>
+    <a th:href="@{|./list_cno?crudcateno=${crudcateVO.crudcateno}&word=${word}&now_page=${now_page}|}">목록</a>
+    <span class="menu_divide">│</span>
+    <a th:href="@{|/breply/create?boardno=${boardVO.boardno}|}">댓글</a>
+    <span class="menu_divide">│</span>
+    <a th:href="@{|/breply/list?boardno=${boardVO.boardno}|}">댓글 목록</a>
+    <span class="menu_divide">│</span>
 
-    <fieldset class="fieldset_basic">
-      <ul>
-        <li class="li_none">
-          <div style="width: 100%; word-break: break-all">
-            <div th:if="${boardVO.bphoto.endsWith('jpg') || boardVO.bphoto.endsWith('png')  || boardVO.bphoto.endsWith('gif')}">
-              <img th:src="@{|/board/storage/${boardVO.bphotosaved}|}" style="width: 50%; float: left; margin-top: 0.5%; margin-right: 1%" />
-            </div>
+    <button onclick="addBookmark()" th:if="${session.managerno != null or session.accountno != null}">북마크 추가</button>
+    <span class="menu_divide" th:if="${session.managerno != null or session.accountno != null}">│</span>
+    <button onclick="deleteBookmark()" th:if="${session.managerno != null or session.accountno != null}">북마크 삭제</button>
+    <span class="menu_divide" th:if="${session.managerno != null or session.accountno != null}">│</span>
+  </aside>
 
-            <span style="font-size: 1.5em; font-weight: bold" th:text="${boardVO.btitle}"></span>
-            <span style="font-size: 1em" th:text="${boardVO.bdate }"></span><br /><br />
-            <div style="white-space: pre-wrap"><span th:text="${boardVO.bcontent}"></span></div>
-          </div>
-        </li>
+  <div class="menu_line"></div>
+  <input type="hidden" name="crudcateno" th:value="${param.crudcateno}" />
+  <input type="hidden" id="accountNo" th:value="${session.accountno}" />
+  <!-- 계정 번호를 설정 -->
 
-        <li class="li_none" th:text="|검색어(키워드): ${boardVO.btag}|"></li>
-
-        <li class="li_none" th:if="${boardVO.bsize > 0}">
-          <div>
-            <!-- ServletRegister.java: registrationBean.addUrlMappings("/download"); -->
-            첨부 파일:
-            <a
-              th:href="@{|/download?dir=/board/storage&filename=${boardVO.bphotosaved}&downname=${boardVO.bphoto}|}"
-              th:text="|${boardVO.bphoto}|"
-            ></a>
-            <span th:text="|(${boardVO.bsize_label})|"></span>
-          </div>
-        </li>
-
-        <li
-          class="li_none"
-          style="clear: both; padding-top: 10px; padding-bottom: 25px"
-          th:if="${boardVO.byoutube != null and boardVO.byoutube.length() > 0}"
-        >
-          <div style="text-align: center; width: 640px; margin: 0px auto" th:utext="${boardVO.byoutube}"></div>
-        </li>
-      </ul>
-      <!-- /cate/list_all_component.html 파일의 list_all_fragment import -->
-      <div th:replace="~{th/gpa/avgscore :: avgscore}"></div>
-
+  <fieldset class="fieldset_basic">
+    <ul>
       <li class="li_none">
-        <!-- ------------------------------ 댓글 영역 시작 ------------------------------ -->
-       
-        <DIV style='width: 100%; margin: 0px auto; clear:both; text-align:center;'>
-          <form name='frm_reply' id='frm_reply' enctype="multipart/form-data"> <!-- 댓글 등록 폼 -->
-            <input type='hidden' name='boardno' id='boardno' value='${boardno}'>
-          
-            <!-- 댓글 입력 창 -->
-            <textarea name='breplycont' id='breplycont' style='width: 100%; height: 60px;' class="form-control" placeholder="댓글 작성, 로그인해야 등록 할 수 있습니다." autofocus='autofocus'></textarea>
-          
-            <div style="margin:5px auto; width: 80%; display: flex; align-items: center;">
-                <input type='file' class="form-control" name='file1MF' id='file1MF' style="width: 60%;" placeholder="파일 선택">
-                <input type="password" name="breplypasswd" id="breplypasswd" value="" class="form-control" style="width: 20%;" placeholder="비밀번호를 입력해주세요">
-            </div>
-          
-            <button type='button' id='btn_create'>&nbsp;&nbsp;등&nbsp;&nbsp;록&nbsp;&nbsp;</button>
-          </form>
-          <DIV id='reply_list' data-replypage='1'>  <!-- 댓글 목록 -->
-            등록된 댓글이 없습니다.
-          
-          </DIV>
-          <DIV id='reply_list_btn' style='border: none'>
-              <button id='btn_add' style='width: 100%;'>더보기 ▽</button>
-          </DIV>  
-        
+        <div style="width: 100%; word-break: break-all">
+          <div
+            th:if="${boardVO.bphoto.endsWith('jpg') || boardVO.bphoto.endsWith('png')  || boardVO.bphoto.endsWith('gif')}">
+            <img th:src="@{|/board/storage/${boardVO.bphotosaved}|}"
+              style="width: 50%; float: left; margin-top: 0.5%; margin-right: 1%" />
+          </div>
+
+          <span style="font-size: 1.5em; font-weight: bold" th:text="${boardVO.btitle}"></span>
+          <span style="font-size: 1em" th:text="${boardVO.bdate }"></span><br /><br />
+          <div style="white-space: pre-wrap"><span th:utext="${content}"></span></div>
+        </div>
+      </li>
+      
+      <div id="tooltip"></span></div>
+
+      <li class="li_none" th:text="|검색어(키워드): ${boardVO.btag}|"></li>
+
+      <li class="li_none" th:if="${boardVO.bsize > 0}">
+        <div>
+          <!-- ServletRegister.java: registrationBean.addUrlMappings("/download"); -->
+          첨부 파일:
+          <a th:href="@{|/download?dir=/board/storage&filename=${boardVO.bphotosaved}&downname=${boardVO.bphoto}|}"
+            th:text="|${boardVO.bphoto}|"></a>
+          <span th:text="|(${boardVO.bsize_label})|"></span>
+        </div>
+      </li>
+
+      <li class="li_none" style="clear: both; padding-top: 10px; padding-bottom: 25px"
+        th:if="${boardVO.byoutube != null and boardVO.byoutube.length() > 0}">
+        <div style="text-align: center; width: 640px; margin: 0px auto" th:utext="${boardVO.byoutube}"></div>
+      </li>
+    </ul>
+    <!-- /cate/list_all_component.html 파일의 list_all_fragment import -->
+    <div th:replace="~{th/gpa/avgscore :: avgscore}"></div>
+
+    <li class="li_none">
+      <!-- ------------------------------ 댓글 영역 시작 ------------------------------ -->
+
+      <DIV style='width: 100%; margin: 0px auto; clear:both; text-align:center;'>
+        <form name='frm_reply' id='frm_reply' enctype="multipart/form-data"> <!-- 댓글 등록 폼 -->
+          <input type='hidden' name='boardno' id='boardno' value='${boardno}'>
+
+          <!-- 댓글 입력 창 -->
+          <textarea name='breplycont' id='breplycont' style='width: 100%; height: 60px;' class="form-control"
+            placeholder="댓글 작성, 로그인해야 등록 할 수 있습니다." autofocus='autofocus'></textarea>
+
+          <div style="margin:5px auto; width: 80%; display: flex; align-items: center;">
+            <input type='file' class="form-control" name='file1MF' id='file1MF' style="width: 60%;" placeholder="파일 선택">
+            <input type="password" name="breplypasswd" id="breplypasswd" value="" class="form-control"
+              style="width: 20%;" placeholder="비밀번호를 입력해주세요">
+          </div>
+
+          <button type='button' id='btn_create'>&nbsp;&nbsp;등&nbsp;&nbsp;록&nbsp;&nbsp;</button>
+        </form>
+        <DIV id='reply_list' data-replypage='1'> <!-- 댓글 목록 -->
+          등록된 댓글이 없습니다.
+
+        </DIV>
+        <DIV id='reply_list_btn' style='border: none'>
+          <button id='btn_add' style='width: 100%;'>더보기 ▽</button>
+        </DIV>
+
       </DIV>
 
       <!-- ------------------------------ 댓글 영역 종료 ------------------------------  -->
-      </li>
-      
-    </fieldset>
-  </div>
+    </li>
+
+  </fieldset>
+</div>
+
 </html>

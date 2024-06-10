@@ -23,4 +23,10 @@ public class VocabularyProc implements VocabularyProcInter {
     return list;
   }
 
+  @Override
+  public String list_mean(String voca) {
+    String mean = this.vocabularyDAO.list_mean(voca);
+    return mean;
+  }
+
 }

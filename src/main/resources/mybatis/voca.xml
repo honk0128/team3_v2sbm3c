@@ -13,5 +13,11 @@
     FROM vocabulary
     ORDER BY vocano
   </select>
+  
+  <select id="list_mean" resultType="String" parameterType="String">
+    SELECT mean
+    FROM vocabulary
+    where voca = #{voca}
+  </select>
 
 </mapper>

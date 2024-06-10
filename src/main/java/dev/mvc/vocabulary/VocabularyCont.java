@@ -20,49 +20,49 @@ public class VocabularyCont {
   @Autowired
   @Qualifier("dev.mvc.vocabulary.VocabularyProc")
   private VocabularyProcInter vocabularyProc;
-  
+
   @Autowired
   @Qualifier("dev.mvc.crudcate.CrudcateProc")
   private CrudcateProcInter crudcateProc;
-  
+
   public VocabularyCont() {
     System.out.println("-> VocabularyCont created.");
   }
-  
+
   @GetMapping(value = "/create")
   public String create(Model model, HttpSession session) {
     ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
     model.addAttribute("menu", menu);
-    
+
 //    int managerno = (int) session.getAttribute("managerno");
 //    System.out.println("->managerno: " + managerno);
-    
+
     return "th/vocabulary/create";
   }
-  
+
   @PostMapping(value = "/create")
-  public String create_proc(VocabularyVO vocabularyVO, Model model, HttpSession session){
+  public String create_proc(VocabularyVO vocabularyVO, Model model, HttpSession session) {
     int cnt = this.vocabularyProc.create_voca(vocabularyVO);
     System.out.println("-> cnt: " + cnt);
-    if(cnt == 1) {
-   
-      
+    if (cnt == 1) {
+
       model.addAttribute("code", "create_success");
       model.addAttribute("voca", vocabularyVO.getVoca());
-    }else {
+    } else {
       model.addAttribute("code", "create_fail");
     }
-    
+
     return "th/vocabulary/msg";
   }
-  
+
   @GetMapping(value = "/list")
   public String list(Model model) {
     ArrayList<VocabularyVO> list = this.vocabularyProc.list();
+    System.out.println("list: " + list);
     model.addAttribute("list", list);
-    
-    
+
     return "th/vocabulary/list";
   }
+
 
 }

@@ -16,5 +16,12 @@ public interface VocabularyDAOInter {
    * @return
    */
   public ArrayList <VocabularyVO> list();
+  
+  /**
+   * 해당 단어 뜻 출력
+   * @param voca
+   * @return
+   */
+  public String list_mean(String voca);
 
 }

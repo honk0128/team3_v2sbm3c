@@ -2,6 +2,9 @@ package dev.mvc.board;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.catalina.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -26,6 +30,8 @@ import dev.mvc.manager.ManagerProc;
 import dev.mvc.manager.ManagerProcInter;
 import dev.mvc.tool.Tool;
 import dev.mvc.tool.Upload;
+import dev.mvc.vocabulary.VocabularyProcInter;
+import dev.mvc.vocabulary.VocabularyVO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -51,6 +57,10 @@ public class BoardCont {
   @Autowired
   @Qualifier("dev.mvc.gpa.GpaProc")
   private GpaProcInter gpaProc;
+  
+  @Autowired
+  @Qualifier("dev.mvc.vocabulary.VocabularyProc")
+  private VocabularyProcInter vocabularyProc;
 
   public BoardCont() {
     System.out.println("-> BoardCont created.");
@@ -241,7 +251,16 @@ public class BoardCont {
     String bsize_label = Tool.unit(bsize);
     boardVO.setBsize_label(bsize_label);
     model.addAttribute("boardVO", boardVO);
+    
+    String content = boardVO.getBcontent();
 
+    ArrayList<VocabularyVO> vocabularyList = vocabularyProc.list();
+    for (VocabularyVO vocabulary : vocabularyList) {
+        String voca = vocabulary.getVoca();
+        content = content.replaceAll("\\b" + Pattern.quote(voca) + "\\b",
+            "<span class=\"highlight\" data-word=\"" + Matcher.quoteReplacement(voca) + "\">" + Matcher.quoteReplacement(voca) + "</span>");
+    }
+    model.addAttribute("content", content);
     CrudcateVO crudcateVO = this.crudcateProc.read(boardVO.getCrudcateno());
     model.addAttribute("crudcateVO", crudcateVO);
 
@@ -253,6 +272,16 @@ public class BoardCont {
     model.addAttribute("now_page", now_page);
 
     return "th/board/read";
+  }
+  
+  @PostMapping(value = "/api/meaning")
+  @ResponseBody
+  public Map<String, String> mean(@RequestParam String voca, Model model) {
+      String mean = this.vocabularyProc.list_mean(voca);
+      Map<String, String> response = new HashMap<>();
+      model.addAttribute("mean" + mean);
+      response.put("meaning", mean);
+      return response;
   }
 
   /**
