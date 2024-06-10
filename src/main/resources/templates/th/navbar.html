@@ -1,10 +1,8 @@
-  <head>
-  <link href="/css/style.css" rel="Stylesheet" type="text/css"> <!-- /static 기준 -->
-  
-  </head>
-  <body>
-    
-  
+<head>
+  <link href="/css/style.css" rel="Stylesheet" type="text/css" />
+  <!-- /static 기준 -->
+</head>
+<body>
   <div th:fragment="navbarFragment">
     <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
       <div class="container-fluid">
@@ -20,7 +18,7 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-  
+
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <!-- 게시판 분류 -->
@@ -41,7 +39,7 @@
                 </li>
               </ul>
             </li>
-  
+
             <!-- 회원 -->
             <li class="nav-item dropdown">
               <a
@@ -76,7 +74,7 @@
                 </li>
               </ul>
             </li>
-  
+
             <!-- 관리자 -->
             <li class="nav-item dropdown" th:if="${session.managerno >=1}">
               <a
@@ -96,7 +94,7 @@
                 <li class="nav-item"><a class="nav-link" href="/manager/list">관리자 목록</a></li>
               </ul>
             </li>
-  
+
             <!-- 댓글 -->
             <li class="nav-item dropdown" th:if="${session.managerno != null or session.accountno != null}">
               <a
@@ -118,7 +116,7 @@
                 </li>
               </ul>
             </li>
-  
+
             <!-- Ai -->
             <li class="nav-item dropdown" th:if="${session.managerno != null or session.accountno != null}">
               <a
@@ -137,9 +135,31 @@
                 </li>
               </ul>
             </li>
-  
+
+            <!-- 주간 식단 -->
+            <li class="nav-item dropdown" th:if="${session.managerno != null or session.accountno != null}">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                th:text="주간식단"
+              >
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li class="nav-item">
+                  <a class="nav-link" th:href="@{|/week/create|}">주간 식단</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" th:href="@{|/week/list_combined|}">주간 식단 목록</a>
+                </li>
+              </ul>
+            </li>
+
             <!-- 회원가입/로그인/로그아웃 -->
-            
+
             <span class="nav-item" th:if="${session.accountno == null} and ${session.managerno == null}"
               ><a class="nav-link" href="/account/signin">회원 가입</a></span
             >
@@ -149,12 +169,9 @@
             <span th:if="${session.managerno != null} or ${session.accountno != null}"
               ><a class="nav-link" href="/account/logout" th:text="@{|${session.accountno != null ? session.aid : session.mid} 로그아웃|}"></a
             ></span>
-            
           </ul>
         </div>
       </div>
     </nav>
   </div>
-  
-  
-  </body>
+</body>
