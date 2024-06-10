@@ -43,5 +43,17 @@ public class AiProc implements AiProcInter {
       int cnt = this.AiDAO.update(aiVO);
      return cnt;
     }
+
+    @Override
+    public ArrayList<AiVO> img(int accountno) {
+      ArrayList <AiVO> img = this.AiDAO.img(accountno);
+      return img;
+    }
+
+    @Override
+    public ArrayList<AiVO> img_all() {
+      ArrayList <AiVO> img_all = this.AiDAO.img_all();
+      return img_all;
+    }
     
 }

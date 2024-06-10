@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- SB가 자동으로 구현하여 연동하는 interface -->
+<mapper namespace="dev.mvc.vocabulary.VocabularyDAOInter"> <!-- SB가 자동으로 구현하여 연동하는 interface -->
+
+  <insert id="create_voca" parameterType="dev.mvc.vocabulary.VocabularyVO">
+    INSERT INTO VOCABULARY(vocano, voca, mean, managerno)
+    VALUES(voca_seq.nextval, #{voca}, #{mean}, #{managerno})
+  </insert>
+  
+  <select id="list" resultType="dev.mvc.vocabulary.VocabularyVO">
+    SELECT vocano, voca, mean, managerno
+    FROM vocabulary
+    ORDER BY vocano
+  </select>
+
+</mapper>

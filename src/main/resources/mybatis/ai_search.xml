@@ -13,6 +13,18 @@
 	FROM AI_SEARCH
 	ORDER BY SEARCHNO ASC
   </select>
+
+  
+  <select id="img" parameterType="dev.mvc.ai.AiVO">
+  SELECT IMG_SEARCH, IMG_SEARCH_SAVE, IMG_SEARCH_THUMB, IMG_SEARCH_SIZE
+  FROM AI_SEARCH
+   WHERE accountno = #{accountno}
+  </select>
+
+  <select id="img_all" parameterType="dev.mvc.ai.AiVO">
+  SELECT IMG_SEARCH, IMG_SEARCH_SAVE, IMG_SEARCH_THUMB, IMG_SEARCH_SIZE
+  FROM AI_SEARCH
+  </select>
   
   <update id="update" parameterType="dev.mvc.ai.AiVO">
     UPDATE AI_SEARCH

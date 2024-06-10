@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- SB가 자동으로 구현하여 연동하는 interface -->
+<mapper namespace="dev.mvc.answer.AnswerDAOInter"> <!-- SB가 자동으로 구현하여 연동하는 interface -->
+
+<select id="list" resultType="dev.mvc.answer.AnswerVO" parameterType="int">
+    SELECT answerno, text_answer, searchno, accountno
+    FROM ai_answer
+    WHERE accountno = #{accountno}
+  </select>
+  
+  <select id="list_all" resultType="dev.mvc.answer.AnswerVO" parameterType="int">
+    SELECT answerno, text_answer, searchno, accountno
+    FROM ai_answer
+  </select>
+
+</mapper>

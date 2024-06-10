@@ -20,6 +20,10 @@ public interface AiDAOInter {
   public int update(AiVO aiVO);
   
   public int delete(int searchno);
+  
+  public ArrayList <AiVO> img(int accountno);
+  
+  public ArrayList <AiVO> img_all();
 }
 
 
