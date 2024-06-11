@@ -2,7 +2,6 @@ package dev.mvc.brereply;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import dev.mvc.breply.BreplyVO;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +22,8 @@ import lombok.Setter;
 // );
 
 @Setter @Getter
-public class BrereplyVO {
+public class BrereplyMemberVO {
+  private String id = "";
 
   /** 대댓글 번호 */
   private int brereplyno;

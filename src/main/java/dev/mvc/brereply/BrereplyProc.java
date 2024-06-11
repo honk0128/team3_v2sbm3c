@@ -2,11 +2,14 @@ package dev.mvc.brereply;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import dev.mvc.breply.BreplyMemberVO;
 import dev.mvc.tool.Security;
+import dev.mvc.tool.Tool;
 
 @Service("dev.mvc.brereply.BrereplyProc")
 public class BrereplyProc implements BrereplyProcInter{
@@ -37,8 +40,22 @@ public class BrereplyProc implements BrereplyProcInter{
   // }
 
   @Override
-  public ArrayList<BrereplyVO> brereply_list(int breplyno) {
-    ArrayList<BrereplyVO> list = this.brereplyDAO.brereply_list(breplyno);
+  public List<BrereplyMemberVO> brereply_list(int breplyno) {
+    List<BrereplyMemberVO> list = this.brereplyDAO.brereply_list(breplyno);
+    String content = "";
+    
+    // 특수 문자 변경
+    for (BrereplyMemberVO brereplyMemberVO:list) {
+      content = brereplyMemberVO.getBrereplycont();
+      content = Tool.convertChar(content);
+      brereplyMemberVO.setBrereplycont(content);
+    }
+    
+    return list;
+  }
+
+  public List<BrereplyMemberVO> brereply_list_300(int breplyno) {
+    List<BrereplyMemberVO> list = this.brereplyDAO.brereply_list_300(breplyno);
     return list;
   }
 

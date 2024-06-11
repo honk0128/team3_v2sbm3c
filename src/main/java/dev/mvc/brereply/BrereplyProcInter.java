@@ -1,9 +1,7 @@
 package dev.mvc.brereply;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-
-import dev.mvc.breply.BreplyVO;
+import java.util.List;
 
 // import java.util.ArrayList;
 // import java.util.HashMap;
@@ -17,17 +15,17 @@ public interface BrereplyProcInter {
    */
   public int brereply_create(BrereplyVO brereplyVO);
 
-  // /**
-  //  * 댓글 목록
-  //  * @return
-  //  */
-  // public ArrayList<BrereplyVO> brereply_list();
+  /**
+   * 댓글 목록
+   * @return
+   */
+  public List<BrereplyMemberVO> brereply_list(int breplyno);
 
   /**
    * 댓글 목록
    * @return
    */
-  public ArrayList<BrereplyVO> brereply_list(int breplyno);
+  public List<BrereplyMemberVO> brereply_list_300(int breplyno);
   
   /**
    * 대댓글 조회
@@ -48,7 +46,7 @@ public interface BrereplyProcInter {
    * @param brereplyVO
    * @return
    */
-  public int brereply_delete(int brereplyVO);
+  public int brereply_delete(int brereplyno);
 
   /**
    * 비밀번호 확인

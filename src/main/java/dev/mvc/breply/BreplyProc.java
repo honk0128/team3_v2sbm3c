@@ -2,11 +2,13 @@ package dev.mvc.breply;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev.mvc.tool.Security;
+import dev.mvc.tool.Tool;
 
 @Service("dev.mvc.breply.BreplyProc")
 public class BreplyProc implements BreplyProcInter{
@@ -31,8 +33,23 @@ public class BreplyProc implements BreplyProcInter{
   }
 
   @Override
-  public ArrayList<BreplyVO> reply_list(int boardno) {
-    ArrayList<BreplyVO> list = this.breplyDAO.reply_list(boardno);
+  public List<BreplyMemberVO> reply_list(int boardno) {
+    List<BreplyMemberVO> list = this.breplyDAO.reply_list(boardno);
+    String content = "";
+    
+    // 특수 문자 변경
+    for (BreplyMemberVO breplyMemberVO:list) {
+      content = breplyMemberVO.getBreplycont();
+      content = Tool.convertChar(content);
+      breplyMemberVO.setBreplycont(content);
+    }
+
+    return list;
+  }
+
+  @Override
+  public List<BreplyMemberVO> reply_list_300(int boardno) {
+    List<BreplyMemberVO> list = this.breplyDAO.reply_list_300(boardno);
     return list;
   }
 
@@ -62,9 +79,9 @@ public class BreplyProc implements BreplyProcInter{
   @Override
   public int password_check(HashMap<String, Object> map) {
     String breplypasswd = (String)map.get("breplypasswd");
-    System.out.println("-> passwd type: " + (String)map.get("breplypasswd"));
+    // System.out.println("-> passwd type: " + (String)map.get("breplypasswd"));
     breplypasswd = this.security.aesEncode(breplypasswd);
-    System.out.println(breplypasswd);
+    // System.out.println(breplypasswd);
     map.put("breplypasswd", breplypasswd);
 
     int cnt = this.breplyDAO.password_check(map);

@@ -1,7 +1,7 @@
 package dev.mvc.breply;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public interface BreplyDAOInter {
   /**
@@ -12,19 +12,19 @@ public interface BreplyDAOInter {
    */
   public int replycreate(BreplyVO breplyVO);
 
-  // /**
-  //  * 댓글 목록
-  //  * select id="reply_list" resultType="dev.mvc.reply.breplyVO"
-  //  * @return
-  //  */
-  // public ArrayList<BreplyVO> reply_list();
-
   /**
    * 댓글 목록
    * select id="reply_list" resultType="dev.mvc.reply.breplyVO"
    * @return
    */
-  public ArrayList<BreplyVO> reply_list(int boardno);
+  public List<BreplyMemberVO> reply_list(int boardno);
+
+  /**
+   * 댓글 목록 300건
+   * select id="reply_list" resultType="dev.mvc.reply.breplyVO"
+   * @return
+   */
+  public List<BreplyMemberVO> reply_list_300(int boardno);
 
   /**
    * 댓글 조회
