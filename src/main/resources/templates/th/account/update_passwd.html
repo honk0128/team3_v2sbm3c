@@ -18,19 +18,11 @@
           <div th:case="find_passwd_fail">
             <span class="span_fail">기존 비밀번호가 일치하지 않습니다. 다시 시도해주세요.</span><br>
             <button type='button'
-                         th:attr="onclick=|location.href='/account/passwd_update_form'|"
+                         onclick="history.back()"
                          class="btn btn-primary btn-sm">다시 시도</button>
           </div>
           
-          
-        
-        <li class="li_none">
-          <div th:if="${cnt == 0}">
-            <button type="button" onclick="history.back()" class="btn btn-secondary btn-sm">다시 시도</button>
-          </div>
-          <div th:if="${cnt == 1}">
-            <button type="button" onclick="location.href='/'" class="btn btn-secondary btn-sm">닫기</button>
-          </div>
+
         </li>
       </ul>
     </fieldset>
