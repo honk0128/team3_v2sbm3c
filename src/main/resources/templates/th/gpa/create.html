@@ -10,6 +10,9 @@
 </head>
  
 <body layout:fragment="content">
+  
+  <div th:fragment="create">
+  
 <c:import url="/menu/top.do" />
  
   <div class='title_line'> 별점 등록</div>
@@ -27,12 +30,12 @@
   
   <div class='menu_line'></div>
   
-  <form name='frm' method='post' action='./create' id="starscore" enctype="multipart/form-data">
-    <input type="hidden" name="boardno" th:value="${gpaVO.boardno }">
+  <form name='frm' method='post' action='/gpa/create'  id="starscore" enctype="multipart/form-data">
+    <input type="hidden" name="boardno" th:value="${boardVO.boardno }">
     
-    <p th:text="${param.boardno }"></p>
+   
     <div  style="margin: 5px auto; width: 50%">
-       <span id="starspan" class="text-bold">별점을 선택해주세요</span>
+       <span id="starspan" class="text-bold">별점을 등록해주세요</span>
        <fieldset>
     <input type="radio" name="reviewStar" value="5" id="rate1"><label
       for="rate1">★</label>
@@ -61,6 +64,7 @@
 
  
 <jsp:include page="../menu/bottom.jsp" flush='false' />
+</div>
 </body>
  
 </html>

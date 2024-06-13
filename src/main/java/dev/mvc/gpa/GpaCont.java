@@ -48,19 +48,22 @@ public class GpaCont {
   }
   
   @GetMapping(value = "/create")
-    public String create(GpaVO gpaVO, Model model, @RequestParam("boardno") Integer boardno){
-    
+    public String create( Model model, @RequestParam("boardno") int boardno, GpaVO gpaVO){
+    gpaVO.setBoardno(boardno);
     model.addAttribute("boardno", boardno);
+    
+    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    model.addAttribute("menu", menu);
     
     return "th/gpa/create"; 
         
   }
   
- 
+  
 
   
   @PostMapping(value="/create")
-  public String creategpa(@RequestParam("reviewStar") int star,@RequestParam("boardno") int boardno, Model model, GpaVO gpaVO, HttpSession session, String aid, RedirectAttributes ra, BoardVO boardVO) {
+  public String creategpa(@RequestParam("reviewStar") int star,@RequestParam("boardno") int boardno, Model model, GpaVO gpaVO, HttpSession session, String aid, RedirectAttributes ra, BoardVO boardVO,@RequestParam(name = "now_page", defaultValue = "1") int now_page) {
 
    
       String sessionAid = (String) session.getAttribute("aid");
@@ -69,18 +72,24 @@ public class GpaCont {
       GpaVO gpaVO2 = gpaproc.readById(sessionAid);
       int accountno = gpaVO2.getAccountno();
 
+      System.out.println(accountno);
       
-      
+      gpaVO.setGpascore(star);
+      gpaVO.setAccountno(accountno);
+      gpaVO.setBoardno(boardno);
      
       int cnt = gpaproc.create(gpaVO);
 
       if (cnt == 1) {
-        gpaVO.setGpascore(star);
-        gpaVO.setAccountno(accountno);
-        gpaVO.setBoardno(boardno);
         
-        model.addAttribute("boardVO", boardVO);
-        return "redirect:/gpa/list?boardno=" + boardVO.getBoardno(); 
+        
+        model.addAttribute("gapVO", gpaVO);
+        return "redirect:/board/read?boardno=" + boardVO.getBoardno() + "&word=" + "&now_page=" + now_page ;
+      /**  return "redirect:/gpa/list?boardno=" + boardVO.getBoardno(); **/
+        /**http://localhost:9093/board/read?boardno=7&word=&now_page=1
+        redirect:/contents/read.do?contentsno=" + contentsVO.getContentsno() + "&cateno=" + contentsVO.getCateno());             
+    
+       **/
           } else {
           
           ra.addFlashAttribute("error", "GPA 생성에 실패했습니다.");
@@ -91,13 +100,13 @@ public class GpaCont {
   
   
   @GetMapping(value = "/list")
-  public String list(HttpSession session, Model model, @RequestParam("boardno")int boardno , GpaVO gpaVO, BoardVO boardVO) {
+  public String list(HttpSession session, Model model, @RequestParam(value = "boardno", required = false) Integer boardno,  GpaVO gpaVO, BoardVO boardVO) {
 
     gpaVO.getBoardno();
     
     ArrayList<GpaVO> list = this.gpaproc.list();
     model.addAttribute("list", list);
-    
+    model.addAttribute("gpaVO", gpaVO);
     model.addAttribute("boardVO", boardVO);
     
     ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
@@ -105,7 +114,6 @@ public class GpaCont {
     
     return "th/gpa/list"; // templates/member/list.html
   }
-  
   
   @GetMapping(value = "/avgscore")
   public String avgscore(HttpSession session, Model model, @RequestParam("boardno")int boardno , GpaVO gpaVO) {
@@ -120,6 +128,7 @@ public class GpaCont {
     
     return "th/gpa/avgscore"; // templates/member/list.html
   }
+  
   
   
   @GetMapping(value = "/update")

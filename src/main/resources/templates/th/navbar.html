@@ -72,6 +72,9 @@
                 <li class="nav-item" th:if="${session.managerno != null or session.accountno != null}">
                   <a class="nav-link" th:href="@{|/account/delete?accountno=${session.accountno}|}">회원 정보 삭제</a>
                 </li>
+                <li class="nav-item" th:if="${session.managerno != null or session.accountno != null}">
+                  <a class="nav-link" th:href="@{|/gpa/list|}">별점 리스트</a>
+                </li>
               </ul>
             </li>
 
