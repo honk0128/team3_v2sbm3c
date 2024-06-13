@@ -21,36 +21,42 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 북마크 검색 카운트 -->
     <select id="bm_list_count" resultType="int" parameterType="HashMap">
         SELECT COUNT(*) as cnt
-        FROM bookmark
+        FROM bookmark bm
+        INNER JOIN board b ON bm.boardno = b.boardno
         <choose>
-        <when test="word == null or word == ''"> <!-- 검색하지 않는 경우의 레코드 갯수 -->
-            WHERE accountno = #{accountno}
-        </when>
-        <otherwise> <!-- 검색하는 경우의 레코드 갯수 -->
-            WHERE accountno = #{accountno} AND (UPPER(bookmarkurl) LIKE '%' || UPPER(#{word}) || '%')
-        </otherwise>
+            <when test="word == null or word == ''"> <!-- 검색하지 않는 경우의 레코드 갯수 -->
+                WHERE bm.accountno = #{accountno}
+            </when>
+            <otherwise> <!-- 검색하는 경우의 레코드 갯수 -->
+                WHERE bm.accountno = #{accountno} AND (
+                    UPPER(bm.bookmarkurl) LIKE '%' || UPPER(#{word}) || '%' OR
+                    UPPER(b.btitle) LIKE '%' || UPPER(#{word}) || '%' OR
+                    UPPER(b.bcontent) LIKE '%' || UPPER(#{word}) || '%' OR
+                    UPPER(b.btag) LIKE '%' || UPPER(#{word}) || '%'
+                )
+            </otherwise>
         </choose>
-    </select>   
+    </select>
 
-    <!--북마크 검색 + 페이징 -->
+    <!-- 북마크 검색 + 페이징 -->
     <select id="bm_list" parameterType="HashMap" resultType="dev.mvc.bookmark.BookmarkVO">
-        SELECT bookmarkno, accountno, boardno, bookmarkurl, bmdate, r
+        SELECT bookmarkno, accountno, boardno, bookmarkurl, bmdate, btitle, bcontent, btag, r 
         FROM (
-            SELECT bookmarkno, accountno, boardno, bookmarkurl, bmdate, rownum as r
-            FROM (
-                SELECT bookmarkno, accountno, boardno, bookmarkurl, bmdate
-                FROM bookmark
-                WHERE accountno = #{accountno}
-                <if test="word != null and word != ''">
-                    AND (UPPER(bookmarkurl) LIKE '%' || UPPER(#{word}) || '%'
-                    OR UPPER(bmdate) LIKE '%' || UPPER(#{word}) || '%'
-                    OR UPPER(boardno) LIKE '%' || UPPER(#{word}) || '%')
-                </if>
-                ORDER BY bookmarkno DESC
-            )
+            SELECT bm.bookmarkno, bm.accountno, bm.boardno, bm.bookmarkurl, bm.bmdate, b.btitle, b.bcontent, b.btag, rownum as r
+            FROM bookmark bm
+            INNER JOIN board b ON bm.boardno = b.boardno
+            WHERE bm.accountno = #{accountno}
+            <if test="word != null and word != ''">
+                AND (
+                    UPPER(bm.bookmarkurl) LIKE '%' || UPPER(#{word}) || '%' OR
+                    UPPER(b.btitle) LIKE '%' || UPPER(#{word}) || '%' OR
+                    UPPER(b.bcontent) LIKE '%' || UPPER(#{word}) || '%' OR
+                    UPPER(b.btag) LIKE '%' || UPPER(#{word}) || '%'
+                )
+            </if>
+            ORDER BY bm.bookmarkno DESC
         )
         WHERE <![CDATA[ r >= #{start_num} AND r <= #{end_num} ]]>
     </select>
-
 
 </mapper>

@@ -58,22 +58,43 @@ private WeekProcInter weekProc;
         System.out.println("-> WeekCont created.");
     }
 
-
+    /**
+     * Create 폼
+     * http://localhost:9093/week/create
+     * @param session
+     * @param model
+     * @param weekVO
+     * @param accountno
+     * @return
+     */
     @GetMapping(value = "/create")
     public String create(HttpSession session, Model model, WeekVO weekVO, Integer accountno) {
-        ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
-        model.addAttribute("menu", menu);
+        if (session.getAttribute("accountno") != null) {
+            ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+            model.addAttribute("menu", menu);
 
-        // 세션에서 accountno 가져오기
-        accountno = (Integer) session.getAttribute("accountno");
-        model.addAttribute("accountno", accountno);
+            // 세션에서 accountno 가져오기
+            accountno = (Integer) session.getAttribute("accountno");
+            model.addAttribute("accountno", accountno);
 
-        return "th/week/create";
+            return "th/week/create";
+        }      // 로그인되지 않은 경우
+        return "redirect:/account/login_need";
     }
 
+    /**
+     * Create 폼 처리
+     * @param request
+     * @param session
+     * @param model
+     * @param weekVO
+     * @param ra
+     * @param accountno
+     * @return
+     */
     @PostMapping(value = "/create")
     public String create_process(HttpServletRequest request, HttpSession session, Model model, WeekVO weekVO, RedirectAttributes ra, Integer accountno) {
-        if (session.getAttribute("accountno") != null || session.getAttribute("managerno") != null) { // 회원으로 로그인 했을 경우
+        if (session.getAttribute("accountno") != null) { // 회원으로 로그인 했을 경우
             int cnt = this.weekProc.create(weekVO);
             if (cnt == 1) {
                 ra.addAttribute("accountno", accountno); // controller -> controller: O
@@ -86,57 +107,16 @@ private WeekProcInter weekProc;
                 return "redirect:/week/msg"; // Post -> Get - param...
             }
         }
-        return "redirect:/account/login_form_need"; // /member/login_cookie_need.html
+        return "redirect:/account/login_need"; // /member/login_cookie_need.html
     }
 
-        // http://localhost:9093/week/list_wds?accountno=8
-    @GetMapping(value = "/list_wds")
-    public String list_wds(HttpSession session, Model model, Integer accountno) {
-        Integer sessionAccountno = (Integer) session.getAttribute("accountno");
-        
-        // 메뉴
-        ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
-        model.addAttribute("menu", menu);
-
-        if (sessionAccountno != null) { // 세션에 저장된 계정 번호가 있을 때
-            // 주어진 계정 번호에 해당하는 주간 메뉴의 weekdates 목록을 가져옵니다.
-            ArrayList<WeekVO> weekList = this.weekProc.list_wds(sessionAccountno);
-            
-            model.addAttribute("weekList", weekList);
-
-            accountno = (Integer) session.getAttribute("accountno");
-            model.addAttribute("accountno", accountno);
-
-
-            return "th/week/list_wds";
-        } else {
-            return "redirect:/manager/login_form_need";
-        }
-    }
-
-
-    @GetMapping(value = "/list_all")
-    public String list_all(HttpSession session, Model model, @RequestParam(value = "weekdates") String weekdates, @RequestParam(value = "accountno") Integer accountno) {
-
-        // 메뉴
-        ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
-        model.addAttribute("menu", menu);
-
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("accountno", accountno);
-        map.put("weekdates", weekdates);
-        
-        // 선택한 주간 식단표 데이터 가져오기
-        ArrayList<WeekVO> weekList = weekProc.list_all(map);
-        model.addAttribute("weekList", weekList);
-
-        WeekVO weekVO = new WeekVO(); // 예시로 객체 생성하셨다면 실제 데이터로 객체를 생성해야 합니다.
-        model.addAttribute("weekVO", weekVO); // 모델에 weekVO 객체를 전달
-
-            
-        return "th/week/list_all";
-    }
-
+    /**
+     * 주간 식단 선택 + 조회
+     * @param session
+     * @param model
+     * @param weekdates
+     * @return
+     */
     @GetMapping(value = "/list_combined")
     public String list_combined(HttpSession session, Model model, @RequestParam(value = "weekdates", required = false) String weekdates) {
 
@@ -168,10 +148,18 @@ private WeekProcInter weekProc;
             model.addAttribute("accountno", sessionAccountno);
             return "th/week/list_combined";
         } else {
-            return "redirect:/manager/login_form_need";
+            return "redirect:/account/login_need";
         }
     }
 
+    /**
+     * 삭제 처리
+     * @param model
+     * @param accountno
+     * @param weekdates
+     * @param redirectAttributes
+     * @return
+     */
     @PostMapping(value = "/delete")
     public String delete_process(Model model, @RequestParam("accountno") Integer accountno, @RequestParam("weekdates") String weekdates, RedirectAttributes redirectAttributes) {
 
@@ -189,6 +177,14 @@ private WeekProcInter weekProc;
         }
     }
 
+    /**
+     * 수정 폼
+     * @param session
+     * @param model
+     * @param accountno
+     * @param weekdates
+     * @return
+     */
     @GetMapping(value = "/update")
     public String update(HttpSession session, Model model, @RequestParam(value = "accountno") Integer accountno, @RequestParam(value = "weekdates") String weekdates) {
         ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
@@ -211,9 +207,18 @@ private WeekProcInter weekProc;
     
         return "th/week/update";
     }
-    
-    
 
+    /**
+     * 수정 처리
+     * @param request
+     * @param session
+     * @param model
+     * @param weekVO
+     * @param ra
+     * @param accountno
+     * @param weekdates
+     * @return
+     */
     @PostMapping(value = "/update")
     public String update_process(HttpServletRequest request, HttpSession session, Model model, WeekVO weekVO, RedirectAttributes ra, Integer accountno, String weekdates) {
         if (session.getAttribute("accountno") != null || session.getAttribute("managerno") != null) { // 회원으로 로그인 했을 경우
@@ -230,11 +235,7 @@ private WeekProcInter weekProc;
                 return "redirect:/week/msg"; // Post -> Get - param...
             }
         }
-        return "redirect:/account/login_form_need"; // /member/login_cookie_need.html
+        return "redirect:/account/login_need"; // /member/login_cookie_need.html
     }
-
-    
-    
-
 
 }

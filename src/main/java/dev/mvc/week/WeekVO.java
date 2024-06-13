@@ -6,13 +6,13 @@ import lombok.Setter;
 @Setter @Getter
 public class WeekVO {
   
-  /** 시퀀스 번호 */
+  /** 주간 식단 시퀀스 번호 */
   private int weekno;
 
   /** 회원 번호 */
   private int accountno;
 
-  /** 기간 */
+  /** 기간 (일주일) */
   private String weekdates;
 
   /** 아침 메뉴 */

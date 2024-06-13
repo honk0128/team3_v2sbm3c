@@ -69,24 +69,49 @@ public interface CrudcateDAOInter {
   public int visible_n(int crudcateno);
 
   /**
-   * 
+   * 대분류 출력 리스트
    * @return
    */
   public ArrayList<CrudcateVO> list_all_name_y();
 
   /**
-   * 
+   * 중분류 출력 리스트
    * @param name
    * @return
    */
   public ArrayList<CrudcateVO> list_all_namesub_y(String name);
 
+  /**
+   * 검색 리스트
+   * @param word
+   * @return
+   */
   public ArrayList<CrudcateVO> list_search(String word);
 
+  /**
+   * 리스트 검색, 페이징
+   * @param map
+   * @return
+   */
   public ArrayList<CrudcateVO> list_search_paging(Map<String, Object> map);
 
+  /**
+   * 리스트 검색 카운터
+   * @param word
+   * @return
+   */
   public int list_search_count(String word);
 
+  /**
+   * 페이징 박스
+   * @param now_page
+   * @param word
+   * @param list_file
+   * @param search_count
+   * @param record_per_page
+   * @param page_per_blocK
+   * @return
+   */
   public String pagingBox(int now_page, String word, String list_file, int search_count, int record_per_page, int page_per_blocK);
 
 }

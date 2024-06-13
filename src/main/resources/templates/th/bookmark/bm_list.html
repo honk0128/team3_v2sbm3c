@@ -53,14 +53,20 @@
       <table class="table table-striped" style="width: 100%">
         <colgroup>
           <col style="width: 5%" />
+          <col style="width: 5%" />
           <col style="width: 10%" />
-          <col style="width: 65%" />
+          <col style="width: 30%" />
+          <col style="width: 10%" />
+          <col style="width: 10%" />
           <col style="width: 10%" />
           <col style="width: 10%" />
         </colgroup>
         <tr>
           <th class="th_bs">순서</th>
-          <th class="th_bs">게시글 번호</th>
+          <th class="th_bs">번호</th>
+          <th class="th_bs">제목</th>
+          <th class="th_bs">내용</th>
+          <th class="th_bs">검색어</th>
           <th class="th_bs">북마크 링크</th>
           <th class="th_bs">등록일</th>
           <th class="th_bs">기타</th>
@@ -77,10 +83,18 @@
           <td class="td_basic" style="vertical-align: middle; text-align: center">
             <span th:text="${bookmarkVO.boardno}"> </span>
           </td>
+
           <td class="td_basic" style="vertical-align: middle; text-align: center">
-            <a th:href="@{|/board/read?boardno=${bookmarkVO.boardno}&word=&now_page=|}">
-              <span th:text="${bookmarkVO.bookmarkurl}" style="font-weight: bold"></span
-            ></a>
+            <span th:text="${bookmarkVO.btitle}"> </span>
+          </td>
+          <td class="td_basic" style="vertical-align: middle; text-align: center">
+            <span th:text="${bookmarkVO.bcontent}"> </span>
+          </td>
+          <td class="td_basic" style="vertical-align: middle; text-align: center">
+            <span th:text="${bookmarkVO.btag}"> </span>
+          </td>
+          <td class="td_basic" style="vertical-align: middle; text-align: center">
+            <a th:href="@{|/board/read?boardno=${bookmarkVO.boardno}&word=&now_page=|}"> <span style="font-weight: bold"> 링크</span></a>
           </td>
           <td class="td_basic" style="vertical-align: middle; text-align: center">
             <span th:text="|&nbsp;${bookmarkVO.bmdate.substring(0,10)}|" style="font-weight: bold"></span>

@@ -89,16 +89,23 @@ public class BoardCont {
    * @return
    */
   @GetMapping(value = "/create")
-  public String create(Model model, BoardVO boardVO, Integer crudcateno) {
+  public String create(HttpSession session, Model model, BoardVO boardVO, Integer crudcateno) {
 
-    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
-    model.addAttribute("menu", menu);
+    if (session.getAttribute("accountno") != null || session.getAttribute("managerno") != null) {
 
-    CrudcateVO crudcateVO = this.crudcateProc.read(crudcateno); // create.jsp에 카테고리 정보를 출력하기위한 목적
-    model.addAttribute("crudcateVO", crudcateVO);
+      ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+      model.addAttribute("menu", menu);
 
-    return "th/board/create"; // /templates/board/create.html
+      CrudcateVO crudcateVO = this.crudcateProc.read(crudcateno); // create.jsp에 카테고리 정보를 출력하기위한 목적
+      model.addAttribute("crudcateVO", crudcateVO);
+
+      return "th/board/create";// /templates/board/create.html
+    }
+    return "redirect:/account/login_need"; // account/login_need.html
   }
+
+
+  
 
   /**
    * Create 폼 처리
@@ -187,7 +194,7 @@ public class BoardCont {
       }
   
   }
-  return "redirect:/board/login_form_need"; // /member/login_cookie_need.html
+  return "redirect:/member/login_form_need"; // /member/login_cookie_need.html
 }
   /**
    * 전체 목록
@@ -200,7 +207,7 @@ public class BoardCont {
   public String list_all(HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
   @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
 
-    if (this.managerProc.isMemberAdmin(session)) { // 관리자로 로그인한 경우
+    if (session.getAttribute("managerno") != null) { // 관리자로 로그인한 경우
       word = Tool.checkNull(word).trim();
 
       ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
@@ -274,7 +281,13 @@ public class BoardCont {
     return "th/board/read";
   }
   
-  @PostMapping(value = "/meaning")
+  /**
+   * 
+   * @param voca
+   * @param model
+   * @return
+   */
+  @PostMapping(value = "/api/meaning")
   @ResponseBody
   public Map<String, String> mean(@RequestParam String voca, Model model) {
       String mean = this.vocabularyProc.list_mean(voca);
@@ -286,28 +299,39 @@ public class BoardCont {
 
   /**
    * http://localhost:9093/board/youtube?crudcateno=4&boardno=14
+   * 유튜브 링크 추가
    * @param model
    * @param boardno
    * @return
    */
   @GetMapping(value = "/youtube")
-  public String youtube(Model model, Integer boardno) {
-    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
-    model.addAttribute("menu", menu);
+  public String youtube(HttpSession session, Model model, Integer boardno) {
+    if (session.getAttribute("accountno") != null || session.getAttribute("managerno") != null) {
+      ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+      model.addAttribute("menu", menu);
 
-    BoardVO boardVO = this.boardProc.read(boardno); // youtube 정보 읽어 오기
-    model.addAttribute("boardVO", boardVO);
+      BoardVO boardVO = this.boardProc.read(boardno); // youtube 정보 읽어 오기
+      model.addAttribute("boardVO", boardVO);
 
-    CrudcateVO crudcateVO = this.crudcateProc.read(boardVO.getCrudcateno()); // 그룹 정보 읽기
-    model.addAttribute("crudcateVO", crudcateVO);
+      CrudcateVO crudcateVO = this.crudcateProc.read(boardVO.getCrudcateno()); // 그룹 정보 읽기
+      model.addAttribute("crudcateVO", crudcateVO);
 
-    // model.addAttribute("word", word);
-    // model.addAttribute("now_page", now_page);
-    
-    return "th/board/youtube"; 
+      // model.addAttribute("word", word);
+      // model.addAttribute("now_page", now_page);
+      
+      return "th/board/youtube"; 
+    }
+    return "redirect:/account/login_need"; // account/login_need.html
   }
 
-
+  /**
+   * 유튜브 링크 수정
+   * @param model
+   * @param ra
+   * @param boardno
+   * @param byoutube
+   * @return
+   */
   @PostMapping(value = "/youtube")
   public String youtube_update(Model model, RedirectAttributes ra, int boardno, String byoutube) {
 
@@ -413,42 +437,11 @@ public class BoardCont {
       }
   
       // 관리자 또는 작성자가 아닐 경우
-      ra.addAttribute("url", "/manager/login_cookie_need"); 
+      ra.addAttribute("url", "/account/login_need"); 
       return "redirect:/board/msg";
   }
   
 
-  // @PostMapping(value = "/update_board")
-  // public String update_board_process(HttpSession session, Model model, BoardVO boardVO, RedirectAttributes ra, String search_word, int now_page) {
-  //   ra.addAttribute("word", search_word);
-  //   ra.addAttribute("now_page", now_page);
-
-  //   if (session.getAttribute("accountno") != null || session.getAttribute("managerno") != null) { // 관리자 또는 작성자 확인
-  //     HashMap<String, Object> map = new HashMap<String, Object>();
-  //     map.put("boardno", boardVO.getBoardno());
-  //     map.put("bpasswd", boardVO.getBpasswd());
-
-  //     if (this.boardProc.password_check(map) == 1) { // 패스워드 일치
-  //       this.boardProc.update_board(boardVO); // 글수정
-
-  //       // mav 객체 이용
-  //       ra.addAttribute("boardno", boardVO.getBoardno());
-  //       ra.addAttribute("crudcateno", boardVO.getCrudcateno());
-  //       return "redirect:/board/read"; // @GetMapping(value = "/read")
-
-  //     } else { // 패스워드 불일치
-  //       ra.addFlashAttribute("code", "passwd_fail"); // redirect -> forward -> html
-  //       ra.addFlashAttribute("cnt", 0);
-  //       ra.addAttribute("url", "/board/msg"); // msg.html, redirect parameter 적용
-
-  //       return "redirect:/board/msg"; // @GetMapping(value = "/msg")
-  //     }
-  //   } else { // 정상적인 로그인이 아닌 경우 로그인 유도
-  //     ra.addAttribute("url", "/member/login_cookie_need"); // /templates/member/login_cookie_need.html
-  //     return "redirect:/board/msg"; // @GetMapping(value = "/msg")
-  //   }
-  // }
-  
   /**
    * Update 폼 처리
    * @param session
@@ -501,32 +494,44 @@ public class BoardCont {
             return "redirect:/board/msg"; // @GetMapping(value = "/msg")
         }
     } else { // 정상적인 로그인이 아닌 경우 로그인 유도
-        ra.addAttribute("url", "/member/login_cookie_need"); // /templates/member/login_cookie_need.html
+        ra.addAttribute("url", "/account/login_need");
         return "redirect:/board/msg"; // @GetMapping(value = "/msg")
     }
   }
 
 
+  /**
+   * 파일 수정 폼
+   * @param session
+   * @param model
+   * @param boardno
+   * @param word
+   * @param now_page
+   * @return
+   */
   @GetMapping(value = "/update_file")
   public String update_file(HttpSession session, Model model, Integer boardno, @RequestParam("word") String word, @RequestParam("now_page") int now_page) {
-    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
-    model.addAttribute("menu", menu);
-    
-    model.addAttribute("word", word);
-    model.addAttribute("now_page", now_page);
-    
-    BoardVO boardVO = this.boardProc.read(boardno);
-    model.addAttribute("boardVO", boardVO);
+    if (session.getAttribute("accountno") != null || session.getAttribute("managerno") != null) {
+      ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+      model.addAttribute("menu", menu);
+      
+      model.addAttribute("word", word);
+      model.addAttribute("now_page", now_page);
+      
+      BoardVO boardVO = this.boardProc.read(boardno);
+      model.addAttribute("boardVO", boardVO);
 
-    CrudcateVO crudcateVO = this.crudcateProc.read(boardVO.getCrudcateno());
-    model.addAttribute("crudcateVO", crudcateVO);
+      CrudcateVO crudcateVO = this.crudcateProc.read(boardVO.getCrudcateno());
+      model.addAttribute("crudcateVO", crudcateVO);
 
-    return "th/board/update_file";
+      return "th/board/update_file";
 
+    }
+    return "redirect:/account/login_need";
   }
 
   /**
-   * 파일 수정 처리 http://localhost:9091/board/update_file
+   * 파일 수정 처리 
    * @param session
    * @param model
    * @param ra
@@ -678,7 +683,7 @@ public class BoardCont {
   }
   
   /**
-   * 글 삭제 처리 http://localhost:9091/board/delete
+   * 글 삭제 처리 http://localhost:9093/board/delete
    * @param session
    * @param ra
    * @param boardno
