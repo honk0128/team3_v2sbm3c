@@ -1,68 +1,19 @@
 <!DOCTYPE html>
-<html> <!-- layout.html 상속-->
 
-<head>
-  <title>Slide Navbar</title>
-  <link rel="stylesheet" type="text/css" href="slide navbar style.css">
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
-  <link href="/css/style2.css" rel="stylesheet" type="text/css"> <!-- /static 기준 -->
+<html layout:decorate="~{th/layout}"> <!-- layout.html 상속-->
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <!--
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
--->
-  <script>
-    function changeBodyClass(newClass) {
-      document.getElementById('body').className = newClass;
-
-      const fileUploadWrapper = document.querySelector('.file-upload-wrapper');
-
-      const fileUploadWrappernone = document.querySelector('.file-upload-wrapper-none');
-
-      const mainbody = document.getElementById('mainbody');
-
-      if (fileUploadWrapper) {
-        // 클래스 변경
-        fileUploadWrapper.className = 'file-upload-wrapper-none';
-
-      }
-
-      if (fileUploadWrappernone) {
-        // 클래스 변경
-        fileUploadWrappernone.className = 'file-upload-wrapper';
-
-      }
-
-      mainbody.checked = !mainbody.checked;
-    }
-
-  </script>
-
-
+<div layout:fragment="content">
   <script>
     window.onload = () => {
-      document.querySelector('#aname').addEventListener('keypress', (event) => {
-        // document.getElementById('apasswd').addEventListener('keypress', (event) => {
-        if (event.key === 'Enter') { // ===: 타입까지 확인
-
-          document.getElementById('aid').focus();
-        }
-      });
-
       document.querySelector('#aid').addEventListener('keypress', (event) => {
         // document.getElementById('apasswd').addEventListener('keypress', (event) => {
-
-        if (event.key === 'Enter') {
+        if (event.key === 'Enter') { // ===: 타입까지 확인
           document.getElementById('btn_checkID').focus();
         }
       });
 
       document.querySelector('#apasswd').addEventListener('keypress', (event) => {
         // document.getElementById('apasswd').addEventListener('keypress', (event) => {
-
         if (event.key === 'Enter') {
           document.getElementById('apasswd2').focus();
         }
@@ -70,7 +21,13 @@
 
       document.querySelector('#apasswd2').addEventListener('keypress', (event) => {
         // document.getElementById('apasswd').addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+          document.getElementById('aname').focus();
+        }
+      });
 
+      document.querySelector('#aname').addEventListener('keypress', (event) => {
+        // document.getElementById('apasswd').addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
           document.getElementById('atel').focus();
         }
@@ -78,7 +35,6 @@
 
       document.querySelector('#atel').addEventListener('keypress', (event) => {
         // document.getElementById('apasswd').addEventListener('keypress', (event) => {
-
         if (event.key === 'Enter') {
           document.getElementById('btn_DaumPostcode').focus();
         }
@@ -90,6 +46,7 @@
           document.getElementById('btn_send').focus();
         }
       });
+
     }
 
     function checkID() {
@@ -156,7 +113,8 @@
         aid_msg.innerHTML = 'ID 입력은 필수 입니다. ID(이메일)는 3자이상 권장합니다.';
         aid_msg.classList.add('span_warning');    // class 적용
         aid.focus();
-        return false; // 회원 가입 진행 중지
+
+        return false;  // 회원 가입 진행 중지
 
       }
 
@@ -170,7 +128,7 @@
         apasswd2_msg.classList.add('span_warning');    // class 적용
         apasswd.focus();  // 첫번째 패스워드로 focus 설정
 
-        return false; // 회원 가입 진행 중지
+        return false;  // 회원 가입 진행 중지
       }
 
       let aname = document.getElementById('aname');
@@ -181,156 +139,188 @@
         aname_msg.classList.add('span_warning');    // class 적용
         aname.focus();
 
-        return false; // 회원 가입 진행 중지
+        return false;  // 회원 가입 진행 중지
       }
 
       document.getElementById('frm').submit(); // required="required" 작동 안됨.
-    }
-
-
+    }    
   </script>
 
-  <div class="navbar" th:replace="~{th/navbar::navbarFragment}"></div>
+  <div class="title_line">회원 가입(*: 필수)</div>
+  <aside class="aside_right">
+    <a href="javascript:location.reload();">새로고침</a>
+    <span class='menu_divide'>│</span>
+    <a href='./create'>회원 가입</a>
+    <span class='menu_divide'>│</span>
+    <a href='./list'>목록</a>
+  </aside>
 
-<body class="loginbody" id="body">
-  <input type="checkbox" id="mainbody" aria-hidden="true" checked>
-  <div class="main">
-    <input type="checkbox" id="chk" aria-hidden="true" checked>
+  <div class='menu_line'></div>
 
-    <div class="signup">
-      <label for="chk" aria-hidden="true" onclick="changeBodyClass('signupbody')">Sign up</label>
-      <form name="frm" id="frm" th:object="${accountVO}" method="post" action="/account/signin_account"
-        enctype="multipart/form-data">
-        <div class="signleft">
-          <div>
+  <div style="width: 60%; margin: 0px auto ">
+    <form name="frm" id="frm" th:object="${accountVO}" method="post" action="/account/signin_account"
+      enctype="multipart/form-data">
+      <div>
+        <label for="aid">아이디(이메일)*</label>
+        <input type="text" name="aid" id="aid" value="" autofocus="autofocus" class="form-control fom-control-sm"
+          style="width: 50%;" th:field="*{aid}">
+        <button type='button' id="btn_checkID" onclick="checkID()" class="btn btn-primary btn-sm"
+          style="margin-top: 4px;">중복확인</button>
+        <span id='aid_msg'></span>
+      </div>
 
-            <input type='text' name='aname' id='aname' value='하정우' required="required" placeholder="성명"
-              class="signinput">
-            <span class="msg" id='aname_msg'></span>
-          </div>
-          <div class="signemail">
+      <div class="form-group">
+        <label for="apasswd">패스워드*</label>
+        <input type='password' name='apasswd' id='apasswd' value='1234' required="required" placeholder="패스워드"
+          class="form-control form-control-sm" style="width: 30%;">
+      </div>
 
-            <input type="text" name="aid" id="aid" value="" placeholder="email" class="signinput" th:field="*{aid}">
-            <br>
-            <span class="msg" id='aid_msg'></span>
-            <button type='button' id="btn_checkID" onclick="checkID()" class="btn btn-junbok"
-              style="margin-top: 4px;">중복확인</button>
+      <div class="form-group">
+        <label for="apasswd2">패스워드 확인*</label>
+        <input type='password' name='apasswd2' id='apasswd2' value='1234' required="required" placeholder="패스워드 확인"
+          class="form-control form-control-sm" style="width: 30%;">
+        <span id='apasswd2_msg'></span>
+      </div>
 
+      <div class="form-group">
+        <label for="aname">성명*</label>
+        <input type='text' name='aname' id='aname' value='하정우' required="required" placeholder="성명"
+          class="form-control form-control-sm" style="width: 30%;">
+        <span id='aname_msg'></span>
+      </div>
 
-          </div>
-          <div class="signpasswd">
-            <input type='password' name='apasswd' id='apasswd' value='1234' required="required" placeholder="패스워드"
-              class="signinput">
-          </div>
-          <div class="signpasswdcheck">
-            <input type='password' name='apasswd2' id='apasswd2' value='1234' required="required" placeholder="패스워드 확인"
-              class="signinput">
-            <span class="msg" id='apasswd2_msg'></span>
-          </div>
+      <div class="form-group">
+        <label for="atel">전화 번호*</label>
+        <input type='text' name='atel' id='atel' value='010-0000-0000' required="required" placeholder="전화번호"
+          class="form-control form-control-sm" style="width: 30%;">
+        예) 010-0000-0000
+      </div>
+
+      <div class="form-group">
+        <label for="zipcode">우편 번호</label>
+        <input type='text' name='zipcode' id='zipcode' value='' placeholder="우편번호" class="form-control form-control-sm"
+          style="width: 30%;">
+        <button type="button" id="btn_DaumPostcode" onclick="DaumPostcode()" class="btn btn-primary btn-sm"
+          style="margin-top: 4px;">우편번호 찾기</button>
+      </div>
+
+      <div class="form-group">
+        <label for="address1" style="width: 100%;">주소</label>
+        <input type='text' name='address1' id='address1' value='' placeholder="주소" class="form-control form-control-sm">
+      </div>
+
+      <div class="form-group">
+        <label for="address2" style="width: 100%;">상세 주소</label>
+        <input type='text' name='address2' id='address2' value='' placeholder="상세 주소"
+          class="form-control form-control-sm">
+      </div>
+
+      <div>
+        <label>이미지</label>
+        <input type='file' class="form-control" name='aprofile_imgMF' id='aprofile_imgMF' value='' placeholder="파일 선택">
+      </div>
+
+      <!-- ------------------------------ DAUM 우편번호 API 시작 ------------------------------ -->
+      <div>
+        <div id="wrap" style="display:none;border:1px solid;width:500px;height:300px;margin:5px 0;position:relative">
+          <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap"
+            style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()"
+            alt="접기 버튼">
         </div>
-        <div class="signright">
 
-          <div class="phonenumber">
-            <input type='text' name='atel' id='atel' value='010-0000-0000' required="required" placeholder="전화번호"
-              class="signinput">
-          </div>
+        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+        <script>
+          // 우편번호 찾기 찾기 화면을 넣을 element
+          var element_wrap = document.getElementById('wrap');
 
+          function foldDaumPostcode() {
+            // iframe을 넣은 element를 안보이게 한다.
+            element_wrap.style.display = 'none';
+          }
 
-          <div class="zipcode">
-            <input type='text' name='zipcode' id='zipcode' value='' placeholder="우편번호" class="signinput">
+          function DaumPostcode() {
+            // 현재 scroll 위치를 저장해놓는다.
+            var currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+            new daum.Postcode({
+              oncomplete: function (data) {
+                // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
-            <button type="button" id="btn_DaumPostcode" onclick="DaumPostcode()" class="btn btn-junbok"
-              style="margin-top: 4px;">우편번호 찾기</button>
-          </div>
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
 
-          <div class="address1">
-            <input type='text' name='address1' id='address1' value='' placeholder="주소" class="signinput">
-          </div>
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                  addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                  addr = data.jibunAddress;
+                }
 
-          <div class="address2">
-            <input type='text' name='address2' id='address2' value='' placeholder="상세 주소" class="signinput">
-          </div>
-
-
-          <div class="file-upload-wrapper-none" data-text="profile img">
-            <input name='aprofile_imgMF' id='aprofile_imgMF' type="file" class="file-upload-field" value="">
-          </div>
-
-
-
-
-        </div>
-        <div class="modal fade" id="zipcodeModal" tabindex="-1" role="dialog" aria-labelledby="zipcodeModalLabel"
-          aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="zipcodeModalLabel">우편번호 찾기</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <!-- 모달 내용 -->
-                <!-- 이 곳에 우편번호 입력 폼 등을 넣으세요 -->
-                <!-- ------------------------------ DAUM 우편번호 API 시작 ------------------------------ -->
-                <div>
-                  <div id="wrap"
-                    style="display:none;border:1px solid;width:500px;height:300px;margin:5px 0;position:relative">
-                    <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap"
-                      style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()"
-                      alt="접기 버튼">
-                  </div>
-
-                  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-                  <script>
-                    var element_wrap = document.getElementById('wrap');
-                    function foldDaumPostcode() {
-                      element_wrap.style.display = 'none';
+                /*
+                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                if(data.userSelectedType === 'R'){
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
                     }
-
-                    function DaumPostcode() {
-                      $('#zipcodeModal').modal('show');
-                      var currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
-                      new daum.Postcode({
-                        oncomplete: function (data) {
-                          var addr = '';
-                          if (data.userSelectedType === 'R') {
-                            addr = data.roadAddress;
-                          } else {
-                            addr = data.jibunAddress;
-                          }
-                          document.getElementById('zipcode').value = data.zonecode;
-                          document.getElementById("address1").value = addr;
-                          document.getElementById("address1").focus();
-
-                          element_wrap.style.display = 'none';
-                          document.body.scrollTop = currentScroll;
-                          $('#zipcodeModal').modal('hide');
-                        },
-                        onresize: function (size) {
-                          element_wrap.style.height = size.height + 'px';
-                        },
-                        width: '100%',
-                        height: '100%'
-                      }).embed(element_wrap);
-                      element_wrap.style.display = 'block';
-
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
                     }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if(extraAddr !== ''){
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    // 조합된 참고항목을 해당 필드에 넣는다.
+                    document.getElementById("sample3_extraAddress").value = extraAddr;
+                
+                } else {
+                    document.getElementById("sample3_extraAddress").value = '';
+                }
+                */
 
-                  </script>
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('zipcode').value = data.zonecode; // 우편번호
+                document.getElementById("address1").value = addr;  // 주소
 
-                </div>
-                <!-- ------------------------------ DAUM 우편번호 API 종료 ------------------------------ -->
+                document.getElementById("address2").innerHTML = ""; // 상세 주소 지우기
+                // 커서를 상세주소 필드로 이동한다.
+                document.getElementById("address2").focus();  // 상세 주소로 포커스 이동
 
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                <!-- 다른 필요한 버튼들을 추가하세요 -->
-              </div>
-            </div>
-          </div>
-        </div>
-        <button type = "button" id="btn_send" onclick="send();" class="signbnt">Sign up</button>
-      </form>
-    </div>
+                // iframe을 넣은 element를 안보이게 한다.
+                // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
+                element_wrap.style.display = 'none';
+
+                // 우편번호 찾기 화면이 보이기 이전으로 scroll 위치를 되돌린다.
+                document.body.scrollTop = currentScroll;
+              },
+              // 우편번호 찾기 화면 크기가 조정되었을때 실행할 코드를 작성하는 부분. iframe을 넣은 element의 높이값을 조정한다.
+              onresize: function (size) {
+                element_wrap.style.height = size.height + 'px';
+              },
+              width: '100%',
+              height: '100%'
+            }).embed(element_wrap);
+
+            // iframe을 넣은 element를 보이게 한다.
+            element_wrap.style.display = 'block';
+          }
+        </script>
+
+      </div>
+      <!-- ------------------------------ DAUM 우편번호 API 종료 ------------------------------ -->
+
+      <div class="content_body_bottom">
+        <button type="button" onclick="send();" class="btn btn-secondary btn-sm">가입</button>
+        <button type="button" onclick="history.back();" class="btn btn-secondary btn-sm">취소</button>
+      </div>
+
+
+    </form>
+  </div>
+
+</div>
+
+</html>
