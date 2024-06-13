@@ -96,6 +96,8 @@ public class AccountCont {
   public String signin_form(Model model, AccountVO accountVO) {
     return "th/account/create";
   }
+  
+  
 
   @PostMapping(value = "/signin_account")
   public String signin_proc(Model model, AccountVO accountVO, RedirectAttributes ra) {
@@ -167,9 +169,10 @@ public class AccountCont {
     } else { // id 중복
       model.addAttribute("code", "duplicte_fail");
       model.addAttribute("cnt", 0);
+      
     }
 
-    return "th/account/create"; // /templates/member/msg.html
+    return "th/account/login"; // /templates/member/msg.html
   }
   
   @GetMapping(value = "/list")
@@ -248,12 +251,14 @@ public class AccountCont {
    * @return 회원 정보
    */
   @GetMapping(value = "/login")
-  public String login_form(Model model, String url) {
+  public String login_form(Model model, String url, AccountVO accountVO) {
     model.addAttribute("url", url); // 로그인 후 이동할 주소
 
     return "th/account/login"; // templates/member/login.html
   }
 
+  
+  
   /**
    * 로그인 처리
    * 
