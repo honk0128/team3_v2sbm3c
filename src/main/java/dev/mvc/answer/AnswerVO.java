@@ -21,6 +21,8 @@ public class AnswerVO {
   
   private int accountno;
   
+  private String aname;
+  
   
 
 }

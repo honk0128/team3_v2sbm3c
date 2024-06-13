@@ -20,7 +20,7 @@
     ORDER BY agrade ASC, aid ASC
   </select>
   
-    <!-- memberno로 회원 정보 조회 -->
+    <!-- accountno로 회원 정보 조회 -->
   <select id="read" resultType="dev.mvc.account.AccountVO" parameterType="int">
     SELECT accountno, aid, apasswd, aname, aprofile_img, aprofile_imgsave, aprofile_thum, aprofile_size, zipcode, address1, address2, atel, adate, agrade
     FROM account
@@ -94,13 +94,14 @@
   </select>
   
 
-  
+  <!-- 가입된 회원인지 확인 -->
   <select id="check_user" resultType="int" parameterType="Map">
     SELECT COUNT(*) as cnt
     FROM ACCOUNT
     WHERE aname=#{aname} and atel=#{atel}
   </select>
   
+  <!-- 아이디 찾기 -->
     <select id="find_aid" resultType="String" parameterType="Map">
     SELECT aid
     FROM ACCOUNT
