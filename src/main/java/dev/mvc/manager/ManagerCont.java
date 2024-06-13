@@ -180,7 +180,7 @@ public class ManagerCont {
 
     return "th/manager/list"; // templates/member/list.html
   }else {
-    return "redirect:/member/login_form_need";  // redirect
+    return "redirect:/account/login_need";  // redirect
   } 
   }
 

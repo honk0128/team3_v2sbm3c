@@ -23,6 +23,7 @@
     > 글 조회
   </div>
 
+<!-- 단어장 스크립트 -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const tooltip = document.getElementById('tooltip');
@@ -30,7 +31,7 @@
       document.querySelectorAll('.highlight').forEach(item => {
         item.addEventListener('click', event => {
           const word = item.getAttribute('data-word');
-          fetch(`/board/api/meaning`, {
+          fetch(`/board/meaning`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'

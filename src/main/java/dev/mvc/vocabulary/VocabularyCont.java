@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import dev.mvc.crudcate.CrudcateProcInter;
 import dev.mvc.crudcate.CrudcateVOMenu;
+import dev.mvc.manager.ManagerProcInter;
 import jakarta.servlet.http.HttpSession;
 
 @RequestMapping(value = "vocabulary")
@@ -24,6 +25,10 @@ public class VocabularyCont {
   @Autowired
   @Qualifier("dev.mvc.crudcate.CrudcateProc")
   private CrudcateProcInter crudcateProc;
+  
+  @Autowired
+  @Qualifier("dev.mvc.manager.ManagerProc")
+  private ManagerProcInter managerProc;
 
   public VocabularyCont() {
     System.out.println("-> VocabularyCont created.");
@@ -31,13 +36,16 @@ public class VocabularyCont {
 
   @GetMapping(value = "/create")
   public String create(Model model, HttpSession session) {
+    if (this.managerProc.isAdmin(session)) {
     ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
     model.addAttribute("menu", menu);
 
 //    int managerno = (int) session.getAttribute("managerno");
 //    System.out.println("->managerno: " + managerno);
-
     return "th/vocabulary/create";
+    }
+    return "redirect:/account/login_need";
+   
   }
 
   @PostMapping(value = "/create")
@@ -56,12 +64,15 @@ public class VocabularyCont {
   }
 
   @GetMapping(value = "/list")
-  public String list(Model model) {
-    ArrayList<VocabularyVO> list = this.vocabularyProc.list();
-    System.out.println("list: " + list);
-    model.addAttribute("list", list);
-
-    return "th/vocabulary/list";
+  public String list(Model model, HttpSession session) {
+    if (this.managerProc.isAdmin(session)) {
+      ArrayList<VocabularyVO> list = this.vocabularyProc.list();
+      System.out.println("list: " + list);
+      model.addAttribute("list", list);
+      return "th/vocabulary/list";
+    }
+    return "redirect:/account/login_need";
+   
   }
 
 

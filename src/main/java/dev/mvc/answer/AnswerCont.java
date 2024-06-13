@@ -49,12 +49,14 @@ public class AnswerCont {
       model.addAttribute("list", list) ;
       model.addAttribute("img", img);
      
-    }else {
+    }else if(this.managerProc.isMember(session)){
       ArrayList <AnswerVO> list = this.answerProc.list(sessionAccountno);
       ArrayList <AiVO> img = this.aiProc.img(sessionAccountno);
       
       model.addAttribute("list", list) ;
       model.addAttribute("img", img);
+    }else {
+      return "redirect:/account/login_need";
     }
     
  

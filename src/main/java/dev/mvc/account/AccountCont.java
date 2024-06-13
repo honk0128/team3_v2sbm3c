@@ -96,8 +96,6 @@ public class AccountCont {
   public String signin_form(Model model, AccountVO accountVO) {
     return "th/account/create";
   }
-  
-  
 
   @PostMapping(value = "/signin_account")
   public String signin_proc(Model model, AccountVO accountVO, RedirectAttributes ra) {
@@ -169,7 +167,6 @@ public class AccountCont {
     } else { // id 중복
       model.addAttribute("code", "duplicte_fail");
       model.addAttribute("cnt", 0);
-      
     }
 
     return "th/account/login"; // /templates/member/msg.html
@@ -194,7 +191,7 @@ public class AccountCont {
 
     return "th/account/list"; // templates/member/list.html
   }else {
-    return "redirect:/account/login_form_need";  // redirect
+    return "redirect:/account/login_need";  // redirect
   } 
   }
 
@@ -238,7 +235,7 @@ public class AccountCont {
       return "th/account/read"; // templates/member/read.html
     }
     else  {
-      return "redirect:/member/login_form_need"; // redirect
+      return "redirect:/account/login_need"; // redirect
     }
 
   }
@@ -257,8 +254,6 @@ public class AccountCont {
     return "th/account/login"; // templates/member/login.html
   }
 
-  
-  
   /**
    * 로그인 처리
    * 
@@ -421,13 +416,26 @@ public class AccountCont {
    * @return 회원 정보
    */
   @GetMapping(value="/delete")
-  public String delete(Model model, int accountno) {
+  public String delete(Model model, int accountno, HttpSession session) {
     System.out.println("-> delete accountno: " + accountno);
     
+ // 회원은 회원 등급만 처리, 관리자: 1 ~ 10, 사용자: 11 ~ 20
+    // int gradeno = this.memberProc.read(memberno).getGrade(); // 등급 번호
+    String mgrade = (String) session.getAttribute("mgrade"); // 등급: admin, member, guest
+    String agrade = (String) session.getAttribute("agrade"); // 등급: admin, member, guest
+    
+    Integer sessionAccountno = (Integer) session.getAttribute("accountno");
+    
+    if (this.managerProc.isMember(session) && accountno == sessionAccountno) {
     AccountVO accountVO = this.accountProc.read(accountno);
     model.addAttribute("accountVO", accountVO);
-    
-    return "th/account/delete";  // templates/member/delete.html
+    return "th/account/delete";  // templates/account/delete.html
+    }else if (this.managerProc.isAdmin(session)) {
+      AccountVO accountVO = this.accountProc.read(accountno);
+      model.addAttribute("accountVO", accountVO);
+      return "th/account/delete";  // templates/account/delete.html
+    }
+    return "redirect:/account/login_need";
   }
   
   /**
@@ -477,6 +485,11 @@ public class AccountCont {
   public String find_passwd_form() {
     return "th/account/find_passwd_form";
 
+  }
+  
+  @GetMapping(value = "/login_need")
+  public String login_need() {
+    return "th/account/login_need";
   }
   
 

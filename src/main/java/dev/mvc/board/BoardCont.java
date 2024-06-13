@@ -274,7 +274,7 @@ public class BoardCont {
     return "th/board/read";
   }
   
-  @PostMapping(value = "/api/meaning")
+  @PostMapping(value = "/meaning")
   @ResponseBody
   public Map<String, String> mean(@RequestParam String voca, Model model) {
       String mean = this.vocabularyProc.list_mean(voca);
