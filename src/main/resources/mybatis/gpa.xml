@@ -20,6 +20,46 @@
   ORDER BY GPANO ASC
   </select>
   
+  <select id="list_cno_search_count" resultType="int" parameterType="HashMap">
+  SELECT COUNT(*) AS cnt
+  FROM GPA
+  <choose>
+    <when test="word == null or word == ''"> 
+      WHERE GPANO = #{gpano}
+      
+   </when>
+   <otherwise>WHERE GPANO = #{gpano} AND (BOARDNO LIKE '%' || #{word} || '%')
+    
+    </otherwise>
+   
+  </choose>
+</select>
+
+  
+  <!-- 카테고리별 검색 + 페이징 목록 -->
+  <select id="list_search_paging" resultType="dev.mvc.gpa.GpaVO" parameterType="HashMap">
+        SELECT GPANO, GPASCORE, ACCOUNTNO, BOARDNO, GPADATE, r
+        FROM (
+            SELECT GPANO, GPASCORE, ACCOUNTNO, BOARDNO, GPADATE, ROWNUM as r
+            FROM (
+                SELECT GPANO, GPASCORE, ACCOUNTNO, BOARDNO, GPADATE
+                FROM GPA
+                <choose>
+                    <when test="word == null or word == ''">
+                        WHERE GPANO = #{gpano}
+                    </when>
+                    <otherwise>
+                        WHERE GPANO = #{gpano}
+                        AND (BOARDNO LIKE '%' || #{word} || '%')
+                    </otherwise>
+                </choose>
+                ORDER BY GPANO DESC
+            )
+        )
+        WHERE <![CDATA[ r >= #{start_num} AND r <= #{end_num} ]]>
+    </select>
+  
+  
   <select id="avgscore" parameterType="dev.mvc.gpa.GpaVO">
   SELECT ROUND(AVG(GPASCORE), 0) AS avg_gpascore
 FROM GPA

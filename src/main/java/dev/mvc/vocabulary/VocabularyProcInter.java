@@ -23,5 +23,14 @@ public interface VocabularyProcInter {
    * @return
    */
   public String list_mean(String voca);
+  
+  
+  public int update(VocabularyVO vocabularyVO);
+  
+  
+  /** 
+   * 단어 삭제
+   */
+  public int delete(int vocano);
 
 }

@@ -458,6 +458,8 @@
     <a
       th:href="@{|/board/youtube?crudcateno=${boardVO.crudcateno}&boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}">Youtube</a>
     <span class="menu_divide">│</span>
+    <a th:href="@{|/vocabulary/create|}">단어 추가</a>
+    <span class="menu_divide">│</span>
     <a
       th:href="@{|./delete?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}&crudcateno=${boardVO.crudcateno}|}">삭제</a>
     <span class="menu_divide">│</span>

@@ -1,6 +1,9 @@
 package dev.mvc.gpa;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import dev.mvc.board.BoardVO;
 
 
 
@@ -26,6 +29,17 @@ public interface GpaDAOInter {
     
     
     public ArrayList<GpaVO> list();
+    
+    
+    public int list_cno_search_count(HashMap<String, Object> hashMap);
+
+    /**
+     * 카테고리 검색 + 페이징
+     * @param map
+     * @return
+     */
+    public ArrayList<GpaVO> list_search_paging(HashMap<String, Object> map);
+
     
     public ArrayList<GpaVO> avgscore(int boardno);
     

@@ -1,6 +1,7 @@
 package dev.mvc.gpa;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public interface GpaProcInter {
   /**
@@ -22,6 +23,16 @@ public interface GpaProcInter {
     
     public ArrayList<GpaVO> list();
 
+    public ArrayList<GpaVO> list_search_paging(HashMap<String, Object> map);
+
+    public int list_cno_search_count(HashMap<String, Object> hashMap);
+
+    
+    public String pagingBox(int boardno, int now_page, String word, String list_file, int search_count, 
+    int record_per_page, int page_per_block);
+    
+    
+    
     public ArrayList<GpaVO> avgscore(int boardno);
     
     public int update(GpaVO gpaVO);

@@ -20,4 +20,16 @@
     where voca = #{voca}
   </select>
 
+<update id="update" parameterType="dev.mvc.vocabulary.VocabularyVO">
+    UPDATE vocabulary
+    SET voca = #{voca}, mean = #{mean}
+    WHERE vocano = #{vocano}
+    
+  </update>
+
+
+<delete id="delete" parameterType="dev.mvc.vocabulary.VocabularyVO"> 
+    DELETE FROM vocabulary WHERE vocano = #{vocano}
+  </delete>
+
 </mapper>

@@ -18,11 +18,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import dev.mvc.ai.AiVO;
 import dev.mvc.ai.Aiurl;
+import dev.mvc.board.Board;
 import dev.mvc.board.BoardVO;
 import dev.mvc.crudcate.CrudcateProcInter;
 import dev.mvc.crudcate.CrudcateVOMenu;
 import dev.mvc.tool.Tool;
 import dev.mvc.tool.Upload;
+import dev.mvc.gpa.Gpa;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -115,6 +117,44 @@ public class GpaCont {
     return "th/gpa/list"; // templates/member/list.html
   }
   
+  
+  @GetMapping(value = "/list_paging")
+  public String list_paging(HttpSession session, Model model, @RequestParam(value = "boardno", required = false) Integer boardno,
+      GpaVO gpaVO, BoardVO boardVO,@RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+
+    gpaVO.getBoardno();
+    
+    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    model.addAttribute("menu", menu);
+    
+    word = Tool.checkNull(word).trim();
+     
+    HashMap<String, Object> map = new HashMap<>();
+    map.put("boardno", boardno);
+    map.put("word", word);
+    map.put("now_page", now_page);
+    
+    ArrayList<GpaVO> list = this.gpaproc.list_search_paging(map);
+    model.addAttribute("list", list);
+    model.addAttribute("word", word);
+    model.addAttribute("gpaVO", gpaVO);
+    model.addAttribute("boardVO", boardVO);
+    
+    int search_count = this.gpaproc.list_cno_search_count(map);
+    String paging = this.gpaproc.pagingBox(boardno, now_page, word, "/gpa/list_paging", search_count, Gpa.RECORD_PER_PAGE, Gpa.PAGE_PER_BLOCK);
+    model.addAttribute("paging", paging);
+    model.addAttribute("now_page", now_page);
+    model.addAttribute("search_count", search_count);
+    
+    int no = search_count - ((now_page - 1) * Board.RECORD_PER_PAGE);
+    model.addAttribute("no", no);
+    
+   
+    
+    return "th/gpa/list_search_paging"; // templates/member/list.html
+  }
+  
   @GetMapping(value = "/avgscore")
   public String avgscore(HttpSession session, Model model, @RequestParam("boardno")int boardno , GpaVO gpaVO) {
 
@@ -158,15 +198,13 @@ System.out.println(gpano);
                           @RequestParam("reviewStar") int star,
                           @ModelAttribute("gpaVO") GpaVO gpaVO,
                           RedirectAttributes ra) {
-      // 여기서는 간단히 데이터를 수정하는 로직을 가정합니다
-      // 실제로는 데이터를 수정하는 서비스나 DAO 계층을 호출해야 합니다
-   
+    
    int gpascore = star;
     
     gpaVO.setGpascore(gpascore);
     
-    gpaproc.update(gpaVO); // 예를 들어, aiService.updateAi 메서드를 호출하여 데이터를 업데이트합니다
-
+    gpaproc.update(gpaVO); 
+    
       ra.addAttribute("gpano", gpaVO.getGpano());
       ra.addAttribute("gpascore", gpaVO.getGpascore());
       

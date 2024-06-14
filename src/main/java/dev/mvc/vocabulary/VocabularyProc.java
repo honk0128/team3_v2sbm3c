@@ -29,4 +29,17 @@ public class VocabularyProc implements VocabularyProcInter {
     return mean;
   }
 
+  @Override
+  public int delete(int vocano) {
+    int cnt = this.vocabularyDAO.delete(vocano);
+    return cnt;
+  }
+
+  @Override
+  public int update(VocabularyVO vocabularyVO) {
+    int cnt = this.vocabularyDAO.update(vocabularyVO);
+    return cnt;
+  }
+
+  
 }
