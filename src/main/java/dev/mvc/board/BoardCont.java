@@ -287,7 +287,7 @@ public class BoardCont {
    * @param model
    * @return
    */
-  @PostMapping(value = "/api/meaning")
+  @PostMapping(value = "/meaning")
   @ResponseBody
   public Map<String, String> mean(@RequestParam String voca, Model model) {
       String mean = this.vocabularyProc.list_mean(voca);

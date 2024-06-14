@@ -74,7 +74,7 @@
 
         <tr
           th:each="bookmarkVO, status:${list}"
-          th:attr="onclick=|location.href='/bookmark/bm_list?accoutno=${bookmarkVO.accountno}&word=${word}&now_page=${now_page}'|"
+          th:attr="onclick=|location.href='/board/read?boardno=${bookmarkVO.boardno}&word=&now_page='|"
           style="cursor: pointer; height: 90px"
         >
           <td class="td_basic" style="vertical-align: middle; text-align: center">
