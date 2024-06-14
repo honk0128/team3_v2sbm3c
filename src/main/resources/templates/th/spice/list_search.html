@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<html layout:decorate="~{th/layout}">
+  <!-- layout.html 상속-->
+  <div layout:fragment="content">
+    <div class="title_line" th:if="${word == ''}">향신료 목록</div>
+    <div class="title_line" th:if="${word != ''}" th:text="|> ${word} (${no}건)|">향신료 목록</div>
+
+    <!-- /spice/list_search_component 로 교체 -->
+    <div th:replace="~{th/spice/list_search_component::list_search_fragment}"></div>
+    <div class="menu_line"></div>
+
+    <form name="frm" th:object="${spiceVO}" method="post" action="/spice/create" enctype="multipart/form-data">
+      <div style="margin: 5px auto; width: 50%">
+        <input
+          type="text"
+          name="spicename"
+          value=""
+          autofocus="autofocus"
+          class="form-control fom-control-sm"
+          style="width: 100%"
+          th:field="*{spicename}"
+          placeholder="향신료 이름을 입력하세요."
+        />
+        <div th:if="${#fields.hasErrors('spicename')}" class="alert alert-danger" role="alert" style="margin-top: 5px">
+          <div th:each="err : ${#lists.sort(#fields.errors('spicename'))}" th:text="${err}"></div>
+        </div>
+      </div>
+      <div style="margin: 5px auto; width: 50%">
+        <input
+          type="text"
+          name="spicecont"
+          value=""
+          class="form-control fom-control-sm"
+          style="width: 100%"
+          th:field="*{spicecont}"
+          placeholder="향신료 설명을 입력하세요."
+        />
+        <div th:if="${#fields.hasErrors('spicecont')}" class="alert alert-danger" role="alert" style="margin-top: 5px">
+          <div th:each="err : ${#lists.sort(#fields.errors('spicecont'))}" th:text="${err}"></div>
+        </div>
+      </div>
+
+      <div style="margin: 5px auto; width: 50%">
+        <input
+          type="number"
+          name="spiceprice"
+          value=""
+          autofocus="autofocus"
+          class="form-control fom-control-sm"
+          style="width: 100%"
+          th:field="*{spiceprice}"
+          placeholder="가격을 입력하세요."
+        />
+        <div th:if="${#fields.hasErrors('spiceprice')}" class="alert alert-danger" role="alert" style="margin-top: 5px">
+          <div th:each="err : ${#lists.sort(#fields.errors('spiceprice'))}" th:text="${err}"></div>
+        </div>
+      </div>
+
+      <div style="margin: 5px auto; width: 50%">
+        <input
+          type="text"
+          name="url"
+          value=""
+          class="form-control fom-control-sm"
+          style="width: 100%"
+          th:field="*{url}"
+          placeholder="구매처(주소)를 입력하세요."
+        />
+        <div th:if="${#fields.hasErrors('url')}" class="alert alert-danger" role="alert" style="margin-top: 5px">
+          <div th:each="err : ${#lists.sort(#fields.errors('url'))}" th:text="${err}"></div>
+        </div>
+      </div>
+
+      <div style="margin:5px auto; width: 50%;">
+        <input
+          type="file"
+          name="fileMF"
+          id='fileMF'
+          value=""
+          class="form-control fom-control-sm"
+          style="width: 100%"
+          placeholder="파일 선택"
+        />
+      </div>
+      <div class="content_body_bottom">
+        <button type="submit" class="btn btn-secondary btn-sm">등록</button>
+      </div>
+    </form>
+
+    <br />
+    <div th:replace="~{th/spice/list_all_component::list_all_fragment}"></div>
+  </div>
+</html>

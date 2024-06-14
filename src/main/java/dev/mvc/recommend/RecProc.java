@@ -1,5 +1,7 @@
 package dev.mvc.recommend;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,17 +20,21 @@ public class RecProc implements RecProcInter{
   }
 
   @Override
-  public int reco_up(int recono) {
-    int cnt = this.RecDAO.reco_up(recono);
+  public int good(RecVO recVO) {
+    int cnt = this.RecDAO.good(recVO);
     return cnt;
   }
 
   @Override
-  public int reco_down(int recono) {
-    int cnt = this.RecDAO.reco_down(recono);
+  public int good_cnt(HashMap<String, Object> map) {
+    int cnt = this.RecDAO.good_cnt(map);
     return cnt;
   }
 
-  
+  @Override
+  public int good_cancel(HashMap<String, Object> map) {
+    int cnt = this.RecDAO.good_cancel(map);
+    return cnt;
+  }
 
 }

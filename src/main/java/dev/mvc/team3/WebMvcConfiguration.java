@@ -8,6 +8,7 @@ import dev.mvc.account.Profiles;
 import dev.mvc.breply.Breply;
 import dev.mvc.brereply.Brereply;
 import dev.mvc.board.Board;
+import dev.mvc.spice.Spice;
 import dev.mvc.tool.Tool;
 
 @Configuration
@@ -33,6 +34,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer{
         registry.addResourceHandler("/board/storage/**").addResourceLocations("file:///" +  Board.getUploadDir());
 
         registry.addResourceHandler("/brereply/storage/**").addResourceLocations("file:///" +  Brereply.getUploadDir());
+
+        registry.addResourceHandler("/spice/storage/**").addResourceLocations("file:///" +  Spice.getUploadDir());
         
         // registry.addResourceHandler("/contents/storage/**").addResourceLocations("file:///" +  Contents.getUploadDir());
         // JSP 인식되는 경로: http://localhost:9091/attachfile/storage";

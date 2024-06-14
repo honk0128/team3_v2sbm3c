@@ -1,8 +1,13 @@
 package dev.mvc.recommend;
 
+import java.util.HashMap;
+
 public interface RecDAOInter {
 
-  public int reco_up(int recono);
+  public int good(RecVO recVO);
 
-  public int reco_down(int recono);
+  public int good_cnt(HashMap<String, Object> map);
+
+  public int good_cancel(HashMap<String, Object> map);
+  
 }

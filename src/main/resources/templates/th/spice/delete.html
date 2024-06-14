@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html layout:decorate="~{th/layout}">
+  <!-- layout.html 상속-->
+  <div layout:fragment="content">
+    <!-- /spice/list_search_component 로 교체 -->
+    <div th:replace="~{th/spice/list_search_component::list_search_fragment}"></div>
+    <div class="menu_line"></div>
+
+    <div id="panel_delete" style="padding: 10px 0px 10px 0px; width: 100%; text-align: center">
+      <form name="frm" th:object="${spiceVO}" method="post" action="/spice/delete">
+        <!-- hidden -->
+        <input type="hidden" name="spiceno" th:value="${spiceVO.spiceno}" />
+        <input type="hidden" name="word" th:value="${word}" />
+        <input type="hidden" name="now_page" th:value="${now_page}" />
+
+        <div class="msg_warning">카테고리를 삭제하면 복구 할 수 없습니다.</div>
+        <span class="title_line_text">이름 : </span>
+        <span th:text="${spiceVO.spicename}" class="title_line_text"></span><br>
+        <span class="title_line_text">설명 : </span>
+        <span th:text="${spiceVO.spicecont}" class="title_line_text"></span>
+        <div class="content_body_bottom">
+          <button type="submit" class="btn btn-secondary btn-sm">삭제</button>
+          <button
+            type="button"
+            th:attr="onclick=|location.href='/spice/list_search?word=${word}&now_page=${now_page}'|"
+            class="btn btn-secondary btn-sm"
+          >
+            취소
+          </button>
+        </div>
+      </form>
+
+      <br />
+      <!-- /spice/list_all_component 로 교체 -->
+      <div th:replace="~{th/spice/list_all_component::list_all_fragment}"></div>
+    </div>
+  </div>
+</html>

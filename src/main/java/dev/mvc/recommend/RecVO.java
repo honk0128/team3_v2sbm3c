@@ -4,11 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 // CREATE TABLE RECOMMEND(
-// 		RECONO                        		NUMBER(10)	 NOT NULL 		 PRIMARY KEY,
-// 		RECODATE                      		DATE		 NOT NULL,
-// 		BOARDNO                       		NUMBER(10)		 NULL ,
+// 		RECONO                        		NUMBER(10)		 NULL 		 PRIMARY KEY,
+// 		SPICENO                       		NUMBER(10)		 NULL ,
 // 		ACCOUNTNO                     		NUMBER(10)		 NULL ,
-//   FOREIGN KEY (BOARDNO) REFERENCES BOARD (BOARDNO),
+// 		RECODATE                      		DATE		 NOT NULL,
+//   FOREIGN KEY (SPICENO) REFERENCES SPICE (SPICENO),
 //   FOREIGN KEY (ACCOUNTNO) REFERENCES ACCOUNT (ACCOUNTNO)
 // );
 
@@ -17,10 +17,10 @@ public class RecVO {
 
 private int recono;
 
-private String recodate;
-
-private int boardno;
+private int spiceno;
 
 private int accountno;
+
+private String recodate;
   
 }
