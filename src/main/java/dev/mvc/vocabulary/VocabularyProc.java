@@ -1,6 +1,7 @@
 package dev.mvc.vocabulary;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,6 +40,24 @@ public class VocabularyProc implements VocabularyProcInter {
   public int update(VocabularyVO vocabularyVO) {
     int cnt = this.vocabularyDAO.update(vocabularyVO);
     return cnt;
+  }
+
+  @Override
+  public ArrayList<VocabularyVO> list_cno_search(HashMap<String, Object> hashMap) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public int list_cno_search_count(HashMap<String, Object> hashMap) {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  @Override
+  public ArrayList<VocabularyVO> list_cno_search_paging(HashMap<String, Object> map) {
+    // TODO Auto-generated method stub
+    return null;
   }
 
   

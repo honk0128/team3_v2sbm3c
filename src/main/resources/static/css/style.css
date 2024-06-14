@@ -1208,3 +1208,8 @@ a:active {
    height: 500px;
    border: 1px solid black;
  } 
+ 
+ .boardcontent{
+   height: 100%;
+   margin-bottom: 100px;
+ }

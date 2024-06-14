@@ -494,6 +494,7 @@
   <!-- 계정 번호를 설정 -->
 
   <fieldset class="fieldset_basic">
+    <div class="boardcontent">
     <ul>
       <li class="li_none">
         <div style="width: 100%; word-break: break-all">
@@ -528,6 +529,7 @@
         <div style="text-align: center; width: 640px; margin: 0px auto" th:utext="${boardVO.byoutube}"></div>
       </li>
     </ul>
+    </div>
     <!-- /cate/list_all_component.html 파일의 list_all_fragment import -->
     <div th:replace="~{th/gpa/avgscore :: avgscore}"></div>
 <div th:replace="~{th/gpa/create :: create}"></div>

@@ -1,6 +1,9 @@
 package dev.mvc.vocabulary;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import dev.mvc.board.BoardVO;
 
 public interface VocabularyDAOInter {
   
@@ -23,6 +26,23 @@ public interface VocabularyDAOInter {
    * @return
    */
   public String list_mean(String voca);
+
+  
+  public ArrayList<VocabularyVO> list_cno_search(HashMap<String, Object> hashMap);
+
+  /**
+   * 카테고리별 검색된 레코드 갯수
+   * @param hashMap
+   * @return
+   */
+  public int list_cno_search_count(HashMap<String, Object> hashMap);
+
+  /**
+   * 카테고리 검색 + 페이징
+   * @param map
+   * @return
+   */
+  public ArrayList<VocabularyVO> list_cno_search_paging(HashMap<String, Object> map);
 
   
   public int update(VocabularyVO vocabularyVO);
