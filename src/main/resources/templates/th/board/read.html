@@ -443,49 +443,41 @@
       }
     }
   </script>
-
+  <style>
+    a:hover {
+      cursor: pointer;
+    }
+  </style>
 
 
   <aside class="aside_right" th:if="${session.managerno >= 1 || session.accountno == boardVO.accountno}">
-    <a th:href="@{|/board/create?crudcateno=${boardVO.crudcateno}|}">등록</a>
+    <a th:href="@{|/board/create?crudcateno=${boardVO.crudcateno}|}"><i class="bi bi-pencil-square" style="font-size: 1.5rem;"></i></a>
     <span class="menu_divide">│</span>
-    <a th:href="@{|/board/update_board?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}">글 수정</a>
+    <a th:href="@{|/board/update_board?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}"><i class="bi bi-eraser" style="font-size: 1.5rem;"></i></a>
     <span class="menu_divide">│</span>
-    <a th:href="@{|./update_file?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}">파일 수정</a>
-    <span class="menu_divide">│</span>
-    <a
-      th:href="@{|/board/youtube?crudcateno=${boardVO.crudcateno}&boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}">Youtube</a>
-    <span class="menu_divide">│</span>
-    <a th:href="@{|/vocabulary/create|}">단어 추가</a>
+    <a th:href="@{|./update_file?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}"><i class="bi bi-image" style="font-size: 1.5rem;"></i></a>
     <span class="menu_divide">│</span>
     <a
-      th:href="@{|./delete?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}&crudcateno=${boardVO.crudcateno}|}">삭제</a>
+      th:href="@{|/board/youtube?crudcateno=${boardVO.crudcateno}&boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}"><i class="bi bi-youtube" style="font-size: 1.5rem;"></i></a>
     <span class="menu_divide">│</span>
-    <button onclick="addBookmark()">북마크 추가</button>
+    <a
+      th:href="@{|./delete?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}&crudcateno=${boardVO.crudcateno}|}"><i class="bi bi-trash3" style="font-size: 1.5rem;"></i></a>
     <span class="menu_divide">│</span>
-    <button onclick="deleteBookmark()">북마크 삭제</button>
+    <a th:href="@{|/vocabulary/create|}"><i class="bi bi-wordpress" style="font-size: 1.5rem;"></i></a>
     <span class="menu_divide">│</span>
-    <a href="javascript:location.reload();">새로고침</a>
+    <a onclick="addBookmark()"><i class="bi bi-bookmark-star" style="font-size: 1.5rem;"></i></a>
     <span class="menu_divide">│</span>
-    <a th:href="@{|./list_cno?crudcateno=${crudcateVO.crudcateno}&word=${word}&now_page=${now_page}|}">목록</a>
+    <a onclick="deleteBookmark()"><i class="bi bi-bookmark-x" style="font-size: 1.5rem; color: red;"></i></a>
     <span class="menu_divide">│</span>
+    <a href="javascript:location.reload();"><i class="bi bi-arrow-clockwise" style="font-size: 1.5rem;"></i></a>
+    <span class="menu_divide">│</span>
+    <a th:href="@{|./list_cno?crudcateno=${crudcateVO.crudcateno}&word=${word}&now_page=${now_page}|}"><i class="bi bi-list-columns-reverse" style="font-size: 1.5rem;"></i></a>
   </aside>
 
   <aside class="aside_right" th:unless="${session.managerno >= 1 || session.accountno == boardVO.accountno}">
+    <a href="javascript:location.reload();"><i class="bi bi-arrow-clockwise" style="font-size: 1.5rem;"></i></a>
     <span class="menu_divide">│</span>
-    <a href="javascript:location.reload();">새로고침</a>
-    <span class="menu_divide">│</span>
-    <a th:href="@{|./list_cno?crudcateno=${crudcateVO.crudcateno}&word=${word}&now_page=${now_page}|}">목록</a>
-    <span class="menu_divide">│</span>
-    <a th:href="@{|/breply/create?boardno=${boardVO.boardno}|}">댓글</a>
-    <span class="menu_divide">│</span>
-    <a th:href="@{|/breply/list?boardno=${boardVO.boardno}|}">댓글 목록</a>
-    <span class="menu_divide">│</span>
-
-    <button onclick="addBookmark()" th:if="${session.managerno != null or session.accountno != null}">북마크 추가</button>
-    <span class="menu_divide" th:if="${session.managerno != null or session.accountno != null}">│</span>
-    <button onclick="deleteBookmark()" th:if="${session.managerno != null or session.accountno != null}">북마크 삭제</button>
-    <span class="menu_divide" th:if="${session.managerno != null or session.accountno != null}">│</span>
+    <a th:href="@{|./list_cno?crudcateno=${crudcateVO.crudcateno}&word=${word}&now_page=${now_page}|}"><i class="bi bi-list-columns-reverse" style="font-size: 1.5rem;"></i></a>
   </aside>
 
   <div class="menu_line"></div>
