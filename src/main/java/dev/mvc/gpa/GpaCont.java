@@ -70,6 +70,9 @@ public class GpaCont {
    
       String sessionAid = (String) session.getAttribute("aid");
 
+      if (sessionAid == null) {
+        return "redirect:/account/login_need";
+    }
       
       GpaVO gpaVO2 = gpaproc.readById(sessionAid);
       int accountno = gpaVO2.getAccountno();

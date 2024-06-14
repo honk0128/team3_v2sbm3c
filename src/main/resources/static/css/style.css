@@ -1052,6 +1052,8 @@ a:active {
   
 }
 
+ 
+
 .carousel-control-prev-icon{
   
 }
@@ -1147,7 +1149,7 @@ a:active {
   
   .carousel-control-prev{
    position: absolute;
-   left: 45%;
+   left: 30%;
     width: 50px;
     height: 50px;
     background-color: #777777;
@@ -1155,7 +1157,7 @@ a:active {
   
   .carousel-control-next{
     position: absolute;
-   right: 45%;
+   right: 30%;
     width: 50px;
     height: 50px;
     background-color: #777777;
@@ -1209,7 +1211,19 @@ a:active {
    border: 1px solid black;
  } 
  
+ @media(max-width: 800px) {
+  .boxbody{
+   height: 1300px;
+   border: 1px solid black;
+ } 
+  }
+ 
+ 
  .boardcontent{
    height: 100%;
    margin-bottom: 100px;
+ }
+ 
+ .boardcontent ul{
+   height: 100%;
  }
