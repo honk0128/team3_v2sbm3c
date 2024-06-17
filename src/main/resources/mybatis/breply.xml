@@ -34,7 +34,7 @@
     SELECT a.aid AS id, r.breplyno, r.boardno, r.accountno AS entityno, r.breplycont, r.breplydate, r.breplythumb,'account' AS entity_type
     FROM account a
     JOIN breply r ON a.accountno = r.accountno
-    WHERE r.accountno &gt; 0 AND r.boardno = #{boardno}
+    WHERE r.accountno &gt; 0 AND r.boardno = #{boardno}+
     AND ROWNUM &lt; 300
     ORDER BY breplyno DESC
   </select>
@@ -45,7 +45,7 @@
     FROM breply
     WHERE breplyno = #{breplyno}
   </select>
-
+  
   <!-- 댓글 수정 -->
   <update id="update" parameterType="dev.mvc.breply.BreplyVO">
     UPDATE BREPLY

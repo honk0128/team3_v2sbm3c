@@ -442,7 +442,8 @@ public class SpiceCont {
     int cnt = 0;
     int accountno = session.getAttribute("accountno") != null ? (int) session.getAttribute("accountno") : 0;
 
-    HashMap<String, Object> map = new HashMap<String, Object>();
+    if(accountno > 0) {
+      HashMap<String, Object> map = new HashMap<String, Object>();
     map.put("spiceno", spiceno);
     map.put("accountno", accountno);
 
@@ -458,6 +459,10 @@ public class SpiceCont {
       this.recProc.good_cancel(map);
     }
     return "redirect:/spice/cno_read?spiceno=" + spiceno + "&word=&now_page=1" + Tool.encode(word) + "&now_page=" + now_page;  // /templates/cate/list_search.html
+    } else {
+      return "redirect:/account/login";
+    }
+    
   }
 
   // @GetMapping(value="/good_down/{spiceno}")
