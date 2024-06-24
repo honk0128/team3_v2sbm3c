@@ -16,7 +16,7 @@ public class VocabularyVO {
   
   private int vocano;
   
-  private String voca;
+  private String voca = "";
   
   private String mean;
   

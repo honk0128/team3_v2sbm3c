@@ -21,7 +21,7 @@
   </select>
 
 <!-- list_cno_search -->
-    <select id="list_cno_search" resultType="dev.mvc.vocabulary.VocabularyVO" parameterType="HashMap">
+    <select id="list_search" resultType="dev.mvc.vocabulary.VocabularyVO" parameterType="HashMap">
      SELECT vocano, voca, mean, managerno
            
     FROM vocabulary
@@ -39,41 +39,30 @@
   </select>
 
   <!-- 카테고리별 검색 레코드 갯수 -->
-  <select id="list_cno_search_count" resultType="int" parameterType="HashMap">
-    SELECT COUNT(*) as cnt
+   <select id="list_search_count" resultType="int" parameterType="String">
+    SELECT count(*) as cnt
     FROM vocabulary
-    <choose>
-      <when test="word == null or word == ''"> <!-- 검색하지 않는 경우의 레코드 갯수 -->
-        WHERE vocano = #{vocano}
-      </when>
-      <otherwise> <!-- 검색하는 경우의 레코드 갯수 -->
-        WHERE vocano = #{vocano}  AND (UPPER(voca) LIKE '%' || UPPER(#{word}) || '%' 
-                                                  OR UPPER(mean) LIKE '%' || UPPER(#{word}) || '%' 
-      </otherwise>
-    </choose>
-  </select>   
+    <if test="word != null and word !=''">
+      WHERE UPPER(voca) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(mean) LIKE '%' || UPPER(#{word}) || '%' 
+    </if>
+    ORDER BY vocano ASC
+  </select>
 
   <!-- 카테고리별 검색 + 페이징 목록 -->
-  <select id="list_cno_search_paging" resultType="dev.mvc.vocabulary.VocabularyVO" parameterType="HashMap">
-    SELECT vocano, voca, mean, managerno, r
+  <select id="list_search_paging" resultType="dev.mvc.vocabulary.VocabularyVO" parameterType="Map">
+    SELECT  vocano, voca, mean, managerno, r
     FROM (
-              SELECT vocano, voca, mean, managerno, rownum as r
-              FROM (
-                    SELECT SELECT vocano, voca, mean, managerno
-                    FROM vocabulary
-                    <choose>
-                      <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->
-                        WHERE vocano = #{vocano}
-                      </when>
-                      <otherwise>
-                        WHERE vocano = #{vocano}  AND (UPPER(voca) LIKE '%' || UPPER(#{word}) || '%' 
-                                                  OR UPPER(mean) LIKE '%' || UPPER(#{word}) || '%' 
-                      </otherwise>
-                    </choose>
-                    ORDER BY vocano DESC
-                    )
+        SELECT vocano, voca, mean, managerno, rownum as r
+        FROM (
+            SELECT vocano, voca, mean, managerno
+            FROM vocabulary
+            <if test="word != null and word !=''">
+             WHERE UPPER(voca) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(mean) LIKE '%' || UPPER(#{word}) || '%'  
+            </if>
+            ORDER BY vocano ASC
+        )
     )
-    WHERE <![CDATA[ r >= #{start_num} AND r <= #{end_num} ]]>
+    WHERE r &gt;= #{start_num} AND r &lt;= #{end_num}
   </select>
 
 <update id="update" parameterType="dev.mvc.vocabulary.VocabularyVO">

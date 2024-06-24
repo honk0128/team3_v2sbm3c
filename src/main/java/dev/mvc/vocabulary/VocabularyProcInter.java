@@ -25,21 +25,24 @@ public interface VocabularyProcInter {
    */
   public String list_mean(String voca);
   
-  public ArrayList<VocabularyVO> list_cno_search(HashMap<String, Object> hashMap);
+  public ArrayList<VocabularyVO> list_search(HashMap<String, Object> hashMap);
 
   /**
    * 카테고리별 검색된 레코드 갯수
    * @param hashMap
    * @return
    */
-  public int list_cno_search_count(HashMap<String, Object> hashMap);
+  public int list_search_count(String word);
 
   /**
    * 카테고리 검색 + 페이징
    * @param map
    * @return
    */
-  public ArrayList<VocabularyVO> list_cno_search_paging(HashMap<String, Object> map);
+  public ArrayList<VocabularyVO> list_search_paging(String word, int now_page, int record_per_page);
+  
+  
+  public String pagingBox(int now_page, String word, String list_file, int search_count, int record_per_page, int page_per_block);
   
   public int update(VocabularyVO vocabularyVO);
   

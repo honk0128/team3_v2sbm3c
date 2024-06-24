@@ -1,65 +1,60 @@
-package dev.mvc.vocabulary;
+package dev.mvc.video;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import dev.mvc.video.VideoVO;
+import dev.mvc.board.Board;
+import dev.mvc.manager.ManagerVO;
+import dev.mvc.spice.SpiceVO;
 
-@Component("dev.mvc.vocabulary.VocabularyProc")
-public class VocabularyProc implements VocabularyProcInter {
-
+@Service("dev.mvc.video.VideoProc")
+public class VideoProc  implements VideoProcInter{
   @Autowired
-  private VocabularyDAOInter vocabularyDAO;
-
+  private VideoDAOInter videoDAO;
+  
+  public VideoProc() {
+    //System.out.println( " -> Gpaproc create");
+  }
+  
   @Override
-  public int create_voca(VocabularyVO vocabularyVO) {
-    int cnt = this.vocabularyDAO.create_voca(vocabularyVO);
+  public int create(VideoVO videoVO) {
+    int cnt = this.videoDAO.create(videoVO);
     return cnt;
   }
 
+  
   @Override
-  public ArrayList<VocabularyVO> list() {
-    ArrayList <VocabularyVO> list = this.vocabularyDAO.list();
+  public VideoVO readById(String mid) {
+    VideoVO videoVO = this.videoDAO.readById(mid);
+    return videoVO;
+  }
+
+  @Override
+  public ArrayList<VideoVO> list() {
+    ArrayList<VideoVO> list = this.videoDAO.list();
+    
     return list;
   }
 
   @Override
-  public String list_mean(String voca) {
-    String mean = this.vocabularyDAO.list_mean(voca);
-    return mean;
-  }
-
-  @Override
-  public int delete(int vocano) {
-    int cnt = this.vocabularyDAO.delete(vocano);
+  public int delete(int videono) {
+    int cnt = this.videoDAO.delete(videono);
     return cnt;
   }
 
   @Override
-  public int update(VocabularyVO vocabularyVO) {
-    int cnt = this.vocabularyDAO.update(vocabularyVO);
+  public int update(VideoVO videoVO) {
+    int cnt = this.videoDAO.update(videoVO);
     return cnt;
   }
 
   @Override
-  public ArrayList<VocabularyVO> list_search(HashMap<String, Object> hashMap) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-  
+  public ArrayList<VideoVO> list_search_paging(String word, int now_page, int record_per_page) {
 
-  @Override
-  public int list_search_count(String word) {
-    int cnt = this.vocabularyDAO.list_search_count(word);
-    return cnt;
-  }
-
-  @Override
-  public ArrayList<VocabularyVO> list_search_paging(String word, int now_page, int record_per_page) {
     //1 페이지 시작 rownum: now_page = 1, (1 - 1) * 10 --> 0 
     int begin_of_page = (now_page - 1) * record_per_page;
     // 시작 rownum 결정
@@ -72,14 +67,14 @@ public class VocabularyProc implements VocabularyProcInter {
     map.put("start_num", start_num);
     map.put("end_num", end_num);
 
-    ArrayList<VocabularyVO> list=this.vocabularyDAO.list_search_paging(map);
+    ArrayList<VideoVO> list=this.videoDAO.list_search_paging(map);
     return list;
   }
 
   @Override
-  public String pagingBox(int now_page, String word, String list_file, int search_count, int record_per_page,
+  public String pagingBox(int now_page, String word,String list_file ,int search_count, int record_per_page,
       int page_per_block) {
- // 전체 페이지 수: (double)1/10 -> 0.1 -> 1 페이지, (double)12/10 -> 1.2 페이지 -> 2 페이지
+    // 전체 페이지 수: (double)1/10 -> 0.1 -> 1 페이지, (double)12/10 -> 1.2 페이지 -> 2 페이지
     int total_page = (int) (Math.ceil((double) search_count / record_per_page));
     // 전체 그룹 수: (double)1/10 -> 0.1 -> 1 그룹, (double)12/10 -> 1.2 그룹-> 2 그룹
     int total_grp = (int) (Math.ceil((double) total_page / page_per_block));
@@ -166,5 +161,23 @@ public class VocabularyProc implements VocabularyProcInter {
     return str.toString();
   }
 
+  @Override
+  public int list_search_count(String word) {
+    int cnt = this.videoDAO.list_search_count(word);
+    return cnt;
+  }
+
+  @Override
+  public VideoVO read(int videono) {
+    VideoVO videoVO = this.videoDAO.read(videono);
+    return videoVO;
+  }
+
+ 
+
+  
+  
+  
+  
   
 }

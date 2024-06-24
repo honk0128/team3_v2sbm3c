@@ -15,7 +15,7 @@ public interface GpaDAOInter {
   /**
    * 등록
    * insert id="create" parameterType="dev.mvc.gpa.GpaVO"
-   * @param GpaVO
+   * @param VideoVO
    * @return 등록한 레코드 갯수
    */
     public int create(GpaVO gpaVO);

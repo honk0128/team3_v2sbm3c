@@ -55,6 +55,22 @@
   
 }
 
+
+@media(max-width: 1000px) {
+  .navbar{
+  
+  background-color: rgb(0, 128, 64) !important;
+  border: 0px !important;
+  z-index: 9999;
+  
+}
+  .navbar a{
+   color: white !important;
+   font-size: 20px;
+}
+}
+
+
 .navbar a{
    color: black !important;
    font-size: 20px;
@@ -1226,4 +1242,10 @@ a:active {
  
  .boardcontent ul{
    height: 100%;
+ }
+ 
+ .navbar-toggler{
+   background-color: white;
+   color: black;
+   
  }
