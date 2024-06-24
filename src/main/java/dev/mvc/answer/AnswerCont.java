@@ -70,6 +70,7 @@ public class AnswerCont {
       
       model.addAttribute("list", list) ;
       model.addAttribute("img", img);
+
     }else {
       return "redirect:/account/login_need";
     } 
