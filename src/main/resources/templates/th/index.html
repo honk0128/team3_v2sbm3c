@@ -1,116 +1,111 @@
 <!DOCTYPE html>
-<html layout:decorate="~{th/layout}"> <!-- layout.html 상속 -->
-<head>
-  <link href="/css/style.css" rel="stylesheet" type="text/css"> <!-- /static 기준 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<script>
-    $(document).ready(function() {
-      const reviewsPerPage = 3; //초기 리뷰수
-      let addreviewpage = 0;
-      let currentCount = reviewsPerPage + addreviewpage; // 처음에 보여질 리뷰 수를 리뷰 페이지 수로 변경
-      const totalReviews = $(".review_item").length;
-      
-      
+<html layout:decorate="~{th/layout}">
+  <!-- layout.html 상속 -->
+  <head>
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+    <!-- /static 기준 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script>
+      $(document).ready(function () {
+        const reviewsPerPage = 3; //초기 리뷰수
+        let addreviewpage = 0;
+        let currentCount = reviewsPerPage + addreviewpage; // 처음에 보여질 리뷰 수를 리뷰 페이지 수로 변경
+        const totalReviews = $(".review_item").length;
 
-      function showMoreReviews() {
-       $(".review_item").hide(); // 모든 리뷰 숨기기
-       currentCount = reviewsPerPage + addreviewpage;
-    $(".review_item").slice(0, currentCount).show(); // 처음 3개의 리뷰만 보이기
- 
-      }
+        function showMoreReviews() {
+          $(".review_item").hide(); // 모든 리뷰 숨기기
+          currentCount = reviewsPerPage + addreviewpage;
+          $(".review_item").slice(0, currentCount).show(); // 처음 3개의 리뷰만 보이기
+        }
 
-      // 페이지 로드 시 처음에는 일부 리뷰만 표시
-      showMoreReviews();
-
-      // "더보기" 버튼 클릭 시 추가 리뷰 표시
-      $("#loadMore").click(function() {
-        addreviewpage += 5;
+        // 페이지 로드 시 처음에는 일부 리뷰만 표시
         showMoreReviews();
-      });
-    });
-  </script>
-</head>
 
-<body>
-  <div layout:fragment="content" style="width: 100%; margin: 50px auto; text-align: center;">
-  <div class="boxbody">
-  <div th:replace="~{th/mobingbox :: mobingbox}"></div>
-  </div>
-    
-  
-  
-  <div th:replace="~{th/youtube :: youtube}"></div>
-  
-  <h2 class="rank"><i class="fa-solid fa-crown gold"></i>금주의 랭킹</h2>
-    <div class="main"> 
-      
-      
-      
-      <section class="slideshow"> 
-        
-        <div class="slidea"> 
-          
-          <figure>
-            <a href="/WinStudy">
-              <img src="/images/main.jpg" alt="Window">
-            </a>
-            <p class="textb"><i class="fa-solid fa-crown gold"></i>1등</p>
-          </figure>
-          <figure>
-            <a href="/LinStudy">
-              <img src="/images/main.jpg" alt="Linux">
-            </a>
-            <p class="textb"><i class="fa-solid fa-crown silver"></i>2등</p>
-          </figure>
-          <figure>
-            <a href="/">
-              <img src="/images/main.jpg" alt="Word Search">
-              <p class="textb"><i class="fa-solid fa-crown brown"></i>3등</p>
-            </a>
-          </figure>
-          <figure>
-            <a href="/WindowsQuizmain">
-              <img src="/images/main.jpg" alt="Window Quiz">
-              <p class="textb">4등</p>
-            </a>
-          </figure>
-          <figure>
-            <a href="/LinuxQuizmain">
-              <img src="/images/main.jpg" alt="Linux Quiz">
-              <p class="textb">5등</p>
-            </a>
-          </figure>
-          <figure>
-            <a href="/roadmap">
-              <img src="/images/main.jpg" alt="RoadMap">
-              <p class="textb">6등</p>
-            </a>
-          </figure>
-        </div>
-      </section>
-    </div>
-    
-    <div class="review">
-      <h2>최신요리 후기</h2>
-      <div class="review_item" th:if="${list.size() > 0}" th:each="boardVO, status:${list}" th:attr="onclick=|location.href='/board/read?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}'|">
-        <div class="review_content">
-          <div class="review_img_room" th:if="${boardVO.bphoto.endsWith('jpg') or boardVO.bphoto.endsWith('png')  or boardVO.bphoto.endsWith('gif')}">
-            <img class="review_img" th:src="@{|/board/storage/${boardVO.bthumb}|}" alt="">
-          </div>
-          
-          <div class="review_title">
-            <span th:text="${boardVO.btitle}"></span><br />
-          </div>
-          <div class="review_text">
-            가장 최근 댓글 들어갈 예정
-              </div>
-        </div>
+        // "더보기" 버튼 클릭 시 추가 리뷰 표시
+        $("#loadMore").click(function () {
+          addreviewpage += 5;
+          showMoreReviews();
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <div layout:fragment="content" style="width: 100%; margin: 50px auto; text-align: center">
+      <div class="boxbody">
+        <div th:replace="~{th/mobingbox :: mobingbox}"></div>
       </div>
-      <button id="loadMore">더보기</button>
+
+      <div th:replace="~{th/youtube :: youtube}"></div>
+
+      <h2 class="rank"><i class="fa-solid fa-crown gold"></i>금주의 랭킹</h2>
+      <div class="main">
+        <section class="slideshow">
+          <div class="slidea">
+            <figure>
+              <a href="/WinStudy">
+                <img src="/images/main.jpg" alt="Window" />
+              </a>
+              <p class="textb"><i class="fa-solid fa-crown gold"></i>1등</p>
+            </figure>
+            <figure>
+              <a href="/LinStudy">
+                <img src="/images/main.jpg" alt="Linux" />
+              </a>
+              <p class="textb"><i class="fa-solid fa-crown silver"></i>2등</p>
+            </figure>
+            <figure>
+              <a href="/">
+                <img src="/images/main.jpg" alt="Word Search" />
+                <p class="textb"><i class="fa-solid fa-crown brown"></i>3등</p>
+              </a>
+            </figure>
+            <figure>
+              <a href="/WindowsQuizmain">
+                <img src="/images/main.jpg" alt="Window Quiz" />
+                <p class="textb">4등</p>
+              </a>
+            </figure>
+            <figure>
+              <a href="/LinuxQuizmain">
+                <img src="/images/main.jpg" alt="Linux Quiz" />
+                <p class="textb">5등</p>
+              </a>
+            </figure>
+            <figure>
+              <a href="/roadmap">
+                <img src="/images/main.jpg" alt="RoadMap" />
+                <p class="textb">6등</p>
+              </a>
+            </figure>
+          </div>
+        </section>
+      </div>
+
+      <div class="review">
+        <h2>최신요리 후기</h2>
+        <div
+          class="review_item"
+          th:if="${list.size() > 0}"
+          th:each="boardVO, status:${list}"
+          th:attr="onclick=|location.href='/board/read?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}'|"
+        >
+          <div class="review_content">
+            <div
+              class="review_img_room"
+              th:if="${boardVO.bphoto.endsWith('jpg') or boardVO.bphoto.endsWith('png')  or boardVO.bphoto.endsWith('gif')}"
+            >
+              <img class="review_img" th:src="@{|/board/storage/${boardVO.bthumb}|}" alt="" />
+            </div>
+
+            <div class="review_title"><span th:text="${boardVO.btitle}"></span><br /></div>
+            <div class="review_text">가장 최근 댓글 들어갈 예정</div>
+          </div>
+        </div>
+        <button id="loadMore">더보기</button>
+      </div>
     </div>
-  </div>
-  
-</body>
+  </body>
 </html>
