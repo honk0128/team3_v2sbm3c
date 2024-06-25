@@ -496,3 +496,38 @@
   line-height: 35px;
 }
 /*** Footer End ***/
+
+.th_basic {
+  font-size: 0.8em;
+  border-bottom: solid 3px #dddddd;
+}
+
+.th_bs {
+  text-align: center;
+}
+
+.td_basic {
+  border-top: none;
+  border-right: none;
+  border-bottom: solid 1px #dddddd;
+  border-left: none;
+  text-align: center;
+}
+
+.td_left {
+  border-top: none;
+  border-right: none;
+  border-bottom: solid 1px #dddddd;
+  border-left: none;
+  text-align: left;
+}
+
+.td_bs {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.td_bs_left {
+  text-align: left;
+  vertical-align: middle;
+}
