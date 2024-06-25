@@ -181,19 +181,18 @@ public class SMSCont {
 
   @PostMapping(value = "/update_passwd")
   public String update_passwd_proc(HttpSession session, Model model, String current_apasswd, String apasswd) {
-    HashMap<String, Object> map = new HashMap<String, Object>();
+
     int no = (int)session.getAttribute("no");
 //    System.out.println("->->->->->accountno: " + accountno);
 //    System.out.println("->current_apasswd" + current_apasswd);
-    map.put("accountno", no);
-    map.put("apasswd", this.security.aesEncode(current_apasswd));
+
 //    System.out.println(map);
     
-    int cnt = this.accountProc.passwd_check(map);
+
   
 //    System.out.println("->>cnt: " + cnt);
     
-    if (cnt == 1) {
+
 
       HashMap<String, Object> map_new_passwd = new HashMap<String, Object>();
       map_new_passwd.put("accountno", no);
@@ -205,9 +204,6 @@ public class SMSCont {
       }else {
         model.addAttribute("code", "find_passwd_fail");
       } 
-    }else {
-      model.addAttribute("code", "find_passwd_fail");
-    }
     return "th/account/update_passwd";
   }
   

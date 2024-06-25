@@ -50,6 +50,8 @@ import jakarta.validation.constraints.Max;
     /** 답변 번호 */
     private Integer answerno = 1;
     
+    private String rdate = "";
+    
     
     
     
