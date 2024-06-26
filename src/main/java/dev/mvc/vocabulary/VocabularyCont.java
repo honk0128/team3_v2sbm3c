@@ -120,6 +120,7 @@ public class VocabularyCont {
     model.addAttribute("paging", paging);
     model.addAttribute("word", word);
     model.addAttribute("now_page", now_page);
+    model.addAttribute("search_count", search_count);
 
     // 일련 번호 생성: 레코드 갯수 - ((현재 페이지수) - 1) * 페이지당 레코드 수)
     int no = (search_count - (now_page - 1) * this.record_per_page);

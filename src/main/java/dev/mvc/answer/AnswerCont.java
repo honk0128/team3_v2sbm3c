@@ -1,6 +1,7 @@
 package dev.mvc.answer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -46,30 +47,39 @@ public class AnswerCont {
                                  @RequestParam(name="word", defaultValue = "") String word, 
                                  @RequestParam(name="now_page", defaultValue = "1") int now_page) {
     
-    Integer sessionAccountno = (Integer) session.getAttribute("accountno");
+    Integer accountno = (Integer) session.getAttribute("accountno");
+    System.out.println(accountno);
     
     
     if (this.managerProc.isAdmin(session)) {
       
       ArrayList <AnswerVO> list = this.answerProc.list_all_search_paging(word, now_page, this.record_per_page);
-      ArrayList <AiVO> img = this.aiProc.img_all();
      
       
       model.addAttribute("list", list) ;
-      model.addAttribute("img", img);
       
       int search_count = this.answerProc.list_all_search_count(word);
       String paging = this.answerProc.pagingBox(now_page, now_page, word, "/answer/list", search_count, this.record_per_page, this.page_per_blocK);
       model.addAttribute("paging", paging);
       model.addAttribute("word", word);
       model.addAttribute("now_page", now_page);
+      model.addAttribute("search_count", search_count);
       
     }else if(this.managerProc.isMember(session)){
-      ArrayList <AnswerVO> list = this.answerProc.list(sessionAccountno);
-      ArrayList <AiVO> img = this.aiProc.img(sessionAccountno);
+      ArrayList <AnswerVO> list = this.answerProc.list_search_paging(accountno, word, now_page, this.record_per_page);
       
       model.addAttribute("list", list) ;
-      model.addAttribute("img", img);
+      
+      HashMap<String, Object> map = new HashMap<>();
+      map.put("accountno", accountno);
+      map.put("word", word);
+      
+      int search_count = this.answerProc.list_search_count(map);
+      String paging = this.answerProc.userpagingBox(accountno, now_page, word, "/answer/list", search_count, this.record_per_page, this.page_per_blocK);
+      model.addAttribute("paging", paging);
+      model.addAttribute("word", word);
+      model.addAttribute("now_page", now_page);
+      model.addAttribute("search_count", search_count);
 
     }else {
       return "redirect:/account/login_need";

@@ -2,6 +2,9 @@
 <html layout:decorate="~{th/layout}"> <!-- layout.html 상속-->
 
 <div layout:fragment="content">
+
+  
+  <div th:if="${session.managerno != null}">
     <!-- Header start -->
     <div class="container-fluid page-header py-5">
       <h1 class="text-center text-white display-6">
@@ -23,9 +26,6 @@
       </ol>
     </div>
     <!-- Single Page Header End -->
-  
-  <div th:if="${session.managerno != null}">
-
     
     <div class='menu_line'></div>
 
@@ -53,16 +53,16 @@
               </tr>
             </thead>
             <tbody>
-              <tr th:each="answerVO, status : ${list}" th:with="aiVO=${img[status.index]}">
+              <tr th:each="answerVO, status : ${list}">
                 <td class='td_bs' th:text="${answerVO.aname}"></td>
                 <td class='td_bs'>
                   <div
-                    th:if="${aiVO.img_search.endsWith('jpg') or aiVO.img_search.endsWith('png') or aiVO.img_search.endsWith('gif')}">
-                    <img th:src="@{|/contents/storage/${aiVO.img_search_thumb}|}" style="width: 80px; height: 80px;">
+                    th:if="${answerVO.img_search.endsWith('jpg') or answerVO.img_search.endsWith('png') or answerVO.img_search.endsWith('gif')}">
+                    <img th:src="@{|/contents/storage/${answerVO.img_search_thumb}|}" style="width: 80px; height: 80px;">
                   </div>
                 </td>
                 <td id="text_answer" class='td_bs' th:text="${answerVO.text_answer}"></td>
-                <td class='td_bs' th:text="${aiVO.rdate.substring(0, 10)}"></td>
+                <td class='td_bs' th:text="${answerVO.rdate.substring(0, 10)}"></td>
                 <td class='td_basic'>
                   <button class="btn btn-md rounded-circle bg-light border mt-4">
                     <i class="fa fa-times text-danger"></i>
@@ -76,43 +76,69 @@
     </div>
   </div>
   <div th:unless="${session.managerno != null}">
-    <!-- 일반 사용자의 경우 출력할 테이블 -->
-    <div class='title_line'>질문 목록</div>
+    <div class="container-fluid page-header py-5">
+      <h1 class="text-center text-white display-6">
+        <span class="title_line_text">AI</span> > <span class="title_line_text">답변</span>
+        <span th:if="${word != ''}" th:text="|> ${word} (${search_count} 건)|" class="title_line_text"></span>
+      </h1>
+      
+      <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item">
+          <a th:href="@{http://192.168.2.6:5000/menu_web(accountno=${session.accountno}, managerno=${session.managerno})}">질문</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="javascript:location.reload();">새로고침</a>
+        </li>
 
-    <aside class="aside_right">
-      <a href="javascript:location.reload();">새로고침</a>
-      <span class='menu_divide'>│</span>
-      <a href='./list'>검색 목록</a>
-    </aside>
-
-    <div th:replace="~{th/answer/list_search_component::list_search_fragment}"></div>
+        <li class="breadcrumb-item">
+          <a href="./list">목록</a>
+        </li>
+      </ol>
+    </div>
     <div class='menu_line'></div>
-    <table class="table table-striped" style='width: 100%;'>
-      <colgroup>
-        <col style='width: 20%;' />
-        <col style='width: 80%;' />
-      </colgroup>
-      <tr>
-        <th class='th_bs'>질문 이미지</th>
-        <th class='th_bs'>답변</th>
-      </tr>
 
-      <tr th:each="answerVO, status : ${list}" th:with="aiVO=${img[status.index]}">
-        <td class='td_basic'>
-          <div
-            th:if="${aiVO.img_search.endsWith('jpg') or aiVO.img_search.endsWith('png') or aiVO.img_search.endsWith('gif')}">
-            <img th:src="@{|/contents/storage/${aiVO.img_search_thumb}|}" style="width: 90px; height: 70px;">
-          </div>
-
-          <div th:if="${img_search_size == 0}">
-            <img src="/account/images/basic.jpg" style="width: 90px; height: 70px;">
-          </div>
-        </td>
-
-        <td class='td_basic' th:text="${answerVO.text_answer}"></td>
-
-      </tr>
-    </table>
+    <div class="container-fluid py-5">
+      <div class="container py-5">
+        <div th:replace="~{th/answer/list_search_component::list_search_fragment}"></div>
+        <br />
+        <br />
+        <div class="table-responsive">
+          <table class="table">
+            <colgroup>
+              <col style='width: 15%;' />
+              <col style='width: 70%;' />
+              <col style='width: 10%;' />
+              <col style='width: 5%;' />
+            </colgroup>
+            <thead>
+              <tr>
+                <th scope="col" class='th_bs'>질문 이미지</th>
+                <th scope="col" class='th_bs'>답변</th>
+                <th scope="col" class='th_bs'>질문 등록일</th>
+                <th scope="col" class='th_bs'>관리</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="answerVO, status : ${list}">
+                <td class='td_bs'>
+                  <div
+                    th:if="${answerVO.img_search.endsWith('jpg') or answerVO.img_search.endsWith('png') or answerVO.img_search.endsWith('gif')}">
+                    <img th:src="@{|/contents/storage/${answerVO.img_search_thumb}|}" style="width: 80px; height: 80px;">
+                  </div>
+                </td>
+                <td id="text_answer" class='td_bs' th:text="${answerVO.text_answer}"></td>
+                <td class='td_bs' th:text="${answerVO.rdate.substring(0, 10)}"></td>
+                <td class='td_basic'>
+                  <button class="btn btn-md rounded-circle bg-light border mt-4">
+                    <i class="fa fa-times text-danger"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="bottom_menu" th:utext="${paging}"></div>

@@ -23,6 +23,20 @@ public class AnswerVO {
   
   private String aname;
   
+  private String rdate = "";
+  
+  /** 질문한 이미지 */
+  private String img_search = "";
+  
+  /** 질문한 이미지 저장 */
+  private String img_search_save = "";
+  
+  /** 질문한 이미지 섬네일 */
+  private String img_search_thumb = "";
+  
+  /** 저장한 이미지 사이즈 */
+  private long img_search_size = 0;
+  
   
 
 }

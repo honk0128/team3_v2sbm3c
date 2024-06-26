@@ -64,7 +64,7 @@ public class AccountCont {
   Security security;
   
   /** 페이지당 출력할 레코드 갯수 */
-  public int record_per_page = 5;
+  public int record_per_page = 8;
 
   /** 블럭당 페이지 수, 하나의 블럭은 10개의 페이지로 구성됨 */
   public int page_per_blocK = 10;
@@ -188,6 +188,7 @@ public class AccountCont {
       model.addAttribute("paging", paging);
       model.addAttribute("word", word);
       model.addAttribute("now_page", now_page);
+      model.addAttribute("search_count", search_count);
 
     return "th/account/list"; // templates/member/list.html
   }else {
