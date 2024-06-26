@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+
+<html layout:decorate="~{th/layout}"> 
+<head>
+  <link href="/css/style.css" rel="Stylesheet" type="text/css"> <!-- /static 기준 -->
+</head>
+<div layout:fragment="content">
+<div th:fragment="list">
+  <div class='title_line'>지역 리스트</div>
+
+  <aside class="aside_right">
+    <a href="javascript:location.reload();">새로고침</a>
+    
+    
+  </aside> 
+   
+   <input type="hidden" name="now_page" th:value="${now_page}" />
+    <input type="hidden" name="word" th:value="${word}" />
+<div th:replace="~{th/region/list_cno_search_component::list_cno_search_fragment}"></div>
+ 
+   
+  <div class='menu_line'></div>
+       
+   <table class="table table-striped" style='width: 100%;'>
+    <colgroup>
+      <col style='width: 5%;'/>
+      <col style='width: 20%;'/>
+      <col style='width: 20%;'/>
+      <col style='width: 20%;'/>
+      <col style='width: 20%;'/>
+      
+      
+      <col style='width: 5%;'/>
+    </colgroup>
+    <tr>
+      <th class='th_bs'>지역번호</th>
+      <th class='th_bs'>지역명</th>
+      <th class='th_bs'>등록한 관리자</th>
+      
+      <th class='th_bs'>수정|삭제</th>
+      <th class='th_bs'> </th>
+    </tr>
+   
+    <tr th:each="regionVO, status:${list}">
+      
+       <fieldset>
+         
+          <td class='td_basic' th:text="${regionVO.regiono}"></td>
+        
+         <td class='td_basic'>
+          <a th:href="@{/regionfood/list(regiono=${regionVO.regiono})}" th:text="${regionVO.regionname}"></a>
+        </td>
+      
+              <td class='td_basic' th:text="${regionVO.managerno}"></td>
+       
+      <td class='td_basic'>
+        <a th:href="@{/region/update(regiono=${regionVO.regiono})}">
+        <img src='/member/images/update.png' title='수정' class="icon"></a>
+        </a>
+        <a th:href="@{/region/delete(regiono=${regionVO.regiono})}">
+    <img src='/member/images/delete.png' title='삭제' class="icon">
+</a>
+      </td>
+      </fieldset>
+    </tr>
+  </table>
+   
+  <div class='bottom_menu'>
+    <button type='button' onclick="location.reload();" class="btn btn-primary btn-sm">새로 고침</button>
+  <div class="bottom_menu" th:utext="${paging}"></div>
+  </div>
+</div>
+</div>
+</html>
+
+
