@@ -89,8 +89,12 @@ public class BookmarkCont {
         if (session.getAttribute("accountno") != null) {
             int result = bookmarkProc.bm_delete(bookmarkVO);
             if (result > 0) {
-                return ResponseEntity.ok().body("{\"message\": \"북마크가 삭제되었습니다.\"}");
+                // 성공적으로 삭제된 경우
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Location", "/bookmark/bm_list");
+                return new ResponseEntity<>(headers, HttpStatus.FOUND);
             } else {
+                // 삭제 실패한 경우
                 return ResponseEntity.status(500).body("{\"message\": \"북마크 삭제에 실패했습니다.\"}");
             }
         } else {
