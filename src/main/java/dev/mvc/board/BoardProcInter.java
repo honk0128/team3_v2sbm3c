@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
+import dev.mvc.crudcate.CrudcateVO;
+
 public interface BoardProcInter {
   /**
    * 등록
@@ -15,6 +17,9 @@ public interface BoardProcInter {
 
   /**
    * 전체 목록
+   * @param word
+   * @param now_page
+   * @param record_per_page
    * @return
    */
   public ArrayList<BoardVO> list_all(String word, int now_page, int record_per_page);

@@ -216,14 +216,14 @@ public class BoardCont {
       // 페이징 목록
       ArrayList<BoardVO> list = this.boardProc.list_all(word, now_page, Board.RECORD_PER_PAGE);
       model.addAttribute("list", list);
-  
+
       // 페이징 버튼 목록
       int search_count = this.boardProc.list_all_sc(word);
       String paging = this.boardProc.pagingBox_all(now_page, word, "/board/list_all", search_count, Board.RECORD_PER_PAGE, Board.PAGE_PER_BLOCK);
       model.addAttribute("paging_all", paging);
-      model.addAttribute("now_page", now_page);
-  
       model.addAttribute("word", word);
+      model.addAttribute("now_page", now_page);
+      model.addAttribute("search_count", search_count);
   
       // 일련 변호 생성: 레코드 갯수 - ((현재 페이지수 -1) * 페이지당 레코드 수)
       int no = search_count - ((now_page - 1) * Board.RECORD_PER_PAGE);
@@ -390,7 +390,6 @@ public class BoardCont {
         Board.RECORD_PER_PAGE, Board.PAGE_PER_BLOCK);
     model.addAttribute("paging", paging);
     model.addAttribute("now_page", now_page);
-
     model.addAttribute("search_count", search_count);
 
     // 일련 변호 생성: 레코드 갯수 - ((현재 페이지수 -1) * 페이지당 레코드 수)

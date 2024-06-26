@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
+import dev.mvc.crudcate.CrudcateVO;
+
 public interface BoardDAOInter {
   /**
    * 등록

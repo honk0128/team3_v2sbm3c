@@ -12,7 +12,7 @@
             #{btitle}, #{bcontent}, sysdate, #{bpasswd}, #{btag}, #{bphoto}, #{bphotosaved}, #{bthumb}, #{bsize}, 'Y')
   </insert>
 
-  <!-- list_all -->
+  <!-- list_all_sc_paging -->
   <select id="list_all" resultType="dev.mvc.board.BoardVO">
     SELECT * FROM (
         SELECT 
@@ -24,7 +24,10 @@
                 boardno, accountno, managerno, crudcateno, btitle, bcontent, bdate, btag, 
                 LOWER(bphoto) as bphoto, bphotosaved, bthumb, bsize, breplycnt, bview, 
                 brecom, bvisible, tagno, byoutube
-            FROM board 
+            FROM board
+            WHERE (UPPER(btitle) LIKE '%' || UPPER(#{word}) || '%' 
+            OR UPPER(bcontent) LIKE '%' || UPPER(#{word}) || '%' 
+            OR UPPER(btag) LIKE '%' || UPPER(#{word}) || '%') 
             ORDER BY boardno DESC
         )
     ) 
@@ -33,13 +36,14 @@
 
   <!-- list_all 검색 레코드 갯수 -->
   <select id="list_all_sc" resultType="int" parameterType="HashMap">
-    SELECT COUNT(*) as cnt
-    FROM board
-      <if test="word != null and word != ''">
-          AND (UPPER(btitle) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(bcontent) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(btag) LIKE '%' || UPPER(#{word}) || '%')
-      </if>
-      ORDER BY boardno DESC
-  </select>   
+      SELECT COUNT(*) as cnt
+      FROM board
+      WHERE (UPPER(btitle) LIKE '%' || UPPER(#{word}) || '%' 
+      OR UPPER(bcontent) LIKE '%' || UPPER(#{word}) || '%' 
+      OR UPPER(btag) LIKE '%' || UPPER(#{word}) || '%')
+  </select>
+
+  
 
   <!-- list_cno -->
   <select id="list_cno" resultType="dev.mvc.board.BoardVO" parameterType="int">
