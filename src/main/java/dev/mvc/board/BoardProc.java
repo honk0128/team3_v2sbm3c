@@ -120,8 +120,6 @@ public class BoardProc implements BoardProcInter {
     str.append(" <div class='col-12'>");
     str.append(" <div class='pagination d-flex justify-content-center mt-5'>");
 
-//    str.append("현재 페이지: " + nowPage + " / " + totalPage + "  "); 
-
     // 이전 10개 페이지로 이동
     // now_grp: 1 (1 ~ 10 page)
     // now_grp: 2 (11 ~ 20 page)

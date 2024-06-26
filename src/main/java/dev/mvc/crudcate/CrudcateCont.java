@@ -54,44 +54,49 @@ public class CrudcateCont {
    * @param now_page
    * @return
    */
-  @PostMapping(value="/create")
-  public String create_process(HttpSession session, Model model, CrudcateVO crudcateVO, BindingResult result, @RequestParam(name="word", defaultValue = "") String word, @RequestParam(name="now_page", defaultValue = "1") int now_page) {
-    if (session.getAttribute("managerno") != null) {
-      if (result.hasErrors()) {
-        // 페이징 목록
-        ArrayList<CrudcateVO> list = this.crudcateProc.list_search_paging(word, now_page, this.record_per_page);
-        model.addAttribute("list", list);
-
-        // 페이징 버튼 목록
-        int search_count = this.crudcateProc.list_search_count(word);
-        String paging = this.crudcateProc.pagingBox(now_page, word, "/crudcate/list_search", search_count, this.record_per_page, this.page_per_blocK);
-        model.addAttribute("paging", paging);
-        model.addAttribute("word", word);
-        model.addAttribute("now_page", now_page);
-
-        // 일련 번호 생성: 레코드 갯수 - ((현재 페이지수) - 1) * 페이지당 레코드 수)
-        int no = (search_count - (now_page - 1) * this.record_per_page);
-        model.addAttribute("no", no);   
-
-        return "th/crudcate/list_search";
+  @PostMapping(value="/list_search")
+  public String create_process(HttpSession session, Model model, CrudcateVO crudcateVO, BindingResult result, 
+                                @RequestParam(name="word", defaultValue = "") String word, 
+                                @RequestParam(name="now_page", defaultValue = "1") int now_page) {
+      if (session.getAttribute("managerno") != null) {
+          // 페이징 목록
+          ArrayList<CrudcateVO> list = this.crudcateProc.list_search_paging(word, now_page, this.record_per_page);
+          model.addAttribute("list", list);
+  
+          // 페이징 버튼 목록
+          int search_count = this.crudcateProc.list_search_count(word);
+  
+          // 일련 번호 생성: 레코드 갯수 - ((현재 페이지수) - 1) * 페이지당 레코드 수)
+          int no = (search_count - (now_page - 1) * this.record_per_page);
+          model.addAttribute("no", no);
+          
+          String paging = this.crudcateProc.pagingBox(now_page, word, "/crudcate/list_search", search_count, this.record_per_page, this.page_per_blocK);
+          model.addAttribute("paging", paging);
+          
+          model.addAttribute("word", word);
+          model.addAttribute("now_page", now_page);
+          model.addAttribute("search_count", search_count);
+  
+          int cnt = this.crudcateProc.create(crudcateVO); 
+          model.addAttribute("cnt", cnt);
+          
+          if (cnt == 1) {
+              model.addAttribute("code", "create_success");
+              model.addAttribute("name", crudcateVO.getName());
+              model.addAttribute("namesub", crudcateVO.getNamesub());
+              model.addAttribute("namesubsub", crudcateVO.getNamesubsub());
+              model.addAttribute("seqno", crudcateVO.getSeqno());
+          } else {
+              model.addAttribute("code", "create_fail");
+          }
+          
+          // create 작업 후 list_search 페이지로 리다이렉트
+          return "redirect:/crudcate/list_search";
       }
       
-      int cnt = this.crudcateProc.create(crudcateVO); 
-      if (cnt == 1) {
-        model.addAttribute("code", "create_success");
-        model.addAttribute("name", crudcateVO.getName());
-        model.addAttribute("namesub", crudcateVO.getNamesub());
-        model.addAttribute("namesubsub", crudcateVO.getNamesubsub());
-        model.addAttribute("seqno", crudcateVO.getSeqno());
-      } else {
-        model.addAttribute("code", "create_fail");
-      }
-      
-      model.addAttribute("cnt", cnt);
-      return "th/crudcate/msg";
-    }
-    return "redirect:/account/login_need"; // /account/login_need.html
+      return "redirect:/account/login_need"; // /account/login_need.html로 리다이렉트
   }
+  
     
 
   /**
@@ -122,6 +127,7 @@ public class CrudcateCont {
       model.addAttribute("paging", paging);
       model.addAttribute("word", word);
       model.addAttribute("now_page", now_page);
+      model.addAttribute("search_count", search_count);
 
       // 일련 번호 생성: 레코드 갯수 - ((현재 페이지수) - 1) * 페이지당 레코드 수)
       int no = (search_count - (now_page - 1) * this.record_per_page);
@@ -160,6 +166,7 @@ public class CrudcateCont {
       model.addAttribute("paging", paging);
       model.addAttribute("word", word);
       model.addAttribute("now_page", now_page);
+      model.addAttribute("search_count", search_count);
 
       // 일련 번호 생성: 레코드 갯수 - ((현재 페이지수) - 1) * 페이지당 레코드 수)
       int no = (search_count - (now_page - 1) * this.record_per_page);
@@ -195,6 +202,7 @@ public class CrudcateCont {
       model.addAttribute("paging", paging);
       model.addAttribute("word", word);
       model.addAttribute("now_page", now_page);
+      model.addAttribute("search_count", search_count);
 
       // 일련 번호 생성: 레코드 갯수 - ((현재 페이지수) - 1) * 페이지당 레코드 수)
       int no = (search_count - (now_page - 1) * this.record_per_page);
@@ -242,6 +250,7 @@ public class CrudcateCont {
       model.addAttribute("paging", paging);
       model.addAttribute("word", word);
       model.addAttribute("now_page", now_page);
+      model.addAttribute("search_count", search_count);
 
       // 일련 번호 생성: 레코드 갯수 - ((현재 페이지수) - 1) * 페이지당 레코드 수)
       int no = (search_count - (now_page - 1) * this.record_per_page);
@@ -383,6 +392,7 @@ public class CrudcateCont {
       model.addAttribute("paging", paging);
       model.addAttribute("word", word);
       model.addAttribute("now_page", now_page);
+      model.addAttribute("search_count", search_count);
 
       // 일련 번호 생성: 레코드 갯수 - ((현재 페이지수) - 1) * 페이지당 레코드 수)
       int no = (search_count - (now_page - 1) * this.record_per_page);

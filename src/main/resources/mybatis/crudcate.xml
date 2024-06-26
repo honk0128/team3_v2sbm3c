@@ -87,7 +87,7 @@
     <if test="word != null and word !=''">
       WHERE UPPER(name) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(namesub) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(namesubsub) LIKE '%' || UPPER(#{word}) || '%'
     </if>
-    ORDER BY crudcateno ASC
+    ORDER BY crudcateno DESC
   </select>
 
   <!--페이징 -->
@@ -101,7 +101,7 @@
           <if test="word != null and word !=''">
           WHERE UPPER(name) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(namesub) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(namesubsub) LIKE '%' || UPPER(#{word}) || '%'
           </if>
-          ORDER BY crudcateno ASC
+          ORDER BY crudcateno DESC
       )
   )
   <!-- WHERE r >= 1 AND r <= 3; -->
@@ -115,7 +115,7 @@
     <if test="word != null and word !=''">
       WHERE UPPER(name) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(namesub) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(namesubsub) LIKE '%' || UPPER(#{word}) || '%'
     </if>
-    ORDER BY crudcateno ASC
+    ORDER BY crudcateno DESC
   </select>
 
 

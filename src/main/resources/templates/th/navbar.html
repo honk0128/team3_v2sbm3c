@@ -99,7 +99,7 @@
                 >
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li class="nav-item"><a class="nav-link" th:href="@{/crudcate/list_search}">카테고리 전체 목록</a></li>
+                  <li class="nav-item"><a class="nav-link" th:href="@{/crudcate/list_search}">카테고리 목록</a></li>
                   <li class="nav-item"><a class="nav-link" href="/board/list_all">전체 글 목록</a></li>
                   <li class="nav-item"><a class="nav-link" href="/account/list">회원 목록</a></li>
                   <li class="nav-item"><a class="nav-link" href="/manager/list">관리자 목록</a></li>
@@ -233,7 +233,7 @@
 
               <span class="my-auto" th:if="${session.managerno != null} or ${session.accountno != null}">
                 <!-- <i class="nav-link fa fa-sign-out fa-2x"></i> -->
-                <a class="nav-link" href="/account/logout"  title="로그아웃"><i class="fas fa-user-slash fa-2x"></i></a
+                <a class="nav-link" href="/account/logout" title="로그아웃"><i class="fas fa-user-slash fa-2x"></i></a
               ></span>
             </div>
           </div>
