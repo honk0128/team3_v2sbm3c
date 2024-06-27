@@ -39,7 +39,7 @@ public interface RegionfoodDAOInter {
      * @param spiceno
      * @return
      */
-    public RegionfoodVO read(int foodno);
+    public ArrayList<RegionfoodVO> alist(int regiono);
     
     
     public int list_search_count(String word);

@@ -171,9 +171,9 @@ public class RegionfoodProc  implements RegionfoodProcInter{
   }
 
   @Override
-  public RegionfoodVO read(int foodno) {
-    RegionfoodVO regionfoodVO = this.regionfoodDAO.read(foodno);
-    return regionfoodVO;
+  public ArrayList<RegionfoodVO> alist(int regiono) {
+    ArrayList<RegionfoodVO> alist = this.regionfoodDAO.alist(regiono);
+    return alist;
   }
 
  

@@ -27,7 +27,7 @@ public interface RegionfoodProcInter {
      * @param spiceno
      * @return
      */
-    public RegionfoodVO read(int foodno);
+    public ArrayList<RegionfoodVO> alist(int regiono);
 
     public ArrayList<RegionfoodVO> list_search_paging(String word, int now_page, int record_per_page);
     

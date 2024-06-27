@@ -158,29 +158,8 @@ public class RegionfoodCont {
   @GetMapping(value = "/list")
   public String list(HttpSession session, Model model,ManagerVO managerVO , RegionfoodVO regionfoodVO,RegionVO regionVO,  @RequestParam(name="word", defaultValue = "") String word, @RequestParam(name="now_page", defaultValue = "1") int now_page, int regiono ) {
 
-    word = Tool.checkNull(word).trim();
-    
-    Map<String, Object> map = new HashMap<String, Object>();
-    map.put("word", word);
-    
-    
-   
-    
-    ArrayList<RegionfoodVO> list = this.regionfoodproc.list_search_paging(word, now_page, this.record_per_page);
-    model.addAttribute("list", list);
-    model.addAttribute("regionVO", regionVO);
-    
-    int search_count = this.regionfoodproc.list_search_count(word);
-    String paging = this.regionfoodproc.pagingBox(regiono,now_page, word, "/regionfood/list", search_count, this.record_per_page, this.page_per_blocK);
-//    model.addAttribute("regiono", regiono);
-    model.addAttribute("paging", paging);
-    model.addAttribute("word", word);
-    model.addAttribute("now_page", now_page);
-    model.addAttribute("regionfoodVO", regionfoodVO);
-    model.addAttribute("managerVO", managerVO);
-    
-    int no = (search_count - (now_page - 1) * this.record_per_page);
-    model.addAttribute("no", no);
+    ArrayList <RegionfoodVO> alist = this.regionfoodproc.alist(regiono);
+    model.addAttribute("alist", alist);
     
     return "th/regionfood/list"; // templates/member/list.html
   }

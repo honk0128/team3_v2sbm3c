@@ -27,10 +27,10 @@
   </update>
   
   <!-- 조회 -->
-  <select id="read" resultType="dev.mvc.regionfood.RegionfoodVO" parameterType="int">
+  <select id="alist" resultType="dev.mvc.regionfood.RegionfoodVO" parameterType="int">
     SELECT foodno, foodtitle, foodimg_url,foodimg_urlsaved,fsize, regiono, recipelist, cook_tool, difficulty, cooktime, managerno
     FROM regionfood
-    WHERE foodno = #{foodno}
+    WHERE regiono = #{regiono}
   </select>
   
   

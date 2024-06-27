@@ -39,9 +39,9 @@
             <colgroup>
               <col style='width: 10%;' />
               <col style='width: 10%;' />
-              <col style='width: 65%;' />
+              <col style='width: 60%;' />
               <col style='width: 10%;' />
-              <col style='width: 5%;' />
+              <col style='width: 10%;' />
             </colgroup>
             <thead>
               <tr>
@@ -63,10 +63,13 @@
                 </td>
                 <td id="text_answer" class='td_bs' th:text="${answerVO.text_answer}"></td>
                 <td class='td_bs' th:text="${answerVO.rdate.substring(0, 10)}"></td>
-                <td class='td_basic'>
-                  <button class="btn btn-md rounded-circle bg-light border mt-4">
-                    <i class="fa fa-times text-danger"></i>
+                <td class='td_bs'>
+                  <button class="btn btn-md rounded-circle bg-light border">
+                  <i class="fa-sharp fa-solid fa-pen-to-square"></i>
                   </button>
+                <button class="btn btn-md rounded-circle bg-light border text-danger">
+                  <i class="bi bi-trash3"></i>
+                </button>
                 </td>
               </tr>
             </tbody>
@@ -106,9 +109,9 @@
           <table class="table">
             <colgroup>
               <col style='width: 15%;' />
-              <col style='width: 70%;' />
+              <col style='width: 65%;' />
               <col style='width: 10%;' />
-              <col style='width: 5%;' />
+              <col style='width: 10%;' />
             </colgroup>
             <thead>
               <tr>
@@ -128,10 +131,13 @@
                 </td>
                 <td id="text_answer" class='td_bs' th:text="${answerVO.text_answer}"></td>
                 <td class='td_bs' th:text="${answerVO.rdate.substring(0, 10)}"></td>
-                <td class='td_basic'>
-                  <button class="btn btn-md rounded-circle bg-light border mt-4">
-                    <i class="fa fa-times text-danger"></i>
+                <td class='td_bs'>
+                  <button class="btn btn-md rounded-circle bg-light border ">
+                  <i class="fa-sharp fa-solid fa-pen-to-square"></i>
                   </button>
+                <button class="btn btn-md rounded-circle bg-light border text-danger">
+                  <i class="bi bi-trash3"></i>
+                </button>
                 </td>
               </tr>
             </tbody>
