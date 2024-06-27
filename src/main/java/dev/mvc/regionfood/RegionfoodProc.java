@@ -53,7 +53,7 @@ public class RegionfoodProc  implements RegionfoodProcInter{
   }
 
   @Override
-  public ArrayList<RegionfoodVO> list_search_paging(String word, int now_page, int record_per_page, int regiono) {
+  public ArrayList<RegionfoodVO> list_search_paging(String word, int now_page, int record_per_page) {
 
     //1 페이지 시작 rownum: now_page = 1, (1 - 1) * 10 --> 0 
     int begin_of_page = (now_page - 1) * record_per_page;
@@ -64,15 +64,18 @@ public class RegionfoodProc  implements RegionfoodProcInter{
 
     Map <String, Object> map = new HashMap<String, Object>();
     map.put("word", word);
+    
     map.put("start_num", start_num);
     map.put("end_num", end_num);
+   
+    
 
     ArrayList<RegionfoodVO> list=this.regionfoodDAO.list_search_paging(map);
     return list;
   }
 
   @Override
-  public String pagingBox(int now_page, String word,String list_file ,int search_count, int record_per_page,
+  public String pagingBox(int regiono,int now_page, String word,String list_file ,int search_count, int record_per_page,
       int page_per_block) {
     // 전체 페이지 수: (double)1/10 -> 0.1 -> 1 페이지, (double)12/10 -> 1.2 페이지 -> 2 페이지
     int total_page = (int) (Math.ceil((double) search_count / record_per_page));

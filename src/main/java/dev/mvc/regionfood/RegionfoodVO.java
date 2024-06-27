@@ -51,7 +51,7 @@ public class RegionfoodVO {
   /** 실제 저장된 메인 이미지 */
   private String foodimg_urlsaved = "";
   
-  private Integer regiono = 0;
+  private Integer regiono = 1;
   
   private String recipelist = "";
   

@@ -30,7 +30,7 @@ import dev.mvc.vocabulary.VocabularyProcInter;
 import dev.mvc.gpa.Gpa;
 import dev.mvc.manager.ManagerProcInter;
 import dev.mvc.region.RegionProcInter;
-
+import dev.mvc.region.RegionVO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -156,78 +156,36 @@ public class RegionfoodCont {
   
   
   @GetMapping(value = "/list")
-  public String list(HttpSession session, Model model,ManagerVO managerVO , RegionfoodVO regionfoodVO, @RequestParam(name="regiono", defaultValue = "1") Integer regiono, @RequestParam(name="word", defaultValue = "") String word, @RequestParam(name="now_page", defaultValue = "1") int now_page ) {
+  public String list(HttpSession session, Model model,ManagerVO managerVO , RegionfoodVO regionfoodVO,RegionVO regionVO,  @RequestParam(name="word", defaultValue = "") String word, @RequestParam(name="now_page", defaultValue = "1") int now_page, int regiono ) {
 
-    ArrayList<RegionfoodVO> list = this.regionfoodproc.list_search_paging(word, now_page, this.record_per_page, regiono);
+    word = Tool.checkNull(word).trim();
+    
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("word", word);
+    
+    
+   
+    
+    ArrayList<RegionfoodVO> list = this.regionfoodproc.list_search_paging(word, now_page, this.record_per_page);
     model.addAttribute("list", list);
+    model.addAttribute("regionVO", regionVO);
     
     int search_count = this.regionfoodproc.list_search_count(word);
-    String paging = this.regionfoodproc.pagingBox(now_page, word, "/regionfood/list", search_count, this.record_per_page, this.page_per_blocK);
-    model.addAttribute("regiono", regiono);
+    String paging = this.regionfoodproc.pagingBox(regiono,now_page, word, "/regionfood/list", search_count, this.record_per_page, this.page_per_blocK);
+//    model.addAttribute("regiono", regiono);
     model.addAttribute("paging", paging);
     model.addAttribute("word", word);
     model.addAttribute("now_page", now_page);
     model.addAttribute("regionfoodVO", regionfoodVO);
     model.addAttribute("managerVO", managerVO);
     
+    int no = (search_count - (now_page - 1) * this.record_per_page);
+    model.addAttribute("no", no);
+    
     return "th/regionfood/list"; // templates/member/list.html
   }
 
   
-  
-  
-//  @GetMapping(value = "/list")
-//  public String list(HttpSession session, Model model,  regionVO regionVO) {
-//
-//    
-//    
-//    ArrayList<regionVO> list = this.regionproc.list();
-//    model.addAttribute("list", list);
-//    model.addAttribute("regionVO", regionVO);
-//    
-//  
-//    return "th/region/list"; // templates/member/list.html
-//  }
-//  
-//  
-//  @GetMapping(value = "/list_paging")
-//  public String list_paging(HttpSession session, Model model, @RequestParam(value = "boardno", required = false) Integer boardno,
-//      regionVO gpaVO, BoardVO boardVO,@RequestParam(name = "word", defaultValue = "") String word,
-//      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-//
-//    gpaVO.getBoardno();
-//    
-//    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
-//    model.addAttribute("menu", menu);
-//    
-//    word = Tool.checkNull(word).trim();
-//     
-//    HashMap<String, Object> map = new HashMap<>();
-//    map.put("boardno", boardno);
-//    map.put("word", word);
-//    map.put("now_page", now_page);
-//    
-//    ArrayList<regionVO> list = this.gpaproc.list_search_paging(map);
-//    model.addAttribute("list", list);
-//    model.addAttribute("word", word);
-//    model.addAttribute("gpaVO", gpaVO);
-//    model.addAttribute("boardVO", boardVO);
-//    
-//    int search_count = this.gpaproc.list_cno_search_count(map);
-//    String paging = this.gpaproc.pagingBox(boardno, now_page, word, "/gpa/list_paging", search_count, Gpa.RECORD_PER_PAGE, Gpa.PAGE_PER_BLOCK);
-//    model.addAttribute("paging", paging);
-//    model.addAttribute("now_page", now_page);
-//    model.addAttribute("search_count", search_count);
-//    
-//    int no = search_count - ((now_page - 1) * Board.RECORD_PER_PAGE);
-//    model.addAttribute("no", no);
-//    
-//   
-//    
-//    return "th/gpa/list_search_paging"; // templates/member/list.html
-//  }
-//  
-
   @GetMapping(value="/list_cno_search") 
   public String list_cno_search_paging(Model model, RegionfoodVO regionfoodVO, @RequestParam(name="word", defaultValue = "") String word,@RequestParam(name="regiono", defaultValue = "1") Integer regiono, @RequestParam(name="now_page", defaultValue = "1") int now_page) {
 
@@ -237,12 +195,12 @@ public class RegionfoodCont {
     map.put("word", word);
 
      // 페이징 목록
-    ArrayList<RegionfoodVO> list = this.regionfoodproc.list_search_paging(word, now_page, this.record_per_page, regiono);
+    ArrayList<RegionfoodVO> list = this.regionfoodproc.list_search_paging(word, now_page, this.record_per_page);
     model.addAttribute("list", list);
 
     // 페이징 버튼 목록
     int search_count = this.regionfoodproc.list_search_count(word);
-    String paging = this.regionfoodproc.pagingBox(now_page, word, "/regionfood/list", search_count, this.record_per_page, this.page_per_blocK);
+    String paging = this.regionfoodproc.pagingBox(regiono,now_page, word, "/regionfood/list", search_count, this.record_per_page, this.page_per_blocK);
     model.addAttribute("paging", paging);
     model.addAttribute("word", word);
     model.addAttribute("now_page", now_page);
