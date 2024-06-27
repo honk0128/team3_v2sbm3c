@@ -1,135 +1,95 @@
 <!DOCTYPE html>
 <html layout:decorate="~{th/layout}">
   <div layout:fragment="content">
-    <div class="title_line"></div>
-    <div class="menu_line"></div>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-      }
+    <!-- Header start -->
+    <div class="container-fluid page-header py-5">
+      <h1 class="text-center text-white display-6">
+        <span>
+          주간 식단표 수정
+          <p th:if="${weekdates != null}">기간: <a th:text="${weekdates}"></a></p>
+        </span>
+      </h1>
+    </div>
+    <!-- Header End -->
 
-      .container {
-        max-width: 800px;
-        margin: 50px auto;
-        background-color: #fff;
-        padding: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
+    <!-- 컨테이너  -->
+    <div class="container-fluid fruite py-5">
+      <div class="container py-5">
+        <form action="/week/update" method="post">
+          <table th:if="${not #lists.isEmpty(weekList)}" class="table table-hover text-center">
+            <colgroup>
+              <col style="width: 10%"></span>
+              <col style="width: 10%"></span>
+              <col style="width: 10%"></span>
+              <col style="width: 10%"></span>
+              <col style="width: 10%"></span>
+              <col style="width: 10%"></span>
+              <col style="width: 10%"></span>
+              <col style="width: 10%"></span>
+            </colgroup>
+            <thead>
+              <tr>
+                <th></th>
+                <th>월요일</th>
+                <th>화요일</th>
+                <th>수요일</th>
+                <th>목요일</th>
+                <th>금요일</th>
+                <th>토요일</th>
+                <th>일요일</th>
+              </tr>
+            </thead>
+            <tbody th:each="weekVO : ${weekList}">
+              <tr>
+                <th>아침</th>
+                <td><input type="text" name="monbreakfast" th:value="${weekVO.monbreakfast}" style="width: 100%"/></td>
+                <td><input type="text" name="tuebreakfast" th:value="${weekVO.tuebreakfast}" style="width: 100%"/></td>
+                <td><input type="text" name="wedbreakfast" th:value="${weekVO.wedbreakfast}" style="width: 100%"/></td>
+                <td><input type="text" name="thubreakfast" th:value="${weekVO.thubreakfast}" style="width: 100%"/></td>
+                <td><input type="text" name="fribreakfast" th:value="${weekVO.fribreakfast}" style="width: 100%"/></td>
+                <td><input type="text" name="satbreakfast" th:value="${weekVO.satbreakfast}" style="width: 100%"/></td>
+                <td><input type="text" name="sunbreakfast" th:value="${weekVO.sunbreakfast}" style="width: 100%"/></td>
+              </tr>
+              <tr>
+                <th>점심</th>
+                <td><input type="text" name="monlunch" th:value="${weekVO.monlunch}" style="width: 100%"/></td>
+                <td><input type="text" name="tuelunch" th:value="${weekVO.tuelunch}" style="width: 100%"/></td>
+                <td><input type="text" name="wedlunch" th:value="${weekVO.wedlunch}" style="width: 100%"/></td>
+                <td><input type="text" name="thulunch" th:value="${weekVO.thulunch}" style="width: 100%"/></td>
+                <td><input type="text" name="frilunch" th:value="${weekVO.frilunch}" style="width: 100%"/></td>
+                <td><input type="text" name="satlunch" th:value="${weekVO.satlunch}" style="width: 100%"/></td>
+                <td><input type="text" name="sunlunch" th:value="${weekVO.sunlunch}" style="width: 100%"/></td>
+              </tr>
+              <tr>
+                <th>저녁</th>
+                <td><input type="text" name="mondinner" th:value="${weekVO.mondinner}" style="width: 100%"/></td>
+                <td><input type="text" name="tuedinner" th:value="${weekVO.tuedinner}" style="width: 100%"/></td>
+                <td><input type="text" name="weddinner" th:value="${weekVO.weddinner}" style="width: 100%"/></td>
+                <td><input type="text" name="thudinner" th:value="${weekVO.thudinner}" style="width: 100%"/></td>
+                <td><input type="text" name="fridinner" th:value="${weekVO.fridinner}" style="width: 100%"/></td>
+                <td><input type="text" name="satdinner" th:value="${weekVO.satdinner}" style="width: 100%"/></td>
+                <td><input type="text" name="sundinner" th:value="${weekVO.sundinner}" style="width: 100%"/></td>
+              </tr>
+              <tr>
+                <th>칼로리</th>
+                <td><input type="text" name="moncal" th:value="${weekVO.moncal}" style="width: 100%"/> Kcal</td>
+                <td><input type="text" name="tuecal" th:value="${weekVO.tuecal}" style="width: 100%"/> Kcal</td>
+                <td><input type="text" name="wedcal" th:value="${weekVO.wedcal}" style="width: 100%"/> Kcal</td>
+                <td><input type="text" name="thucal" th:value="${weekVO.thucal}" style="width: 100%"/> Kcal</td>
+                <td><input type="text" name="frical" th:value="${weekVO.frical}" style="width: 100%"/> Kcal</td>
+                <td><input type="text" name="satcal" th:value="${weekVO.satcal}" style="width: 100%"/> Kcal</td>
+                <td><input type="text" name="suncal" th:value="${weekVO.suncal}" style="width: 100%"/> Kcal</td>
+              </tr>
+            </tbody>
+          </table>
 
-      h1,
-      h2 {
-        text-align: center;
-        color: #333;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-
-      th,
-      td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: center;
-      }
-
-      th {
-        background-color: #4caf50;
-        color: white;
-      }
-
-      tr:nth-child(even) {
-        background-color: #f2f2f2;
-      }
-
-      input[type="text"] {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 5px;
-      }
-
-      button {
-        margin-top: 20px;
-        padding: 10px 20px;
-        background-color: #4caf50;
-        color: white;
-        border: none;
-        cursor: pointer;
-      }
-
-      button:hover {
-        background-color: #45a049;
-      }
-    </style>
-
-    <h1>주간 식단표 수정</h1>
-    <h2 th:if="${weekdates != null}">기간: <a th:text="${weekdates}"></a></h2>
-    <form action="/week/update" method="post">
-      <table th:if="${not #lists.isEmpty(weekList)}">
-        <thead>
-          <tr>
-            <th></th>
-            <th>월요일</th>
-            <th>화요일</th>
-            <th>수요일</th>
-            <th>목요일</th>
-            <th>금요일</th>
-            <th>토요일</th>
-            <th>일요일</th>
-          </tr>
-        </thead>
-        <tbody th:each="weekVO : ${weekList}">
-          <tr>
-            <th>아침</th>
-            <td><input type="text" name="monbreakfast" th:value="${weekVO.monbreakfast}" /></td>
-            <td><input type="text" name="tuebreakfast" th:value="${weekVO.tuebreakfast}" /></td>
-            <td><input type="text" name="wedbreakfast" th:value="${weekVO.wedbreakfast}" /></td>
-            <td><input type="text" name="thubreakfast" th:value="${weekVO.thubreakfast}" /></td>
-            <td><input type="text" name="fribreakfast" th:value="${weekVO.fribreakfast}" /></td>
-            <td><input type="text" name="satbreakfast" th:value="${weekVO.satbreakfast}" /></td>
-            <td><input type="text" name="sunbreakfast" th:value="${weekVO.sunbreakfast}" /></td>
-          </tr>
-          <tr>
-            <th>점심</th>
-            <td><input type="text" name="monlunch" th:value="${weekVO.monlunch}" /></td>
-            <td><input type="text" name="tuelunch" th:value="${weekVO.tuelunch}" /></td>
-            <td><input type="text" name="wedlunch" th:value="${weekVO.wedlunch}" /></td>
-            <td><input type="text" name="thulunch" th:value="${weekVO.thulunch}" /></td>
-            <td><input type="text" name="frilunch" th:value="${weekVO.frilunch}" /></td>
-            <td><input type="text" name="satlunch" th:value="${weekVO.satlunch}" /></td>
-            <td><input type="text" name="sunlunch" th:value="${weekVO.sunlunch}" /></td>
-          </tr>
-          <tr>
-            <th>저녁</th>
-            <td><input type="text" name="mondinner" th:value="${weekVO.mondinner}" /></td>
-            <td><input type="text" name="tuedinner" th:value="${weekVO.tuedinner}" /></td>
-            <td><input type="text" name="weddinner" th:value="${weekVO.weddinner}" /></td>
-            <td><input type="text" name="thudinner" th:value="${weekVO.thudinner}" /></td>
-            <td><input type="text" name="fridinner" th:value="${weekVO.fridinner}" /></td>
-            <td><input type="text" name="satdinner" th:value="${weekVO.satdinner}" /></td>
-            <td><input type="text" name="sundinner" th:value="${weekVO.sundinner}" /></td>
-          </tr>
-          <tr>
-            <th>칼로리</th>
-            <td><input type="text" name="moncal" th:value="${weekVO.moncal}" />Kcal</td>
-            <td><input type="text" name="tuecal" th:value="${weekVO.tuecal}" />Kcal</td>
-            <td><input type="text" name="wedcal" th:value="${weekVO.wedcal}" />Kcal</td>
-            <td><input type="text" name="thucal" th:value="${weekVO.thucal}" />Kcal</td>
-            <td><input type="text" name="frical" th:value="${weekVO.frical}" />Kcal</td>
-            <td><input type="text" name="satcal" th:value="${weekVO.satcal}" />Kcal</td>
-            <td><input type="text" name="suncal" th:value="${weekVO.suncal}" />Kcal</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <input type="hidden" name="accountno" th:value="${accountno}" />
-      <input type="hidden" name="weekdates" th:value="${weekdates}" />
-      <button type="submit">수정</button>
-    </form>
-
-    <br />
+          <div class="d-flex justify-content-center mt-3">
+            <input type="hidden" name="accountno" th:value="${accountno}" />
+            <input type="hidden" name="weekdates" th:value="${weekdates}" />
+            <button type="submit" class="btn btn-primary border-0 border-secondary py-2 px-3 rounded-pill text-black">수정</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </html>
