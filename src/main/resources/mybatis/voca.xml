@@ -7,6 +7,7 @@
     INSERT INTO VOCABULARY(vocano, voca, mean, managerno)
     VALUES(voca_seq.nextval, #{voca}, #{mean}, #{managerno})
   </insert>
+
   
   <select id="list" resultType="dev.mvc.vocabulary.VocabularyVO">
     SELECT vocano, voca, mean, managerno

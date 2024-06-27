@@ -3,6 +3,25 @@
 <html layout:decorate="~{th/layout}"> <!-- layout.html 상속-->
 
 <div layout:fragment="content">
+  <!-- Header start -->
+  <div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">
+      <span class="title_line_text">비밀번호 찾기</span>
+    </h1>
+
+    <ol class="breadcrumb justify-content-center mb-0">
+      <li class="breadcrumb-item">
+        <a th:href="@{/account/login}">회원가입</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a th:href="@{/account/login}">로그인</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="javascript:location.reload();">새로고침</a>
+      </li>
+    </ol>
+  </div>
+  <!-- Single Page Header End -->
   <script>
   window.onload = () => {
     document.querySelector('#aid').addEventListener('keypress', (event) => {
@@ -30,6 +49,8 @@
   </aside>
 
   <div class='menu_line'></div>
+<div class="container-fluid py-5">
+    <div class="container py-5">
 
   <div style="width: 60%; margin: 0px auto ">
     <form name="frm" method="post" action="/find_passwd">
@@ -57,6 +78,8 @@
 
 
     </form>
+  </div>
+  </div>
   </div>
 
 </div>
