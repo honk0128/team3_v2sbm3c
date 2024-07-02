@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -433,22 +436,17 @@ public class SpiceCont {
     }
   }
 
-  @GetMapping(value="/good/{spiceno}")
-  public String good(Model model, HttpSession session, RecVO recVO,
-                        @PathVariable("spiceno") Integer spiceno, 
-                        @RequestParam(name="word", defaultValue = "") String word,
-                        @RequestParam(name="now_page", defaultValue = "1") int now_page) {
+  @PostMapping(value="/good")
+  @ResponseBody
+  public String good(HttpSession session, @RequestBody RecVO recVO) {
 
+    int spiceno = recVO.getSpiceno();
+
+    HashMap<String, Object> map = new HashMap<String, Object>();
+    map.put("spiceno", recVO.getSpiceno());
+    map.put("accountno", recVO.getAccountno());
+      
     int cnt = 0;
-    int accountno = session.getAttribute("accountno") != null ? (int) session.getAttribute("accountno") : 0;
-
-    if(accountno > 0) {
-      HashMap<String, Object> map = new HashMap<String, Object>();
-    map.put("spiceno", spiceno);
-    map.put("accountno", accountno);
-
-    recVO.setAccountno(accountno);
-
     cnt = this.recProc.good_cnt(map);
 
     if (cnt == 0) {
@@ -458,24 +456,29 @@ public class SpiceCont {
       this.spiceProc.good_down(spiceno);
       this.recProc.good_cancel(map);
     }
-    return "redirect:/spice/cno_read?spiceno=" + spiceno + "&word=&now_page=1" + Tool.encode(word) + "&now_page=" + now_page;  // /templates/cate/list_search.html
-    } else {
-      return "redirect:/account/login";
-    }
+
+    JSONObject json = new JSONObject();
+    json.put("res", cnt); // 1: 좋아요 누름, 0: 좋아요 안누름
     
+    return json.toString();
   }
 
-  // @GetMapping(value="/good_down/{spiceno}")
-  // public String good_down(Model model, 
-  //                         @PathVariable("spiceno") Integer spiceno, 
-  //                         @RequestParam(name="word", defaultValue = "") String word,
-  //                         @RequestParam(name="now_page", defaultValue = "1") int now_page) {
-   
-  //   this.spiceProc.good_down(spiceno);
+  @PostMapping(value="/good_cnt")
+  @ResponseBody
+  public String good_cnt(@RequestBody RecVO recVO) {
+
+    HashMap<String, Object> map = new HashMap<String, Object>();
+    map.put("spiceno", recVO.getSpiceno());
+    map.put("accountno", recVO.getAccountno());
+      
+    int cnt = 0;
+    cnt = this.recProc.good_cnt(map);
+
+    JSONObject json = new JSONObject();
+    json.put("res", cnt); // 1: 좋아요 누름, 0: 좋아요 안누름
     
-  //   return "redirect:/spice/cno_read?spiceno=" + spiceno + "&word=&now_page=1" + Tool.encode(word) + "&now_page=" + now_page;  // /templates/cate/list_search.html
-    
-  // }
+    return json.toString();
+  }
 
   @GetMapping(value="/list_search") 
   public String list_search_paging(Model model, HttpSession session, SpiceVO spiceVO, @RequestParam(name="word", defaultValue = "") String word, @RequestParam(name="now_page", defaultValue = "1") int now_page) {
