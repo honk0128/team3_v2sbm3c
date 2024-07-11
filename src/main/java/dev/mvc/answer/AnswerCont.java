@@ -56,10 +56,12 @@ public class AnswerCont {
     System.out.println(accountno);
     
 /** 검색 기록 저장 및 검색 빈도 확인
+ * 
+ */
     if (word != null && !word.trim().isEmpty()) {
     this.searchProc.search_word(word);
     }
-    */
+    
     if (this.managerProc.isAdmin(session)) {
       
       ArrayList <AnswerVO> list = this.answerProc.list_all_search_paging(word, now_page, this.record_per_page);
