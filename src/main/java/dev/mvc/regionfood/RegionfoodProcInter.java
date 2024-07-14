@@ -7,7 +7,7 @@ public interface RegionfoodProcInter {
   /**
    * 등록
    * insert id="create" parameterType="dev.mvc.gpa.GpaVO"
-   * @param RegionfoodVO
+   * @param Recipe_stepVO
    * @return 등록한 레코드 갯수
    */
   public int create(RegionfoodVO regionfoodVO);
@@ -19,7 +19,9 @@ public interface RegionfoodProcInter {
      */
     public RegionfoodVO readById(String mid);
 //    
-//    
+//    \
+    public RegionfoodVO read(int foodno);
+    
     public ArrayList<RegionfoodVO> list();
     
     /**

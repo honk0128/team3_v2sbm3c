@@ -37,7 +37,10 @@ public class RegionfoodVO {
   
   private Integer foodno = 0;
 
+ private Integer step_order = 0;
  
+ private String step_text = "";
+  
   private String foodtitle = "";
   
   

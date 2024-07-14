@@ -26,6 +26,14 @@
     
   </update>
   
+   <!-- read  -->
+    <select id="read" resultType="dev.mvc.regionfood.RegionfoodVO" parameterType="int">
+    SELECT foodno, foodtitle, foodimg_url,foodimg_urlsaved,fsize, regiono, recipelist, cook_tool, difficulty, cooktime, managerno
+    FROM regionfood 
+    WHERE regiono = #{regiono}
+  </select>
+  
+  
   <!-- 조회 -->
   <select id="alist" resultType="dev.mvc.regionfood.RegionfoodVO" parameterType="int">
     SELECT foodno, foodtitle, foodimg_url,foodimg_urlsaved,fsize, regiono, recipelist, cook_tool, difficulty, cooktime, managerno
