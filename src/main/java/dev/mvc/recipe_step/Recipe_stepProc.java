@@ -1,4 +1,4 @@
-package dev.mvc.regionfood;
+package dev.mvc.recipe_step;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,49 +11,53 @@ import dev.mvc.board.Board;
 import dev.mvc.manager.ManagerVO;
 import dev.mvc.spice.SpiceVO;
 
-@Service("dev.mvc.regionfood.RegionfoodProc")
-public class RegionfoodProc  implements RegionfoodProcInter{
+@Service("dev.mvc.recipe_step.Recipe_stepProc")
+public class Recipe_stepProc  implements Recipe_stepProcInter{
   @Autowired
-  private RegionfoodDAOInter regionfoodDAO;
+  private Recipe_stepDAOInter recipe_stepDAO;
   
-  public RegionfoodProc() {
+  public Recipe_stepProc() {
     //System.out.println( " -> Gpaproc create");
   }
   
   @Override
-  public int create(RegionfoodVO regionfoodVO) {
-    int cnt = this.regionfoodDAO.create(regionfoodVO);
+  public int create(Recipe_stepVO Recipe_stepVO) {
+    int cnt = this.recipe_stepDAO.create(Recipe_stepVO);
     return cnt;
   }
 
+  public Integer selectMaxStepOrderByFoodno(int foodno) {
+    return recipe_stepDAO.selectMaxStepOrderByFoodno(foodno);
+}
+  
   
   @Override
-  public RegionfoodVO readById(String mid) {
-    RegionfoodVO regionfoodVO = this.regionfoodDAO.readById(mid);
-    return regionfoodVO;
+  public Recipe_stepVO readById(String mid) {
+    Recipe_stepVO recipe_stepVO = this.recipe_stepDAO.readById(mid);
+    return recipe_stepVO;
   }
 
   @Override
-  public ArrayList<RegionfoodVO> list() {
-    ArrayList<RegionfoodVO> list = this.regionfoodDAO.list();
+  public ArrayList<Recipe_stepVO> list() {
+    ArrayList<Recipe_stepVO> list = this.recipe_stepDAO.list();
     
     return list;
   }
 
   @Override
-  public int delete(int foodno) {
-    int cnt = this.regionfoodDAO.delete(foodno);
+  public int delete(int step_no) {
+    int cnt = this.recipe_stepDAO.delete(step_no);
     return cnt;
   }
 
   @Override
-  public int update(RegionfoodVO regionfoodVO) {
-    int cnt = this.regionfoodDAO.update(regionfoodVO);
+  public int update(Recipe_stepVO recipe_stepVO) {
+    int cnt = this.recipe_stepDAO.update(recipe_stepVO);
     return cnt;
   }
 
   @Override
-  public ArrayList<RegionfoodVO> list_search_paging(String word, int now_page, int record_per_page) {
+  public ArrayList<Recipe_stepVO> list_search_paging(String word, int now_page, int record_per_page) {
 
     //1 페이지 시작 rownum: now_page = 1, (1 - 1) * 10 --> 0 
     int begin_of_page = (now_page - 1) * record_per_page;
@@ -70,12 +74,12 @@ public class RegionfoodProc  implements RegionfoodProcInter{
    
     
 
-    ArrayList<RegionfoodVO> list=this.regionfoodDAO.list_search_paging(map);
+    ArrayList<Recipe_stepVO> list=this.recipe_stepDAO.list_search_paging(map);
     return list;
   }
 
   @Override
-  public String pagingBox(int regiono,int now_page, String word,String list_file ,int search_count, int record_per_page,
+  public String pagingBox(int step_no,int now_page, String word,String list_file ,int search_count, int record_per_page,
       int page_per_block) {
     // 전체 페이지 수: (double)1/10 -> 0.1 -> 1 페이지, (double)12/10 -> 1.2 페이지 -> 2 페이지
     int total_page = (int) (Math.ceil((double) search_count / record_per_page));
@@ -166,20 +170,26 @@ public class RegionfoodProc  implements RegionfoodProcInter{
 
   @Override
   public int list_search_count(String word) {
-    int cnt = this.regionfoodDAO.list_search_count(word);
+    int cnt = this.recipe_stepDAO.list_search_count(word);
     return cnt;
   }
 
   @Override
-  public ArrayList<RegionfoodVO> alist(int regiono) {
-    ArrayList<RegionfoodVO> alist = this.regionfoodDAO.alist(regiono);
+  public ArrayList<Recipe_stepVO> alist(int regiono) {
+    ArrayList<Recipe_stepVO> alist = this.recipe_stepDAO.alist(regiono);
     return alist;
   }
 
   @Override
-  public RegionfoodVO read(int foodno) {
-    RegionfoodVO regionfoodVO = this.regionfoodDAO.read(foodno);
-    return regionfoodVO;
+  public Recipe_stepVO read(int step_no) {
+    Recipe_stepVO recipe_stepVO = this.recipe_stepDAO.read(step_no);
+    return recipe_stepVO;
+  }
+
+  @Override
+  public ArrayList<Recipe_stepVO> listfoodno(int foodno) {
+    ArrayList<Recipe_stepVO> list = this.recipe_stepDAO.listfoodno(foodno);
+    return list;
   }
 
  

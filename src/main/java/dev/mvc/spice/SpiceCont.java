@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -36,7 +39,7 @@ public class SpiceCont {
   private RecProcInter recProc;
 
   /** 페이지당 출력할 레코드 갯수 */
-  public int record_per_page = 8;
+  public int record_per_page = 9;
 
   /** 블럭당 페이지 수, 하나의 블럭은 10개의 페이지로 구성됨 */
   public int page_per_blocK = 10;
@@ -128,6 +131,8 @@ public class SpiceCont {
         model.addAttribute("spicecont", spiceVO.getSpicecont());
         model.addAttribute("spiceprice", spiceVO.getSpiceprice());
         model.addAttribute("url", spiceVO.getUrl());
+
+        return "redirect:/spice/list_search";
       } else {
         model.addAttribute("code", "create_fail");
       }
@@ -139,18 +144,56 @@ public class SpiceCont {
     }
   }
 
+  // @GetMapping(value = "/list")
+  // public String list(Model model, @RequestParam(name="word", defaultValue = "") String word, @RequestParam(name="now_page", defaultValue = "1") int now_page) {
+  //   ArrayList<SpiceVO> list = this.spiceProc.list_search_paging(word, now_page, this.record_per_page);
+  //   model.addAttribute("list", list);
+
+
+  //   // 페이징 버튼 목록
+  //   int search_count = this.spiceProc.list_search_count(word);
+  //   String paging = this.spiceProc.pagingBox(now_page, word, "/spice/list", search_count, this.record_per_page, this.page_per_blocK);
+  //   model.addAttribute("paging", paging);
+  //   model.addAttribute("word", word);
+  //   model.addAttribute("now_page", now_page);
+  //   return "th/spice/list";
+  // }
+
   @GetMapping(value = "/list")
-  public String list(Model model, @RequestParam(name="word", defaultValue = "") String word, @RequestParam(name="now_page", defaultValue = "1") int now_page) {
-    ArrayList<SpiceVO> list = this.spiceProc.list_search_paging(word, now_page, this.record_per_page);
+  public String list_cno_search_paging(HttpSession session, Model model,
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+
+    // ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    // model.addAttribute("menu", menu);
+
+    // SpiceVO spiceVO = this.spiceProc.read(spiceno);
+    // model.addAttribute("spiceVO", spiceVO);
+
+    word = Tool.checkNull(word).trim();
+
+    HashMap<String, Object> map = new HashMap<>();
+    map.put("word", word);
+    map.put("now_page", now_page);
+
+    ArrayList<SpiceVO> list = this.spiceProc.list_search_paging(word, now_page, record_per_page);
+
     model.addAttribute("list", list);
 
-
-    // 페이징 버튼 목록
-    int search_count = this.spiceProc.list_search_count(word);
-    String paging = this.spiceProc.pagingBox(now_page, word, "/spice/list", search_count, this.record_per_page, this.page_per_blocK);
-    model.addAttribute("paging", paging);
+    // System.out.println("-> size: " + list.size());
     model.addAttribute("word", word);
+
+    int search_count = this.spiceProc.list_search_count(word);
+    String paging = this.spiceProc.pagingBox(now_page, word, "/spice/list", search_count,
+        Spice.record_per_page, Spice.page_per_blocK);
+    model.addAttribute("paging", paging);
     model.addAttribute("now_page", now_page);
+    model.addAttribute("search_count", search_count);
+
+    // 일련 변호 생성: 레코드 갯수 - ((현재 페이지수 -1) * 페이지당 레코드 수)
+    int no = search_count - ((now_page - 1) * Spice.record_per_page);
+    model.addAttribute("no", no);
+
     return "th/spice/list";
   }
   
@@ -248,92 +291,63 @@ public class SpiceCont {
    * @return
    */
   @PostMapping(value="/update")
-  public String update_process(Model model, SpiceVO spiceVO, HttpSession session, RedirectAttributes ra, BindingResult result, @RequestParam(name="word", defaultValue = "") String word, @RequestParam(name="now_page", defaultValue = "1") int now_page) {
+  public String update_process(Model model, SpiceVO spiceVO, HttpSession session, RedirectAttributes ra, BindingResult result, 
+                              @RequestParam(name="word", defaultValue = "") String word, 
+                              @RequestParam(name="now_page", defaultValue = "1") int now_page) {
     if (result.hasErrors()) {
-    // 페이징 목록
-    ArrayList<SpiceVO> list = this.spiceProc.list_search_paging(word, now_page, this.record_per_page);
-    model.addAttribute("list", list);
+      // 페이징 목록
+      ArrayList<SpiceVO> list = this.spiceProc.list_search_paging(word, now_page, this.record_per_page);
+      model.addAttribute("list", list);
 
-    // 페이징 버튼 목록
-    int search_count = this.spiceProc.list_search_count(word);
-    String paging = this.spiceProc.pagingBox(now_page, word, "/spice/list_search", search_count, this.record_per_page, this.page_per_blocK);
-    model.addAttribute("paging", paging);
-    model.addAttribute("word", word);
-    model.addAttribute("now_page", now_page);
+      // 페이징 버튼 목록
+      int search_count = this.spiceProc.list_search_count(word);
+      String paging = this.spiceProc.pagingBox(now_page, word, "/spice/list_search", search_count, this.record_per_page, this.page_per_blocK);
+      model.addAttribute("paging", paging);
+      model.addAttribute("word", word);
+      model.addAttribute("now_page", now_page);
 
-    // 일련 번호 생성: 레코드 갯수 - ((현재 페이지수) - 1) * 페이지당 레코드 수)
-    int no = (search_count - (now_page - 1) * this.record_per_page);
-    model.addAttribute("no", no);
+      // 일련 번호 생성: 레코드 갯수 - ((현재 페이지수) - 1) * 페이지당 레코드 수)
+      int no = (search_count - (now_page - 1) * this.record_per_page);
+      model.addAttribute("no", no);
 
-    return "th/spice/update"; // 다시 수정 폼으로 이동
+      return "th/spice/update"; // 다시 수정 폼으로 이동
     }
 
     int managerno = session.getAttribute("managerno") != null ? (int) session.getAttribute("managerno") : 0;
 
     if (managerno != 0) {
+      String file1saved_old = "";
+
       SpiceVO spiceVO_old = this.spiceProc.read(spiceVO.getSpiceno());
-      String file1saved_old = spiceVO_old.getSpicesaved();  // 이전에 저장된 파일명
+      file1saved_old = spiceVO_old.getSpicesaved();  // 이전에 저장된 파일명
       String thumb_old = spiceVO_old.getSpicethumb();
 
-      if (file1saved_old != null && !file1saved_old.isEmpty()) {
-        String upDir = Spice.getUploadDir(); // 파일이 저장된 디렉토리 경로
-        Tool.deleteFile(upDir, file1saved_old);  // 이전에 저장된 파일 삭제
-        Tool.deleteFile(upDir, thumb_old);       // 이전에 저장된 preview 이미지 삭제
-      }
-
-      // -------------------------------------------------------------------
-      // 파일 삭제 시작
-      // -------------------------------------------------------------------
-      String file1saved = spiceVO_old.getSpicesaved();  // 실제 저장된 파일명
-      String thumb1 = spiceVO_old.getSpicethumb();       // 실제 저장된 preview 이미지 파일명
-      long size1 = 0;
-         
-      String upDir =  Spice.getUploadDir(); // C:/kd/deploy/resort_v4sbm3c/contents/storage/
-      
-      // 파일을 변경할 때만 기존 이미지를 삭제하도록 수정
+      // 기존 파일 삭제
       MultipartFile mf = spiceVO.getFileMF();
       if (mf != null && !mf.isEmpty()) {
-          Tool.deleteFile(upDir, file1saved);  // 실제 저장된 파일삭제
-          Tool.deleteFile(upDir, thumb1);     // preview 이미지 삭제
-      }
-      // -------------------------------------------------------------------
-      // 파일 삭제 종료
-      // -------------------------------------------------------------------
-          
-      // -------------------------------------------------------------------
-      // 파일 전송 시작
-      // -------------------------------------------------------------------
-      String file1 = "";          // 원본 파일명 image
+        String upDir = Spice.getUploadDir(); // 파일이 저장된 디렉토리 경로
+        if (file1saved_old != null && !file1saved_old.isEmpty()) {
+          Tool.deleteFile(upDir, file1saved_old);  // 이전에 저장된 파일 삭제
+          Tool.deleteFile(upDir, thumb_old);       // 이전에 저장된 preview 이미지 삭제
+        }
 
-      // 전송 파일이 없어도 file1MF 객체가 생성됨.
-      // <input type='file' class="form-control" name='file1MF' id='file1MF' 
-      //           value='' placeholder="파일 선택">
-      if (mf != null && !mf.isEmpty()) {
-          file1 = mf.getOriginalFilename(); // 원본 파일명
-          size1 = mf.getSize();  // 파일 크기
-          
-          // 파일 저장 후 업로드된 파일명이 리턴됨, spring.jsp, spring_1.jpg...
-          file1saved = Upload.saveFileSpring(mf, upDir); 
-          
-          if (Tool.isImage(file1saved)) { // 이미지인지 검사
-              // thumb 이미지 생성후 파일명 리턴됨, width: 250, height: 200
-              thumb1 = Tool.preview(upDir, file1saved, 250, 200); 
-          }
+        // 파일 전송 시작
+        String file1 = mf.getOriginalFilename(); // 원본 파일명
+        long size1 = mf.getSize();  // 파일 크기
+        String file1saved = Upload.saveFileSpring(mf, upDir); 
+        String thumb1 = Tool.isImage(file1saved) ? Tool.preview(upDir, file1saved, 250, 200) : "";
+
+        spiceVO.setSpiceimg(file1);
+        spiceVO.setSpicesaved(file1saved);
+        spiceVO.setSpicethumb(thumb1);
+        spiceVO.setSpicesize(size1);
       } else { // 파일이 삭제만 되고 새로 올리지 않는 경우
-          file1 = spiceVO_old.getSpiceimg();
-          file1saved = spiceVO_old.getSpicesaved();
-          thumb1 = spiceVO_old.getSpicethumb();
-          size1 = spiceVO_old.getSpicesize();
+        spiceVO.setSpiceimg(spiceVO_old.getSpiceimg());
+        spiceVO.setSpicesaved(spiceVO_old.getSpicesaved());
+        spiceVO.setSpicethumb(spiceVO_old.getSpicethumb());
+        spiceVO.setSpicesize(spiceVO_old.getSpicesize());
       }
-      // -------------------------------------------------------------------
-      // 파일 전송 코드 종료
-      // -------------------------------------------------------------------
 
-      spiceVO.setSpiceimg(file1);
-      spiceVO.setSpicesaved(file1saved);
-      spiceVO.setSpicethumb(thumb1);
-      spiceVO.setSpicesize(size1);
-        
       int cnt = this.spiceProc.update(spiceVO); // 수정
       if (cnt == 1) {
         return "redirect:/spice/update/" + spiceVO.getSpiceno() + "?word=" + Tool.encode(word) + "&now_page=" + now_page;
@@ -344,7 +358,7 @@ public class SpiceCont {
     } else {
       return "redirect:/manager/login";
     }
-  }
+}
 
   /**
    * Delete 폼
@@ -433,22 +447,17 @@ public class SpiceCont {
     }
   }
 
-  @GetMapping(value="/good/{spiceno}")
-  public String good(Model model, HttpSession session, RecVO recVO,
-                        @PathVariable("spiceno") Integer spiceno, 
-                        @RequestParam(name="word", defaultValue = "") String word,
-                        @RequestParam(name="now_page", defaultValue = "1") int now_page) {
+  @PostMapping(value="/good")
+  @ResponseBody
+  public String good(HttpSession session, @RequestBody RecVO recVO) {
 
+    int spiceno = recVO.getSpiceno();
+
+    HashMap<String, Object> map = new HashMap<String, Object>();
+    map.put("spiceno", recVO.getSpiceno());
+    map.put("accountno", recVO.getAccountno());
+      
     int cnt = 0;
-    int accountno = session.getAttribute("accountno") != null ? (int) session.getAttribute("accountno") : 0;
-
-    if(accountno > 0) {
-      HashMap<String, Object> map = new HashMap<String, Object>();
-    map.put("spiceno", spiceno);
-    map.put("accountno", accountno);
-
-    recVO.setAccountno(accountno);
-
     cnt = this.recProc.good_cnt(map);
 
     if (cnt == 0) {
@@ -458,24 +467,29 @@ public class SpiceCont {
       this.spiceProc.good_down(spiceno);
       this.recProc.good_cancel(map);
     }
-    return "redirect:/spice/cno_read?spiceno=" + spiceno + "&word=&now_page=1" + Tool.encode(word) + "&now_page=" + now_page;  // /templates/cate/list_search.html
-    } else {
-      return "redirect:/account/login";
-    }
+
+    JSONObject json = new JSONObject();
+    json.put("res", cnt); // 1: 좋아요 누름, 0: 좋아요 안누름
     
+    return json.toString();
   }
 
-  // @GetMapping(value="/good_down/{spiceno}")
-  // public String good_down(Model model, 
-  //                         @PathVariable("spiceno") Integer spiceno, 
-  //                         @RequestParam(name="word", defaultValue = "") String word,
-  //                         @RequestParam(name="now_page", defaultValue = "1") int now_page) {
-   
-  //   this.spiceProc.good_down(spiceno);
+  @PostMapping(value="/good_cnt")
+  @ResponseBody
+  public String good_cnt(@RequestBody RecVO recVO) {
+
+    HashMap<String, Object> map = new HashMap<String, Object>();
+    map.put("spiceno", recVO.getSpiceno());
+    map.put("accountno", recVO.getAccountno());
+      
+    int cnt = 0;
+    cnt = this.recProc.good_cnt(map);
+
+    JSONObject json = new JSONObject();
+    json.put("res", cnt); // 1: 좋아요 누름, 0: 좋아요 안누름
     
-  //   return "redirect:/spice/cno_read?spiceno=" + spiceno + "&word=&now_page=1" + Tool.encode(word) + "&now_page=" + now_page;  // /templates/cate/list_search.html
-    
-  // }
+    return json.toString();
+  }
 
   @GetMapping(value="/list_search") 
   public String list_search_paging(Model model, HttpSession session, SpiceVO spiceVO, @RequestParam(name="word", defaultValue = "") String word, @RequestParam(name="now_page", defaultValue = "1") int now_page) {
@@ -497,6 +511,7 @@ public class SpiceCont {
       model.addAttribute("paging", paging);
       model.addAttribute("word", word);
       model.addAttribute("now_page", now_page);
+      model.addAttribute("search_count", search_count);
 
       // 일련 번호 생성: 레코드 갯수 - ((현재 페이지수) - 1) * 페이지당 레코드 수)
       int no = (search_count - (now_page - 1) * this.record_per_page);
@@ -526,6 +541,7 @@ public class SpiceCont {
     model.addAttribute("paging", paging);
     model.addAttribute("word", word);
     model.addAttribute("now_page", now_page);
+    model.addAttribute("search_count", search_count);
 
     // 일련 번호 생성: 레코드 갯수 - ((현재 페이지수) - 1) * 페이지당 레코드 수)
     int no = (search_count - (now_page - 1) * this.record_per_page);

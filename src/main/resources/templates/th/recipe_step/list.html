@@ -6,25 +6,11 @@
   <link href="/css/style.css" rel="Stylesheet" type="text/css"> <!-- /static 기준 -->
 </head>
 <div layout:fragment="content">
-  <!-- Header start -->
-    <div class="container-fluid page-header py-5">
-      <h1 class="text-center text-white display-6">
-        <span>지역 음식 리스트</span>
-        <span th:if="${word != ''}" th:text="|> ${word} (${search_count} 건)|" class="title_line_text"></span>
-      </h1>
-    </div>
-    <!-- Header End -->
-    
-    <div class="container-fluid fruite py-5">
-      <div class="container py-5">
-
 <div th:fragment="list">
   <div class='title_line'>지역 음식 리스트</div>
 
   <aside class="aside_right">
     <a href="javascript:location.reload();">새로고침</a>
-    |
-    <a th:href="@{/regionfood/create(regiono=${regionfoodVO.regiono})}">등록</a>
     
     
   </aside> 
@@ -49,8 +35,6 @@
     </colgroup>
     <tr>
       <th class='th_bs'>지역음식 이름</th>
-      <th class='th_bs'>지역</th>
-      
       <th class='th_bs'>음식 사진</th>
       <th class='th_bs'>요리 재료 목록</th>
       <th class='th_bs'>필요 조리 도구</th>
@@ -68,7 +52,7 @@
          
         
          <td class='td_basic' style='height: 150px;' th:utext="${regionfoodVO.foodtitle}"></td>
-       <td class='td_basic' th:text="${regionfoodVO.regiono}"></td>
+      
               <td class='td_basic' th:text="${regionfoodVO.foodimg_url}"></td>
        
               <td class='td_basic' th:text="${regionfoodVO.recipelist}"></td>
@@ -96,8 +80,6 @@
     <button type='button' onclick="location.reload();" class="btn btn-primary btn-sm">새로 고침</button>
   <div class="bottom_menu" th:utext="${paging}"></div>
   </div>
-  </div>
-</div>
 </div>
 </div>
 </html>

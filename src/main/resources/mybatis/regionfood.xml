@@ -26,11 +26,19 @@
     
   </update>
   
+   <!-- read  -->
+    <select id="read" resultType="dev.mvc.regionfood.RegionfoodVO" parameterType="int">
+    SELECT foodno, foodtitle, foodimg_url,foodimg_urlsaved,fsize, regiono, recipelist, cook_tool, difficulty, cooktime, managerno
+    FROM regionfood 
+    WHERE regiono = #{regiono}
+  </select>
+  
+  
   <!-- 조회 -->
-  <select id="read" resultType="dev.mvc.regionfood.RegionfoodVO" parameterType="int">
+  <select id="alist" resultType="dev.mvc.regionfood.RegionfoodVO" parameterType="int">
     SELECT foodno, foodtitle, foodimg_url,foodimg_urlsaved,fsize, regiono, recipelist, cook_tool, difficulty, cooktime, managerno
     FROM regionfood
-    WHERE foodno = #{foodno}
+    WHERE regiono = #{regiono}
   </select>
   
   
@@ -42,42 +50,34 @@
             SELECT v.foodno, v.foodtitle, v.foodimg_url,v.foodimg_urlsaved,v.fsize,v.regiono,v.recipelist,v.cook_tool,v.difficulty,v.cooktime,v.managerno, m.MNAME
             FROM regionfood v
             INNER JOIN MANAGER m ON v.managerno = m.MANAGERNO
-            <if test="word != null and word !=''">
-              
-            WHERE UPPER(v.foodtitle) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(m.MNAME) LIKE '%' || UPPER(#{word}) || '%'  OR UPPER(v.recipelist) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(v.cook_tool) LIKE '%' || UPPER(#{word}) || '%'
-            
-            </if>
+            <choose>
+      <when test="word == null or word == ''">
+        WHERE v.regiono = #{regiono} 
+        </when>
+        <otherwise> <!-- 검색하는 경우 -->
+             WHERE v.regiono = #{regiono}  AND UPPER(v.foodtitle) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(m.MNAME) LIKE '%' || UPPER(#{word}) || '%'  OR UPPER(v.recipelist) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(v.cook_tool) LIKE '%' || UPPER(#{word}) || '%'
+             </otherwise>
+              </choose>
             ORDER BY v.foodno ASC
         )
     )
     WHERE r &gt;= #{start_num} AND r &lt;= #{end_num}
 </select>
   
-  <!--페이징 -->
-  <!--
-  <select id="list_search_paging" resultType="dev.mvc.video.VideoVO" parameterType="Map">
-    SELECT  videono, videotitle, url, descripe,video_date,managerno, r
-    FROM (
-        SELECT videono, videotitle, url, descripe,video_date,managerno, rownum as r
-        FROM (
-            SELECT videono, videotitle, url, descripe,video_date,managerno
-            FROM video
-            <if test="word != null and word !=''">
-            WHERE UPPER(videotitle) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(descripe) LIKE '%' || UPPER(#{word}) || '%' 
-            </if>
-            ORDER BY videono ASC
-        )
-    )
-    WHERE r &gt;= #{start_num} AND r &lt;= #{end_num}
-  </select>
--->
+  
   <!-- 검색된 코드 수 -->
   <select id="list_search_count" resultType="int" parameterType="String">
     SELECT count(*) as cnt
     FROM regionfood
-    <if test="word != null and word !=''">
-      WHERE UPPER(foodtitle) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(MNAME) LIKE '%' || UPPER(#{word}) || '%'  OR UPPER(recipelist) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(cook_tool) LIKE '%' || UPPER(#{word}) || '%'
-              </if>
+    
+     <choose>
+      <when test="word == null or word == ''">
+        WHERE v.regiono = #{regiono} 
+        </when>
+        <otherwise> <!-- 검색하는 경우 -->
+             WHERE v.regiono = #{regiono}  AND UPPER(v.foodtitle) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(m.MNAME) LIKE '%' || UPPER(#{word}) || '%'  OR UPPER(v.recipelist) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(v.cook_tool) LIKE '%' || UPPER(#{word}) || '%'
+             </otherwise>
+              </choose>
     ORDER BY foodno ASC
   </select>
   

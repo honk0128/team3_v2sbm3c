@@ -1,4 +1,4 @@
-package dev.mvc.regionfood;
+package dev.mvc.recipe_step;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,8 +24,6 @@ import dev.mvc.ai.Aiurl;
 import dev.mvc.board.Board;
 import dev.mvc.board.BoardVO;
 import dev.mvc.manager.ManagerVO;
-import dev.mvc.recipe_step.Recipe_stepProcInter;
-import dev.mvc.recipe_step.Recipe_stepVO;
 import dev.mvc.crudcate.CrudcateProcInter;
 import dev.mvc.crudcate.CrudcateVO;
 import dev.mvc.crudcate.CrudcateVOMenu;
@@ -43,22 +41,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 
-@RequestMapping("/regionfood")
+@RequestMapping("/recipe_step")
 @Controller
-public class RegionfoodCont {
+public class Recipe_stepCont {
 
   
   @Autowired
-  @Qualifier("dev.mvc.regionfood.RegionfoodProc")
-  private RegionfoodProcInter regionfoodproc;
+  @Qualifier("dev.mvc.recipe_step.Recipe_stepProc")
+  private Recipe_stepProcInter recipe_stepproc;
   
   @Autowired
   @Qualifier("dev.mvc.region.RegionProc")
   private RegionProcInter regionProc;
 
-  @Autowired
-  @Qualifier("dev.mvc.recipe_step.Recipe_stepProc")
-  private Recipe_stepProcInter recipe_stepproc;
 
   
 //  @Autowired
@@ -74,18 +69,18 @@ public class RegionfoodCont {
   /** 블럭당 페이지 수, 하나의 블럭은 10개의 페이지로 구성됨 */
   public int page_per_blocK = 10;
   
-  public RegionfoodCont() {
-    System.out.println("-> RegionfoodCont created.");
+  public Recipe_stepCont() {
+    System.out.println("-> Recipe_stepCont created.");
   }
   
   @GetMapping(value = "/create")
-    public String create( Model model, RegionfoodVO regionfoodVO){
+    public String create( Model model, Recipe_stepVO recipe_stepVO){
 //    gpaVO.setBoardno(boardno);
 //    model.addAttribute("boardno", boardno);
     
     
     
-    return "th/regionfood/create"; 
+    return "th/recipe_step/create"; 
         
   }
   
@@ -93,7 +88,7 @@ public class RegionfoodCont {
 
   
   @PostMapping(value="/create")
-  public String createregionfood( Model model, RegionfoodVO regionfoodVO, HttpSession session, String mid, RedirectAttributes ra, @RequestParam(name="regiono", defaultValue = "1") int regiono) {
+  public String createrecipe_step( Model model, Recipe_stepVO recipe_stepVO, HttpSession session, String mid, RedirectAttributes ra, @RequestParam("foodno") int foodno) {
 
     
     String file1 = ""; // 원본 파일명 image
@@ -103,10 +98,10 @@ public class RegionfoodCont {
     String upDir = Board.getUploadDir(); // 파일을 업로드할 폴더 준비
     System.out.println("-> upDir: " + upDir);
     
-    MultipartFile mf = regionfoodVO.getFphotoNF();
+    MultipartFile mf = recipe_stepVO.getSphotoNF();
     
     file1 = mf.getOriginalFilename();
-    System.out.println("-> 원본 파일명 산출 fphoto: " + file1);
+    System.out.println("-> 원본 파일명 산출 sphoto: " + file1);
 
     long size1 = mf.getSize();
     if (size1 > 0) { // 파일 크기 체크, 파일을 올리는 경우
@@ -119,9 +114,9 @@ public class RegionfoodCont {
           thumb1 = Tool.preview(upDir, file1saved, 200, 150);
         }
     
-        regionfoodVO.setFoodimg_url(file1);
-        regionfoodVO.setFoodimg_urlsaved(file1saved);
-        regionfoodVO.setFsize(size1);
+        recipe_stepVO.setStep_img(upDir);
+        recipe_stepVO.setStep_imgsaved(file1saved);
+        recipe_stepVO.setSsize(size1);
       }else { // 전송 못하는 파일 형식
         ra.addFlashAttribute("code", "check_upload_file_fail"); // 업로드 할 수 없는 파일
         ra.addFlashAttribute("cnt", 0); // 업로드 실패
@@ -140,19 +135,28 @@ public class RegionfoodCont {
       
       
       
-     regionfoodVO.setRegiono(regiono);
+     recipe_stepVO.setFoodno(foodno);
 //      gpaVO.setGpascore(star);
 //      gpaVO.setAccountno(accountno);
 //      gpaVO.setBoardno(boardno);
      
-      int cnt = regionfoodproc.create(regionfoodVO);
+     
+     Integer maxStepOrder = recipe_stepproc.selectMaxStepOrderByFoodno(foodno);
+    
+     if (maxStepOrder == null) {
+       maxStepOrder = 0;
+   }
+     
+     recipe_stepVO.setStep_order(maxStepOrder + 1);
+     recipe_stepVO.setFoodno(foodno);
+    
+      int cnt = recipe_stepproc.create(recipe_stepVO);
 
       if (cnt == 1) {
         
         
-        model.addAttribute("regionfoodVO", regionfoodVO);
-        ra.addAttribute("regiono", regionfoodVO.getRegiono());
-        return "redirect:/regionfood/list?regiono=" + regionfoodVO.getRegiono();
+        model.addAttribute("recipe_stepVO", recipe_stepVO);
+        return "redirect:/regionfood/read?foodno=" + recipe_stepVO.getFoodno();
       /**  return "redirect:/gpa/list?boardno=" + boardVO.getBoardno(); **/
         /**http://localhost:9093/board/read?boardno=7&word=&now_page=1
         redirect:/contents/read.do?contentsno=" + contentsVO.getContentsno() + "&cateno=" + contentsVO.getCateno());             
@@ -167,17 +171,17 @@ public class RegionfoodCont {
   
   
   @GetMapping(value = "/list")
-  public String list(HttpSession session, Model model,ManagerVO managerVO , RegionfoodVO regionfoodVO,RegionVO regionVO,  @RequestParam(name="word", defaultValue = "") String word, @RequestParam(name="now_page", defaultValue = "1") int now_page,@RequestParam int regiono ) {
+  public String list(HttpSession session, Model model,ManagerVO managerVO , Recipe_stepVO recipe_stepVO,RegionVO regionVO,  @RequestParam(name="word", defaultValue = "") String word, @RequestParam(name="now_page", defaultValue = "1") int now_page,@RequestParam int step_no ) {
 
-    ArrayList <RegionfoodVO> alist = this.regionfoodproc.alist(regiono);
+    ArrayList <Recipe_stepVO> alist = this.recipe_stepproc.alist(step_no);
     model.addAttribute("alist", alist);
     
-    return "th/regionfood/list"; // templates/member/list.html
+    return "th/recipe_step/list"; // templates/member/list.html
   }
 
   
   @GetMapping(value="/list_cno_search") 
-  public String list_cno_search_paging(Model model, RegionfoodVO regionfoodVO, @RequestParam(name="word", defaultValue = "") String word,@RequestParam(name="regiono", defaultValue = "1") Integer regiono, @RequestParam(name="now_page", defaultValue = "1") int now_page) {
+  public String list_cno_search_paging(Model model, Recipe_stepVO recipe_stepVO, @RequestParam(name="word", defaultValue = "") String word,@RequestParam(name="step_no", defaultValue = "1") Integer step_no, @RequestParam(name="now_page", defaultValue = "1") int now_page) {
 
     word = Tool.checkNull(word).trim();
 
@@ -185,12 +189,12 @@ public class RegionfoodCont {
     map.put("word", word);
 
      // 페이징 목록
-    ArrayList<RegionfoodVO> list = this.regionfoodproc.list_search_paging(word, now_page, this.record_per_page);
+    ArrayList<Recipe_stepVO> list = this.recipe_stepproc.list_search_paging(word, now_page, this.record_per_page);
     model.addAttribute("list", list);
 
     // 페이징 버튼 목록
-    int search_count = this.regionfoodproc.list_search_count(word);
-    String paging = this.regionfoodproc.pagingBox(regiono,now_page, word, "/regionfood/list", search_count, this.record_per_page, this.page_per_blocK);
+    int search_count = this.recipe_stepproc.list_search_count(word);
+    String paging = this.recipe_stepproc.pagingBox(step_no,now_page, word, "/recipe_step/list", search_count, this.record_per_page, this.page_per_blocK);
     model.addAttribute("paging", paging);
     model.addAttribute("word", word);
     model.addAttribute("now_page", now_page);
@@ -199,88 +203,87 @@ public class RegionfoodCont {
     int no = (search_count - (now_page - 1) * this.record_per_page);
     model.addAttribute("no", no);
 
-    return "th/regionfood/list"; // /templates/spice/list_search.html
+    return "th/recipe_step/list"; // /templates/spice/list_search.html
   }
   
   @GetMapping(value = "/read")
-  public String read(Model model, @RequestParam("foodno") int foodno
+  public String read(Model model, @RequestParam("step_no") int step_no
   ) {
 
    
-    RegionfoodVO regionfoodVO = this.regionfoodproc.read(foodno);
-    ArrayList<Recipe_stepVO> recipe_stepVO = this.recipe_stepproc.listfoodno(foodno);
-    long fsize = regionfoodVO.getFsize();
-    String fsize_label = Tool.unit(fsize);
-    regionfoodVO.setFsize_label(fsize_label);
-    model.addAttribute("regionfoodVO", regionfoodVO);
-    model.addAttribute("recipe_stepVO", recipe_stepVO);    // 조회에서 화면 하단에 출력
+    Recipe_stepVO recipe_stepVO = this.recipe_stepproc.read(step_no);
+    long ssize = recipe_stepVO.getSsize();
+    String ssize_label = Tool.unit(ssize);
+    recipe_stepVO.setSsize_label(ssize_label);
+    model.addAttribute("recipe_stepVO", recipe_stepVO);
+    
+    // 조회에서 화면 하단에 출력
     // ArrayList<ReplyVO> reply_list = this.replyProc.list_board(boardno);
     // mav.addObject("reply_list", reply_list);
 
   
 
-    return "th/regionfood/read";
+    return "th/recipe_step/read";
   }
   
  
   @GetMapping(value = "/update")
   public String update(Model model,
                                 HttpSession session,
-                                @RequestParam("foodno") int foodno,
+                                @RequestParam("step_no") int step_no,
                                 
                                 RedirectAttributes ra
                                 
                                 ) {
     
-    RegionfoodVO regionfoodVO = new RegionfoodVO();
+    Recipe_stepVO recipe_stepVO = new Recipe_stepVO();
     
-    regionfoodVO.setRegiono(foodno);
+    recipe_stepVO.setStep_no(step_no);
     
    
-    model.addAttribute("regionfoodVO", regionfoodVO);
+    model.addAttribute("recipe_stepVO", recipe_stepVO);
 
-System.out.println(foodno);
     
-    return "th/regionfood/update";
+    return "th/recipe_step/update";
   }
   
   @PostMapping(value = "/update")
   public String update_gpa(Model model,
                           HttpSession session,
                           
-                          @ModelAttribute("regionfoodVO") RegionfoodVO regionfoodVO,
+                          @ModelAttribute("recipe_stepVO") Recipe_stepVO recipe_stepVO,
                           RedirectAttributes ra) {
     
   
    
     
-    regionfoodproc.update(regionfoodVO); 
+    recipe_stepproc.update(recipe_stepVO); 
     
-      ra.addAttribute("foodno", regionfoodVO.getFoodno());
+      ra.addAttribute("step_no", recipe_stepVO.getStep_no());
      
 
-      return "redirect:/regionfood/list";
+      return "redirect:/recipe_step/list";
   }
   
   
   
   @GetMapping(value = "/delete")
-  public String delete(@RequestParam("foodno") int foodno, HttpSession session, Model model, RedirectAttributes ra, RegionfoodVO regionfoodVO
+  public String delete(@RequestParam("step_no") int step_no, HttpSession session, Model model, RedirectAttributes ra, Recipe_stepVO recipe_stepVO
                        ) {
     
-    System.out.println("GET /delete, regiono: " + foodno);
-    model.addAttribute("foodno", foodno);
-    model.addAttribute("regionfoodVO", regionfoodVO);
+    
+    model.addAttribute("step_no", step_no);
+    model.addAttribute("recipe_stepVO", recipe_stepVO);
     
     
-    return "th/regionfood/delete";
+    return "th/recipe_step/delete";
   }
   
   @PostMapping(value = "/delete")
-  public String delete(@RequestParam("foodno") int foodno, RegionfoodVO regionfoodVO) {
+  public String delete(@RequestParam("step_no") int step_no, Recipe_stepVO recipe_stepVO) {
     
 //        
-    this.regionfoodproc.delete(foodno);
+    this.recipe_stepproc.delete(step_no);
 //    
 //    HashMap<String, Object> hashMap = new HashMap<String, Object>();
 //    hashMap.put("word", word);
@@ -288,7 +291,7 @@ System.out.println(foodno);
 //    ra.addAttribute("word", word);
 //    ra.addAttribute("now_page", now_page);
     
-    return "redirect:/regionfood/list";
+    return "redirect:/recipe_step/list";
   }   
   
   

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import dev.mvc.ai.AiProcInter;
 import dev.mvc.ai.AiVO;
 import dev.mvc.manager.ManagerProcInter;
+import dev.mvc.search.SearchProcInter;
 import jakarta.servlet.http.HttpSession;
 
 @RequestMapping("/answer")
@@ -31,6 +32,10 @@ public class AnswerCont {
   @Autowired
   @Qualifier("dev.mvc.manager.ManagerProc")
   private ManagerProcInter managerProc;
+  
+  @Autowired
+  @Qualifier("dev.mvc.search.SearchProc")
+  private SearchProcInter searchProc;
   
   /** 페이지당 출력할 레코드 갯수 */
   public int record_per_page = 5;
@@ -50,6 +55,12 @@ public class AnswerCont {
     Integer accountno = (Integer) session.getAttribute("accountno");
     System.out.println(accountno);
     
+/** 검색 기록 저장 및 검색 빈도 확인
+ * 
+ */
+    if (word != null && !word.trim().isEmpty()) {
+    this.searchProc.search_word(word);
+    }
     
     if (this.managerProc.isAdmin(session)) {
       

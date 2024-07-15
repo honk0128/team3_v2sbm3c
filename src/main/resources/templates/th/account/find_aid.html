@@ -2,6 +2,25 @@
 
 <html layout:decorate="~{th/layout}"> <!-- layout.html 상속-->
 <div layout:fragment="content">
+      <!-- Header start -->
+  <div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">
+      <span class="title_line_text">아이디 찾기</span>
+    </h1>
+
+    <ol class="breadcrumb justify-content-center mb-0">
+      <li class="breadcrumb-item">
+        <a th:href="@{/account/login}">회원가입</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a th:href="@{/account/find_passwd_form}">비밀번호 찾기</a>
+      </li>
+    </ol>
+  </div>
+  <!-- Single Page Header End -->
+  
+  <div class='menu_line'></div>
+  <div class="container-fluid py-5">
   <div class="title_line">회원 가입 > 알림</div>
   <div class="message">
     <fieldset class="fieldset_basic">
@@ -31,6 +50,8 @@
         </li>
       </ul>
     </fieldset>
+  </div>
+  </div>
   </div>
 </div>
 </html>
