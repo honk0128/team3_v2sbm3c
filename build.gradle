@@ -45,6 +45,10 @@ dependencies {
   implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
    // https://mvnrepository.com/artifact/javax.mail/javax.mail-api 
   implementation 'javax.mail:javax.mail-api:1.6.2'
+// https://mvnrepository.com/artifact/org.springframework/spring-websocket
+implementation 'org.springframework:spring-websocket:6.1.10'
+// https://mvnrepository.com/artifact/org.springframework/spring-messaging
+implementation 'org.springframework:spring-messaging:6.1.10'
 }
 
 tasks.named('bootBuildImage') {

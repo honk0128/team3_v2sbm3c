@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import dev.mvc.crudcate.CrudcateProcInter;
+import dev.mvc.crudcate.CrudcateVOMenu;
 import dev.mvc.manager.ManagerProcInter;
 import dev.mvc.tool.Tool;
 import jakarta.servlet.http.HttpSession;
@@ -20,6 +22,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequestMapping("/lunch")
 @Controller
 public class LunchCont {
+
+  @Autowired
+  @Qualifier("dev.mvc.crudcate.CrudcateProc")
+  private CrudcateProcInter crudcateProc;
 
   @Autowired
   @Qualifier("dev.mvc.lunch.LunchProc")
@@ -47,11 +53,15 @@ public class LunchCont {
   
       // 사용자 검증
       if (session.getAttribute("accountno") != null || session.getAttribute("managerno") != null) {
+
+        ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+        model.addAttribute("menu", menu);
   
           // 매니저 검증
           if (session.getAttribute("managerno") != null) { // 관리자로 로그인한 경우
               ArrayList<LunchVO> list = this.lunchProc.list_all();
               model.addAttribute("list", list);
+
           } else { // 일반 사용자로 로그인한 경우
               Integer sessionAccountno = (Integer) session.getAttribute("accountno");
               ArrayList<LunchVO> list = this.lunchProc.list(sessionAccountno);

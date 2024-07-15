@@ -189,7 +189,7 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <li class="nav-item">
-                    <a class="nav-link" th:href="@{|/week/create|}">주간 식단</a>
+                    <a class="nav-link" th:href="@{|/week/create|}">주간 식단 작성</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" th:href="@{|/week/list_combined|}">주간 식단 목록</a>
@@ -217,7 +217,26 @@
                     <a class="nav-link" th:href="@{http://192.168.2.6:5000/lunch(accountno=${session.accountno})}">오점뭐</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" th:href="@{/lunch/list}">AI 답변</a>
+                    <a class="nav-link" th:href="@{/lunch/list}">추천 목록</a>
+                  </li>
+                </ul>
+              </li>
+
+              <!-- 채팅창 -->
+              <li class="nav-item dropdown" th:if="${session.managerno != null or session.accountno != null}">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdownMenuLink"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  th:text="채팅"
+                >
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <li class="nav-item">
+                    <a class="nav-link" th:href="@{|/chat|}" target="_blank">채팅방</a>
                   </li>
                 </ul>
               </li>
