@@ -390,13 +390,13 @@ public class Tool {
       String path = "";
       if (File.separator.equals("\\")) {
           // Windows 개발시 사용 폴더
-          path = "C:/kd/deploy/resort_v4sbm3c";
+          path = "C:/kd/deploy/team3_v2sbm3c";
 
       } else {
           // Linux 배포
           // 기본 명령어
           // pwd: 현재 경로 확인, mkdir deploy: 폴더 생성, cd deploy: 폴더 이동, rmdir resort_v2sbm3c: 폴더 삭제, cd ..: 상위 폴더로 이동 
-          path = "/home/ubuntu/deploy/resort_v4sbm3c";
+          path = "/home/ubuntu/deploy/team3_v2sbm3c";
       }
       // System.out.println("path: " + path);
       
