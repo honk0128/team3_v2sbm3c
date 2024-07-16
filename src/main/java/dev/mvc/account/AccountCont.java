@@ -28,6 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import dev.mvc.crudcate.CrudcateProcInter;
+import dev.mvc.crudcate.CrudcateVOMenu;
 import dev.mvc.loginlog.LoginlogProcInter;
 import dev.mvc.loginlog.LoginlogVO;
 // import dev.mvc.contents.Contents;
@@ -48,6 +50,10 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/account")
 @Controller
 public class AccountCont {
+  @Autowired
+  @Qualifier("dev.mvc.crudcate.CrudcateProc")
+  private CrudcateProcInter crudcateProc;
+
   @Autowired
   @Qualifier("dev.mvc.account.AccountProc")
   private AccountProcInter accountProc;
@@ -94,6 +100,9 @@ public class AccountCont {
    */
   @GetMapping(value = "/signin")
   public String signin_form(Model model, AccountVO accountVO) {
+
+    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    model.addAttribute("menu", menu);
     return "th/account/create";
   }
 
@@ -176,8 +185,13 @@ public class AccountCont {
   public String list(HttpSession session, Model model,
                        @RequestParam(name="word", defaultValue = "") String word, 
                        @RequestParam(name="now_page", defaultValue = "1") int now_page) {
+
+                        
     if (this.managerProc.isAdmin(session)) {
-      
+
+      ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+      model.addAttribute("menu", menu);
+
       // 페이징 목록
       ArrayList<AccountVO> list = this.accountProc.list_account_search_paging(word, now_page, this.record_per_page);
       model.addAttribute("list", list);
@@ -205,6 +219,10 @@ public class AccountCont {
    */
   @GetMapping(value = "/read")
   public String read(HttpSession session, Model model, int accountno) {
+
+    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    model.addAttribute("menu", menu);
+
     // 회원은 회원 등급만 처리, 관리자: 1 ~ 10, 사용자: 11 ~ 20
     // int gradeno = this.memberProc.read(memberno).getGrade(); // 등급 번호
     String mgrade = (String) session.getAttribute("mgrade"); // 등급: admin, member, guest
@@ -251,6 +269,9 @@ public class AccountCont {
   @GetMapping(value = "/login")
   public String login_form(Model model, String url, AccountVO accountVO) {
     model.addAttribute("url", url); // 로그인 후 이동할 주소
+
+    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    model.addAttribute("menu", menu);
 
     return "th/account/login"; // templates/member/login.html
   }
@@ -324,6 +345,7 @@ public class AccountCont {
   @GetMapping(value="/logout")
   public String logout(HttpSession session, Model model) {
     session.invalidate();  // 모든 세션 변수 삭제
+    
     return "redirect:/";
   }
   
@@ -418,6 +440,11 @@ public class AccountCont {
    */
   @GetMapping(value="/delete")
   public String delete(Model model, int accountno, HttpSession session) {
+
+    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    model.addAttribute("menu", menu);
+
+
     System.out.println("-> delete accountno: " + accountno);
     
  // 회원은 회원 등급만 처리, 관리자: 1 ~ 10, 사용자: 11 ~ 20
@@ -460,7 +487,11 @@ public class AccountCont {
   
   
   @GetMapping(value = "/find_aid_form")
-  public String find_aid_form() {
+  public String find_aid_form(Model model) {
+
+    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    model.addAttribute("menu", menu);
+
     return "th/account/find_aid_form";
 
   }
@@ -483,18 +514,22 @@ public class AccountCont {
   }
   
   @GetMapping(value = "/find_passwd_form")
-  public String find_passwd_form() {
+  public String find_passwd_form(Model model) {
+
+    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    model.addAttribute("menu", menu);
+
     return "th/account/find_passwd_form";
 
   }
   
   @GetMapping(value = "/login_need")
-  public String login_need() {
+  public String login_need(Model model) {
+
+    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    model.addAttribute("menu", menu);
+
     return "th/account/login_need";
   }
   
-
-  
-  
- 
 }
