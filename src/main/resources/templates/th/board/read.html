@@ -517,7 +517,7 @@
           <div class="col-lg-6">
             <div class="border rounded">
               <div th:if="${boardVO.bphoto.endsWith('jpg') || boardVO.bphoto.endsWith('png')  || boardVO.bphoto.endsWith('gif')}">
-                <img th:src="@{|/board/storage/${boardVO.bphotosaved}|}" style="width: 100%" />
+                <img th:src="@{|/board/storage/${boardVO.bphotosaved}|}" style="width: 100%" th:alt="${boardVO.bphoto}" />
               </div>
               <div th:if="${boardVO.bsize == 0}">
                 <img src="/board/images/aaa.jpg" style="width: 100%" />
@@ -555,23 +555,6 @@
                 <span th:text="|(${boardVO.bsize_label})|"></span>
               </li>
             </ul>
-
-            <!-- <div class="input-group quantity mb-5" style="width: 100px">
-              <div class="input-group-btn">
-                <button class="btn btn-sm btn-minus rounded-circle bg-light border">
-                  <i class="fa fa-minus"></i>
-                </button>
-              </div>
-              <input type="text" class="form-control form-control-sm text-center border-0" value="1" />
-              <div class="input-group-btn">
-                <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                  <i class="fa fa-plus"></i>
-                </button>
-              </div>
-            </div>
-            <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"
-              ><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a
-            > -->
           </div>
         </div>
         <div
