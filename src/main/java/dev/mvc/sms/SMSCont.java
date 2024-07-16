@@ -1,5 +1,6 @@
 package dev.mvc.sms;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -19,10 +20,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import dev.mvc.account.AccountProcInter;
 import dev.mvc.account.AccountVO;
+import dev.mvc.crudcate.CrudcateProcInter;
+import dev.mvc.crudcate.CrudcateVOMenu;
 import dev.mvc.tool.Security;
 
 @Controller
 public class SMSCont {
+  @Autowired
+  @Qualifier("dev.mvc.crudcate.CrudcateProc")
+  private CrudcateProcInter crudcateProc;
+  
   @Autowired
   @Qualifier("dev.mvc.account.AccountProc")
   private AccountProcInter accountProc;
@@ -130,6 +137,8 @@ public class SMSCont {
    */
   @RequestMapping(value = { "/sms/proc_next.do" }, method = RequestMethod.GET)
   public ModelAndView proc_next(HttpSession session) {
+    
+    
 
     int no = (int) session.getAttribute("no");
     System.out.println("->->->no: " + no);
@@ -149,7 +158,9 @@ public class SMSCont {
    * @return
    */
   @RequestMapping(value = { "/sms/confirm.do" }, method = RequestMethod.POST)
-  public ModelAndView confirm(HttpSession session, String auth_no) {
+  public ModelAndView confirm(HttpSession session, String auth_no, Model model) {
+    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    model.addAttribute("menu", menu);
 
     int no = (int) session.getAttribute("no");
     System.out.println("->->->->no: " + no);

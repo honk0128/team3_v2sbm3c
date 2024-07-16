@@ -508,7 +508,7 @@ public class AccountCont {
         
         return "th/account/find_aid";
     }else {
-      model.addAttribute("code", "find_passwd_fail");
+      model.addAttribute("code", "find_fail");
       return "th/account/find_aid";
     }
   }
