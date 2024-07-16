@@ -229,17 +229,27 @@
                   href="#"
                   id="navbarDropdownMenuLink"
                   role="button"
-                  data-bs-toggle="dropdown"
                   aria-expanded="false"
                   th:text="채팅"
+                  onclick="openChatPopup(); return false;"
                 >
                 </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li class="nav-item">
-                    <a class="nav-link" th:href="@{|/chat|}" target="_blank">채팅방</a>
-                  </li>
-                </ul>
               </li>
+
+              <script>
+                function openChatPopup() {
+                  var popupWidth = 600; // 팝업 창의 너비
+                  var popupHeight = 800; // 팝업 창의 높이
+                  var leftPosition = (window.screen.width - popupWidth) / 2;
+                  var topPosition = (window.screen.height - popupHeight) / 2;
+
+                  window.open(
+                    "/chat",
+                    "chatPopup",
+                    "width=" + popupWidth + ", height=" + popupHeight + ", left=" + leftPosition + ", top=" + topPosition
+                  );
+                }
+              </script>
             </div>
             <div class="d-flex m-3 me-0">
               <span class="nav-item my-auto me-4" th:if="${session.accountno == null} and ${session.managerno == null}"
