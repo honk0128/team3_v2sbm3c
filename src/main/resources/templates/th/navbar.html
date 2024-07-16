@@ -164,16 +164,39 @@
                 >
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li class="nav-item">
-                    <a class="nav-link" th:href="@{http://192.168.2.6:5000/menu_web(accountno=${session.accountno}, managerno=${session.managerno})}"
+                  <!-- <li class="nav-item">
+                    <a class="nav-link" th:href="@{http://192.168.2.37:5000/menu_web(accountno=${session.accountno}, managerno=${session.managerno})}"
                       >AI 질문</a
                     >
+                  </li> -->
+                  <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="openQuestPopup()">AI 질문</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" th:href="@{/answer/list}">AI 답변</a>
                   </li>
                 </ul>
               </li>
+
+              <script>
+                function openQuestPopup() {
+                  var popupWidth = 600; // 팝업 창의 너비
+                  var popupHeight = 800; // 팝업 창의 높이
+                  var leftPosition = (window.screen.width - popupWidth) / 2;
+                  var topPosition = (window.screen.height - popupHeight) / 2;
+
+                  // 타임리프 변수를 자바스크립트 변수로 전달
+                  var accountno = /*[[${session.accountno}]]*/ "[[${session.accountno}]]";
+                  var managerno = "[[${session.managerno}]]";
+
+                  var url = "http://192.168.2.37:5000/menu_web?accountno=" + accountno + "&managerno=" + managerno;
+                  window.open(
+                    url,
+                    "lunchPopup",
+                    "width=" + popupWidth + ", height=" + popupHeight + ", left=" + leftPosition + ", top=" + topPosition
+                  );
+                }
+              </script>
 
               <!-- 주간 식단 -->
               <li class="nav-item dropdown" th:if="${session.managerno != null or session.accountno != null}">
@@ -214,9 +237,10 @@
                   <a class="nav-link" th:href="@{https://port-0-openai-1lx8pnj08.sel5.cloudtype.app(accountno=${session.accountno})}">오점뭐</a>
                 </li> -->
                   <li class="nav-item">
-                    <a class="nav-link" th:href="@{http://192.168.2.6:5000/lunch(accountno=${session.accountno})}" onclick="openLunchPopup()"
-                      >오점뭐</a
-                    >
+                    <a class="nav-link" href="#" onclick="openLunchPopup()">오점뭐</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="openChatbotPopup()">챗 봇</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" th:href="@{/lunch/list}">추천 목록</a>
@@ -258,9 +282,24 @@
                   var popupHeight = 800; // 팝업 창의 높이
                   var leftPosition = (window.screen.width - popupWidth) / 2;
                   var topPosition = (window.screen.height - popupHeight) / 2;
-                  var accountno = accountno;
-                  var url = `http://192.168.2.6:5000/lunch?accountno=${accountno}`;
 
+                  // 타임리프 변수를 자바스크립트 변수로 전달
+                  var accountno = /*[[${session.accountno}]]*/ "[[${session.accountno}]]";
+
+                  var url = "http://192.168.2.37:5000/lunch?accountno=" + accountno;
+                  window.open(
+                    url,
+                    "lunchPopup",
+                    "width=" + popupWidth + ", height=" + popupHeight + ", left=" + leftPosition + ", top=" + topPosition
+                  );
+                }
+
+                function openChatbotPopup() {
+                  var popupWidth = 600; // 팝업 창의 너비
+                  var popupHeight = 800; // 팝업 창의 높이
+                  var leftPosition = (window.screen.width - popupWidth) / 2;
+                  var topPosition = (window.screen.height - popupHeight) / 2;
+                  var url = "http://192.168.2.37:5000/chatbot";
                   window.open(
                     url,
                     "lunchPopup",

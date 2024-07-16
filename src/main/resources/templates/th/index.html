@@ -6,19 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
+      document.addEventListener("DOMContentLoaded", function () {
         let lastModifiedTime = 0;
 
         function checkImageUpdate() {
           const xhr = new XMLHttpRequest();
-          xhr.open('HEAD', 'dba/recommend/recommend.jpg', true);
+          xhr.open("HEAD", "dba/recommend/recommend.jpg", true);
           xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE) {
               if (xhr.status === 200) {
-                const newModifiedTime = new Date(xhr.getResponseHeader('Last-Modified')).getTime();
+                const newModifiedTime = new Date(xhr.getResponseHeader("Last-Modified")).getTime();
                 if (newModifiedTime > lastModifiedTime) {
                   lastModifiedTime = newModifiedTime;
-                  document.getElementById('graph').src = 'dba/recommend/recommend.jpg?' + new Date().getTime();
+                  document.getElementById("graph").src = "dba/recommend/recommend.jpg?" + new Date().getTime();
                 }
               }
             }
@@ -51,12 +51,12 @@
         });
       });
     </script>
-    
+
     <script>
       var spinner = function () {
         setTimeout(function () {
-          if ($('#spinner').length > 0) {
-            $('#spinner').removeClass('show');
+          if ($("#spinner").length > 0) {
+            $("#spinner").removeClass("show");
           }
         }, 1);
       };
@@ -128,6 +128,8 @@
           </div>
         </section>
       </div>
+
+      <input type="text" id="accountno" th:value="${session.accountno}" />
 
       <div class="review">
         <h2>최신요리 후기</h2>
