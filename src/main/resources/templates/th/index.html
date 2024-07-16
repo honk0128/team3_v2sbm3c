@@ -1,29 +1,50 @@
 <!DOCTYPE html>
 <html layout:decorate="~{th/layout}">
-  <!-- layout.html 상속 -->
   <head>
     <link href="/css/style.css" rel="stylesheet" type="text/css" />
-    <!-- /static 기준 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        let lastModifiedTime = 0;
+
+        function checkImageUpdate() {
+          const xhr = new XMLHttpRequest();
+          xhr.open('HEAD', 'dba/recommend/recommend.jpg', true);
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+              if (xhr.status === 200) {
+                const newModifiedTime = new Date(xhr.getResponseHeader('Last-Modified')).getTime();
+                if (newModifiedTime > lastModifiedTime) {
+                  lastModifiedTime = newModifiedTime;
+                  document.getElementById('graph').src = 'dba/recommend/recommend.jpg?' + new Date().getTime();
+                }
+              }
+            }
+          };
+          xhr.send();
+        }
+
+        setInterval(checkImageUpdate, 5000); // 5초마다 체크
+      });
+    </script>
+
+    <script>
       $(document).ready(function () {
-        const reviewsPerPage = 3; //초기 리뷰수
+        const reviewsPerPage = 3;
         let addreviewpage = 0;
-        let currentCount = reviewsPerPage + addreviewpage; // 처음에 보여질 리뷰 수를 리뷰 페이지 수로 변경
+        let currentCount = reviewsPerPage + addreviewpage;
         const totalReviews = $(".review_item").length;
 
         function showMoreReviews() {
-          $(".review_item").hide(); // 모든 리뷰 숨기기
+          $(".review_item").hide();
           currentCount = reviewsPerPage + addreviewpage;
-          $(".review_item").slice(0, currentCount).show(); // 처음 3개의 리뷰만 보이기
+          $(".review_item").slice(0, currentCount).show();
         }
 
-        // 페이지 로드 시 처음에는 일부 리뷰만 표시
         showMoreReviews();
 
-        // "더보기" 버튼 클릭 시 추가 리뷰 표시
         $("#loadMore").click(function () {
           addreviewpage += 5;
           showMoreReviews();
@@ -32,16 +53,15 @@
     </script>
     
     <script>
-    // Spinner
-    var spinner = function () {
-      setTimeout(function () {
-        if ($('#spinner').length > 0) {
-          $('#spinner').removeClass('show');
-        }
-      }, 1);
-    };
-    spinner();
-  </script>
+      var spinner = function () {
+        setTimeout(function () {
+          if ($('#spinner').length > 0) {
+            $('#spinner').removeClass('show');
+          }
+        }, 1);
+      };
+      spinner();
+    </script>
   </head>
 
   <body>
@@ -51,6 +71,19 @@
       </div>
 
       <div th:replace="~{th/youtube :: youtube}"></div>
+      <div th:if="${session.managerno != null}">
+        <h2 class="rank"><i class="fa-solid fa-crown gold"></i>데이터 분석 그래프</h2>
+        <div class="main">
+          <section class="slideshow">
+            <div class="slidea">
+              <figure>
+                <img id="graph" src="dba/recommend/recommend.jpg" alt="좋아요 그래프" />
+                <p class="textb"><i class="fa-solid fa-crown gold"></i>좋아요 비율</p>
+              </figure>
+            </div>
+          </section>
+        </div>
+      </div>
 
       <h2 class="rank"><i class="fa-solid fa-crown gold"></i>금주의 랭킹</h2>
       <div class="main">
