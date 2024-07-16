@@ -150,6 +150,28 @@
               </li>
               <!--메인 유튜브 영상 -->
 
+<!-- 지역 음식 등록 -->
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdownMenuLink"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  th:text="지역별추천음식"
+                >
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <li class="nav-item">
+                    <a class="nav-link" th:href="@{/region/list}">지역 목록</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" th:if="${session.managerno >=1}" th:href="@{/region/create}">지역 생성</a>
+                  </li>
+                </ul>
+              </li>
+
               <!-- Ai -->
               <li class="nav-item dropdown" th:if="${session.managerno != null or session.accountno != null}">
                 <a

@@ -536,11 +536,7 @@
             <p class="mb-3" style="font-size: 1em" th:text="${boardVO.bdate }"></p>
             <h5 class="fw-bold mb-3">3,35 $</h5>
             <div class="d-flex mb-4">
-              <i class="fa fa-star text-secondary"></i>
-              <i class="fa fa-star text-secondary"></i>
-              <i class="fa fa-star text-secondary"></i>
-              <i class="fa fa-star text-secondary"></i>
-              <i class="fa fa-star"></i>
+              <div th:replace="~{th/gpa/avgscore :: avgscore}"></div>
             </div>
             <div style="white-space: pre-wrap"><span th:utext="${content}"></span></div>
 
@@ -567,7 +563,7 @@
         <!-- 게시글 내용 끝-->
 
         <!-- 별점 -->
-        <div th:replace="~{th/gpa/avgscore :: avgscore}"></div>
+        
         <div th:replace="~{th/gpa/create :: create}"></div>
 
         <!-- 댓글 영역 시작 -->
