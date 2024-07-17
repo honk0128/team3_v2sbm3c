@@ -539,7 +539,7 @@
         <!-- 게시글 내용 끝-->
 
         <!-- 댓글 영역 시작 -->
-        <div style="width: 100%; margin: 0px auto; clear: both">
+        <div style="width: 100%; margin: 0px auto; clear: both" class="mt-2">
           <!-- 댓글 등록 폼 -->
           <form name="frm_reply" id="frm_reply" enctype="multipart/form-data">
             <input type="hidden" name="boardno" id="boardno" value="" />
@@ -570,9 +570,25 @@
               />
             </div>
             <div style="text-align: center">
-              <button type="button" id="btn_create">&nbsp;&nbsp;등&nbsp;&nbsp;록&nbsp;&nbsp;</button>
-              <button type="button" id="btn_save" style="display: none">&nbsp;&nbsp;저&nbsp;&nbsp;장&nbsp;&nbsp;</button>
-              <button type="button" id="btn_cancel" style="display: none">&nbsp;&nbsp;취&nbsp;&nbsp;소&nbsp;&nbsp;</button>
+              <button type="button" id="btn_create" class="btn btn-primary border-0 border-secondary rounded-pill text-black mx-1">
+                &nbsp;&nbsp;등&nbsp;&nbsp;록&nbsp;&nbsp;
+              </button>
+              <button
+                type="button"
+                id="btn_save"
+                style="display: none"
+                class="btn btn-primary border-0 border-secondary rounded-pill text-black mx-1"
+              >
+                &nbsp;&nbsp;저&nbsp;&nbsp;장&nbsp;&nbsp;
+              </button>
+              <button
+                type="button"
+                id="btn_cancel"
+                style="display: none"
+                class="btn btn-primary border-0 border-secondary rounded-pill text-black mx-1"
+              >
+                &nbsp;&nbsp;취&nbsp;&nbsp;소&nbsp;&nbsp;
+              </button>
             </div>
           </form>
           <br />
@@ -580,7 +596,7 @@
           <div id="reply_list" data-replypage="1"></div>
           <br />
           <div id="reply_list_btn" style="border: none">
-            <button id="btn_add" style="width: 100%">더보기 ▽</button>
+            <button id="btn_add" style="width: 100%" class="btn btn-primary border-0 border-secondary rounded-pill text-black mx-1">더보기 ▽</button>
           </div>
         </div>
         <!-- 댓글 영역 종료 -->
