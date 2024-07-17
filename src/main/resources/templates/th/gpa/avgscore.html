@@ -6,7 +6,7 @@
 </head>
 <div layout:fragment="content">
 <div th:fragment="avgscore">
-  <div class='title_line'>별점 평균</div>
+  
 
   <aside class="aside_right">
     
@@ -16,7 +16,7 @@
    
   <div class='menu_line'></div>
        
-   <table class="table table-striped" style='width: 100%;'>
+   <table  style='width: 100%;'>
     <colgroup>
       <col style='width: 45%;'/>
       
@@ -25,13 +25,7 @@
       
       <col style='width: 5%;'/>
     </colgroup>
-    <tr>
-      <th class='th_bs'>별점 점수</th>
-      
-      
-      
-      <th class='th_bs'> </th>
-    </tr>
+    
    
     <tr th:each="gpaVO, status:${list}">
       
@@ -43,8 +37,8 @@
         </td>
         
        <div th:if="${gpaVO != null}">  
-        <td class='td_basic'>
-          <span th:each="star : ${#numbers.sequence(1, gpaVO.avg_gpascore)}" name="reviewStar" id="starfont">★</span>
+        <td class="avgstar">
+          <span th:each="star : ${#numbers.sequence(1, gpaVO.avg_gpascore)}" name="reviewStar" id="starfont"><i class="fa fa-star text-secondary"></i></span>
           </td>
          
        

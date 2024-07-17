@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import dev.mvc.crudcate.CrudcateProcInter;
+import dev.mvc.crudcate.CrudcateVOMenu;
 // import dev.mvc.contents.Contents;
 //import dev.mvc.cate.CateProcInter;
 //import dev.mvc.cate.CateVOMenu;
@@ -39,6 +41,10 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/manager")
 @Controller
 public class ManagerCont {
+  @Autowired
+  @Qualifier("dev.mvc.crudcate.CrudcateProc")
+  private CrudcateProcInter crudcateProc;
+  
   @Autowired
   @Qualifier("dev.mvc.manager.ManagerProc")
   private ManagerProcInter managerProc;
@@ -71,6 +77,9 @@ public class ManagerCont {
    */
   @GetMapping(value="/signin") // http://localhost:9091/account/create
   public String create_form(Model model, ManagerVO managerVO) {
+    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    model.addAttribute("menu", menu);
+    
     return "th/manager/create";    // /template/member/create.html
   }
   
@@ -114,6 +123,9 @@ public class ManagerCont {
    */
   @GetMapping(value = "/login")
   public String login_form(Model model) {
+    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    model.addAttribute("menu", menu);
+    
     return "th/manager/login"; // templates/member/login.html
   }
 
@@ -173,7 +185,11 @@ public class ManagerCont {
   
   @GetMapping(value = "/list")
   public String list(HttpSession session, Model model) {
+    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    model.addAttribute("menu", menu);
+    
     if (this.managerProc.isMemberAdmin(session)) {
+      
     ArrayList<ManagerVO> list = this.managerProc.list();
 
     model.addAttribute("list", list);
@@ -193,6 +209,9 @@ public class ManagerCont {
    */
   @GetMapping(value = "/read")
   public String read(HttpSession session, Model model, int managerno) {
+    
+    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    model.addAttribute("menu", menu);
     // 회원은 회원 등급만 처리, 관리자: 1 ~ 10, 사용자: 11 ~ 20
     // int gradeno = this.memberProc.read(memberno).getGrade(); // 등급 번호
     String mgrade = (String) session.getAttribute("mgrade"); // 등급: admin, member, guest
@@ -258,6 +277,9 @@ public class ManagerCont {
    */
   @GetMapping(value="/delete")
   public String delete(Model model, int managerno) {
+    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    model.addAttribute("menu", menu);
+    
     System.out.println("-> delete managerno: " + managerno);
     
     ManagerVO managerVO = this.managerProc.read(managerno);

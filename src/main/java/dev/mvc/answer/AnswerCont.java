@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import dev.mvc.ai.AiProcInter;
 import dev.mvc.ai.AiVO;
+import dev.mvc.crudcate.CrudcateProcInter;
+import dev.mvc.crudcate.CrudcateVOMenu;
 import dev.mvc.manager.ManagerProcInter;
 import dev.mvc.search.SearchProcInter;
 import jakarta.servlet.http.HttpSession;
@@ -20,6 +22,10 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/answer")
 @Controller
 public class AnswerCont {
+  @Autowired
+  @Qualifier("dev.mvc.crudcate.CrudcateProc")
+  private CrudcateProcInter crudcateProc;
+
   
   @Autowired
   @Qualifier("dev.mvc.answer.AnswerProc")
@@ -51,6 +57,9 @@ public class AnswerCont {
   public String answer_list(HttpSession session, Model model, AiVO aiVO, 
                                  @RequestParam(name="word", defaultValue = "") String word, 
                                  @RequestParam(name="now_page", defaultValue = "1") int now_page) {
+    
+    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    model.addAttribute("menu", menu);
     
     Integer accountno = (Integer) session.getAttribute("accountno");
     System.out.println(accountno);

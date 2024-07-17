@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -127,7 +129,26 @@ public class RegionCont {
     return "th/region/list"; // templates/member/list.html
   }
 
-  
+  // react listcont
+//  @GetMapping("/list")
+//  public ResponseEntity<Map<String, Object>> list(
+//          @RequestParam(name="word", defaultValue = "") String word, 
+//          @RequestParam(name="now_page", defaultValue = "1") int now_page) {
+//
+//      Map<String, Object> response = new HashMap<>();
+//
+//      ArrayList<RegionVO> list = this.regionproc.list_search_paging(word, now_page, this.record_per_page);
+//      response.put("list", list);
+//
+//      int search_count = this.regionproc.list_search_count(word);
+//      String paging = this.regionproc.pagingBox(now_page, word, "/region/list", search_count, this.record_per_page, this.page_per_blocK);
+//      response.put("paging", paging);
+//      response.put("word", word);
+//      response.put("now_page", now_page);
+//
+//      return ResponseEntity.ok(response);
+//  }
+
   
   
 //  @GetMapping(value = "/list")
