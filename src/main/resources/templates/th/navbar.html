@@ -172,6 +172,26 @@
                 </ul>
               </li>
 
+<!-- 공지사항 -->
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdownMenuLink"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  th:text="공지사항"
+                >
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <li class="nav-item">
+                    <a class="nav-link" th:href="@{http://localhost:3000/issue/find_all}">공지사항</a>
+                  </li>
+                  
+                </ul>
+              </li>
+
               <!-- Ai -->
               <li class="nav-item dropdown" th:if="${session.managerno != null or session.accountno != null}">
                 <a

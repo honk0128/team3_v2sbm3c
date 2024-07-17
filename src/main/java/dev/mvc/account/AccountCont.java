@@ -2,6 +2,7 @@ package dev.mvc.account;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import org.apache.ibatis.reflection.SystemMetaObject;
@@ -12,6 +13,7 @@ import org.apache.ibatis.reflection.SystemMetaObject;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -92,6 +94,27 @@ public class AccountCont {
 
   }
 
+  /**
+   * react용 세션 불러오기
+   * @param session
+   * @return
+   */
+  
+@GetMapping("/getsessiondata")
+public ResponseEntity<Map<String, Object>> getSessionData(HttpSession session) {
+    Map<String, Object> sessionData = new HashMap<>();
+    Integer accountNo = (Integer) session.getAttribute("accountno");
+    String aid = (String) session.getAttribute("aid");
+    // 필요한 세션 데이터를 sessionData에 추가
+    sessionData.put("accountno", accountNo);
+    sessionData.put("aid", aid);
+
+    System.out.println("sessiondata: " + sessionData);
+    
+    return ResponseEntity.ok(sessionData);
+}
+  
+  
   /**
    * 회윈 가입 폼
    * @param model
