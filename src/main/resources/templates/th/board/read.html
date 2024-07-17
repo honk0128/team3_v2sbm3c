@@ -152,6 +152,7 @@
                   msg += " <a href='javascript:breply_update(" + row.breplyno + ")' title='댓글 수정'><i class='fa-solid fa-pen-to-square'></i></a>";
                   msg += " <a href='javascript:breply_delete(" + row.breplyno + ")' title='댓글 삭제'><i class='fa-solid fa-trash-can'></i></a>";
                 }
+                msg += " <a href='/breply/read_reply?breplyno=" + row.breplyno + "' title='댓글 보기'><i class='fa-regular fa-comment-dots'></i></a>";
                 msg += "  " + "<br>";
 
                 if (row.breplythumb != null && row.breplythumb != "") {
@@ -270,9 +271,9 @@
                   // 글쓴이 일치여부 확인, 본인의 글만 삭제 가능함 ★
                   msg += " <a href='javascript:breply_update(" + row.breplyno + ")' title='댓글 수정'><i class='fa-solid fa-pen-to-square'></i></a>";
                   msg += " <a href='javascript:breply_delete(" + row.breplyno + ")' title='댓글 삭제'><i class='fa-solid fa-trash-can'></i></a>";
-                  msg +=
-                    " <a href='/breply/read_reply?breplyno=" + row.breplyno + "' title='댓글 보기'><i class='fa-regular fa-comment-dots'></i></a>";
+                  
                 }
+                msg += " <a href='/breply/read_reply?breplyno=" + row.breplyno + "' title='댓글 보기'><i class='fa-regular fa-comment-dots'></i></a>";
                 msg += "  " + "<br>";
 
                 if (row.breplythumb != null && row.breplythumb != "") {
@@ -536,7 +537,11 @@
             <p class="mb-3" style="font-size: 1em" th:text="${boardVO.bdate }"></p>
             <h5 class="fw-bold mb-3">3,35 $</h5>
             <div class="d-flex mb-4">
-              <div th:replace="~{th/gpa/avgscore :: avgscore}"></div>
+              <i class="fa fa-star text-secondary"></i>
+              <i class="fa fa-star text-secondary"></i>
+              <i class="fa fa-star text-secondary"></i>
+              <i class="fa fa-star text-secondary"></i>
+              <i class="fa fa-star"></i>
             </div>
             <div style="white-space: pre-wrap"><span th:utext="${content}"></span></div>
 
@@ -563,7 +568,7 @@
         <!-- 게시글 내용 끝-->
 
         <!-- 별점 -->
-        
+        <div th:replace="~{th/gpa/avgscore :: avgscore}"></div>
         <div th:replace="~{th/gpa/create :: create}"></div>
 
         <!-- 댓글 영역 시작 -->
@@ -598,25 +603,9 @@
               />
             </div>
             <div style="text-align: center">
-              <button type="button" id="btn_create" class="btn btn-primary border-0 border-secondary py-2 px-3 rounded-pill text-black mx-1">
-                등&nbsp;록
-              </button>
-              <button
-                type="button"
-                id="btn_save"
-                style="display: none"
-                class="btn btn-primary border-0 border-secondary py-2 px-3 rounded-pill text-black mx-1"
-              >
-                저&nbsp;장
-              </button>
-              <button
-                type="button"
-                id="btn_cancel"
-                style="display: none"
-                class="btn btn-primary border-0 border-secondary py-2 px-3 rounded-pill text-black mx-1"
-              >
-                취&nbsp;소
-              </button>
+              <button type="button" id="btn_create">&nbsp;&nbsp;등&nbsp;&nbsp;록&nbsp;&nbsp;</button>
+              <button type="button" id="btn_save" style="display: none">&nbsp;&nbsp;저&nbsp;&nbsp;장&nbsp;&nbsp;</button>
+              <button type="button" id="btn_cancel" style="display: none">&nbsp;&nbsp;취&nbsp;&nbsp;소&nbsp;&nbsp;</button>
             </div>
           </form>
           <br />
@@ -624,9 +613,7 @@
           <div id="reply_list" data-replypage="1"></div>
           <br />
           <div id="reply_list_btn" style="border: none">
-            <button id="btn_add" style="width: 100%" class="btn btn-primary border-0 border-secondary py-2 px-3 rounded-pill text-black mx-1">
-              더보기 ▽
-            </button>
+            <button id="btn_add" style="width: 100%">더보기 ▽</button>
           </div>
         </div>
         <!-- 댓글 영역 종료 -->
