@@ -150,7 +150,7 @@
               </li>
               <!--메인 유튜브 영상 -->
 
-<!-- 지역 음식 등록 -->
+              <!-- 지역 음식 등록 -->
               <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
@@ -261,25 +261,17 @@
                     <a class="nav-link" href="#" onclick="openLunchPopup()">오점뭐</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="openChatbotPopup()">챗 봇</a>
-                  </li>
-                  <li class="nav-item">
                     <a class="nav-link" th:href="@{/lunch/list}">추천 목록</a>
                   </li>
                 </ul>
               </li>
 
               <li class="nav-item dropdown" th:if="${session.managerno != null or session.accountno != null}">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  id="navbarDropdownMenuLink"
-                  role="button"
-                  aria-expanded="false"
-                  th:text="채팅"
-                  onclick="openChatPopup(); return false;"
-                >
-                </a>
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" aria-expanded="false" th:text="채팅"> </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <li class="nav-item"><a class="nav-link" href="#" onclick="openChatPopup()">채팅방</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#" onclick="openChatbotPopup()">챗 봇</a></li>
+                </ul>
               </li>
 
               <script>

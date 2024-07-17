@@ -271,7 +271,6 @@
                   // 글쓴이 일치여부 확인, 본인의 글만 삭제 가능함 ★
                   msg += " <a href='javascript:breply_update(" + row.breplyno + ")' title='댓글 수정'><i class='fa-solid fa-pen-to-square'></i></a>";
                   msg += " <a href='javascript:breply_delete(" + row.breplyno + ")' title='댓글 삭제'><i class='fa-solid fa-trash-can'></i></a>";
-                  
                 }
                 msg += " <a href='/breply/read_reply?breplyno=" + row.breplyno + "' title='댓글 보기'><i class='fa-regular fa-comment-dots'></i></a>";
                 msg += "  " + "<br>";
@@ -445,31 +444,6 @@
         <span th:text="${crudcateVO.name}" class="title_line_text"></span>
         > <span th:text="${crudcateVO.namesub}" class="title_line_text"></span> > <span>글 조회</span>
       </h1>
-
-      <!-- <ol class="breadcrumb justify-content-center mb-0">
-    <li th:href="@{|/board/create?crudcateno=${boardVO.crudcateno}|}"><i class="bi bi-pencil-square" style="font-size: 1.5rem;"></i></li>
-    <li th:href="@{|/board/update_board?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}"><i class="bi bi-eraser" style="font-size: 1.5rem;"></i></li>
-    <li th:href="@{|./update_file?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}"><i class="bi bi-image" style="font-size: 1.5rem;"></i></li>
-    
-    <li th:href="@{|/board/youtube?crudcateno=${boardVO.crudcateno}&boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}"><i class="bi bi-youtube" style="font-size: 1.5rem;"></i></li>
-    
-    <li
-      th:href="@{|./delete?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}&crudcateno=${boardVO.crudcateno}|}"><i class="bi bi-trash3" style="font-size: 1.5rem;"></i></li>
-    
-    <li th:href="@{|/vocabulary/create|}"><i class="bi bi-wordpress" style="font-size: 1.5rem;"></i></li>
-    
-    <li onclick="addBookmark()"><i class="bi bi-bookmark-star" style="font-size: 1.5rem;"></i></li>
-    
-    <li onclick="deleteBookmark()"><i class="bi bi-bookmark-x" style="font-size: 1.5rem; color: red;"></i></li>
-    
-    <li href="javascript:location.reload();"><i class="bi bi-arrow-clockwise" style="font-size: 1.5rem;"></i></li>
-    
-    <li th:href="@{|./list_cno?crudcateno=${crudcateVO.crudcateno}&word=${word}&now_page=${now_page}|}"><i class="bi bi-list-columns-reverse" style="font-size: 1.5rem;"></i></li>
-  </ol>
-  <ol class="breadcrumb justify-content-center mb-0" th:unless="${session.managerno >= 1 || session.accountno == boardVO.accountno}">
-    <li href="javascript:location.reload();"><i class="bi bi-arrow-clockwise" style="font-size: 1.5rem;"></i></li>
-    <li th:href="@{|./list_cno?crudcateno=${crudcateVO.crudcateno}&word=${word}&now_page=${now_page}|}"><i class="bi bi-list-columns-reverse" style="font-size: 1.5rem;"></i></li>
-  </ol> -->
     </div>
     <!-- Header End -->
 
@@ -535,14 +509,11 @@
           <div class="col-lg-6">
             <span class="mb-3" style="font-size: 1.5em; font-weight: bold" th:text="${boardVO.btitle}"></span>
             <p class="mb-3" style="font-size: 1em" th:text="${boardVO.bdate }"></p>
-            <h5 class="fw-bold mb-3">3,35 $</h5>
-            <div class="d-flex mb-4">
-              <i class="fa fa-star text-secondary"></i>
-              <i class="fa fa-star text-secondary"></i>
-              <i class="fa fa-star text-secondary"></i>
-              <i class="fa fa-star text-secondary"></i>
-              <i class="fa fa-star"></i>
-            </div>
+            <!-- 별점 평균 -->
+            <div th:replace="~{th/gpa/avgscore :: avgscore}"></div>
+            <!-- 별점 등록 -->
+            <div th:replace="~{th/gpa/create :: create}"></div>
+
             <div style="white-space: pre-wrap"><span th:utext="${content}"></span></div>
 
             <ul class="mt-4">
@@ -566,10 +537,6 @@
           <div style="text-align: center; width: 640px; margin: 0px auto" th:utext="${boardVO.byoutube}"></div>
         </div>
         <!-- 게시글 내용 끝-->
-
-        <!-- 별점 -->
-        <div th:replace="~{th/gpa/avgscore :: avgscore}"></div>
-        <div th:replace="~{th/gpa/create :: create}"></div>
 
         <!-- 댓글 영역 시작 -->
         <div style="width: 100%; margin: 0px auto; clear: both">
