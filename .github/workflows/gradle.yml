@@ -27,6 +27,8 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+    - name: Run chmod to make gradlew executable
+      run: chmod +x ./gradlew
 
     # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
     # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
@@ -60,12 +62,7 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-    - name: Run chmod to make gradlew executable
-      run: chmod +x ./gradlew
-
     # Generates and submits a dependency graph, enabling Dependabot Alerts for all project dependencies.
     # See: https://github.com/gradle/actions/blob/main/dependency-submission/README.md
     - name: Generate and submit dependency graph
       uses: gradle/actions/dependency-submission@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
-      with:
-        arguments: build
