@@ -18,8 +18,6 @@ import lombok.Setter;
 @Setter @Getter
 public class VideoVO {
   
-  private String iframeHtml = "";
-  
   private String mid = "";
   /**비디오 번호*/
   private Integer videono = 0;

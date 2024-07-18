@@ -16,34 +16,191 @@
 
 
 
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="5000">
-    <div class="carousel-inner">
-        <div th:each="region, iter : ${regions}" th:class="${iter.index == 0} ? 'carousel-item active' : 'carousel-item'">
-            <div class="carousel-title">
-                <h3 th:text="${region.regionname}"></h3>
-            </div>
-            <div class="row">
-                <div class="col-md-3" th:each="food : ${regionFoodMap[__${region.regiono}__]}">
-                    <div class="thumbnail">
-                        <img class="d-block w-100" th:src="@{|/board/storage/@{${food.fthumb}}|}">
-                    </div>
-                    <div class="caption">
-                        <h4 th:text="${food.foodtitle}"></h4>
-                        <p>...</p>
-                        <a class="btn btn-mini" th:href="@{|/regionfood/read?foodno=${food.foodno}|}">&raquo; Read More</a>
-                    </div>
-                </div>
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="5000"> <!-- 5초마다 자동으로 넘어가게 설정 -->
+<!--
+  <ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+  </ol> -->
+  
+  <div class="carousel-inner">
+    
+    <div class="carousel-item active">
+    <div class="carousel-title">
+      <h3>오늘의 추천 건강요리</h3>
+      <p>건강은 과학이다!</p>
+    </div>
+      <div class="row">
+       <div class="col-md-3">
+          <div class="thumbnail">
+            <img class="d-block w-100" src="https://via.placeholder.com/360x240?text=Slide+1" alt="First slide">
+           
+          </div>
+           <div class="caption">
+              <h4>Praesent commodo</h4>
+              <p>Nullam Condimentum Nibh Etiam Sem</p>
+              <a class="btn btn-mini" href="#">&raquo; Read More</a>
             </div>
         </div>
+        <!-- 추가 이미지 3개 -->
+        <div class="col-md-3">
+          <div class="thumbnail">
+            <img class="d-block w-100" src="https://via.placeholder.com/360x240?text=Slide+1" alt="First slide">
+            
+          </div>
+          <div class="caption">
+              <h4>Praesent commodo</h4>
+              <p>Nullam Condimentum Nibh Etiam Sem</p>
+              <a class="btn btn-mini" href="#">&raquo; Read More</a>
+            </div>
+        </div>
+        <div class="col-md-3">
+          <div class="thumbnail">
+            <img class="d-block w-100" src="https://via.placeholder.com/360x240?text=Slide+1" alt="First slide">
+            
+          </div>
+          <div class="caption">
+              <h4>Praesent commodo</h4>
+              <p>Nullam Condimentum Nibh Etiam Sem</p>
+              <a class="btn btn-mini" href="#">&raquo; Read More</a>
+            </div>
+        </div>
+        <div class="col-md-3">
+          <div class="thumbnail">
+            <img class="d-block w-100" src="https://via.placeholder.com/360x240?text=Slide+1" alt="First slide">
+            
+          </div>
+          <div class="caption">
+              <h4>Praesent commodo</h4>
+              <p>Nullam Condimentum Nibh Etiam Sem</p>
+              <a class="btn btn-mini" href="#">&raquo; Read More</a>
+            </div>
+        </div>
+      </div>
     </div>
+    <!-- 슬라이드 2 -->
+    <div class="carousel-item">
+      <div class="carousel-title">
+      <h3>오늘의 추천 고기 요리</h3>
+      <p>오늘 하루도 든든하게 한 접시 어떠세요?</p>
+    </div>
+      <div class="row">
+       <div class="col-md-3">
+          <div class="thumbnail">
+            <img class="d-block w-100" src="https://via.placeholder.com/360x240?text=Slide+2" alt="First slide">
+           
+          </div>
+           <div class="caption">
+              <h4>Praesent commodo</h4>
+              <p>Nullam Condimentum Nibh Etiam Sem</p>
+              <a class="btn btn-mini" href="#">&raquo; Read More</a>
+            </div>
+        </div>
+        <!-- 추가 이미지 3개 -->
+        <div class="col-md-3">
+          <div class="thumbnail">
+            <img class="d-block w-100" src="https://via.placeholder.com/360x240?text=Slide+2" alt="First slide">
+            
+          </div>
+          <div class="caption">
+              <h4>Praesent commodo</h4>
+              <p>Nullam Condimentum Nibh Etiam Sem</p>
+              <a class="btn btn-mini" href="#">&raquo; Read More</a>
+            </div>
+        </div>
+        <div class="col-md-3">
+          <div class="thumbnail">
+            <img class="d-block w-100" src="https://via.placeholder.com/360x240?text=Slide+1" alt="First slide">
+            
+          </div>
+          <div class="caption">
+              <h4>Praesent commodo</h4>
+              <p>Nullam Condimentum Nibh Etiam Sem</p>
+              <a class="btn btn-mini" href="#">&raquo; Read More</a>
+            </div>
+        </div>
+        <div class="col-md-3">
+          <div class="thumbnail">
+            <img class="d-block w-100" src="https://via.placeholder.com/360x240?text=Slide+2" alt="First slide">
+            
+          </div>
+          <div class="caption">
+              <h4>Praesent commodo</h4>
+              <p>Nullam Condimentum Nibh Etiam Sem</p>
+              <a class="btn btn-mini" href="#">&raquo; Read More</a>
+            </div>
+        </div>
+      </div>
+</div>
+<!-- 슬라이드 3 -->
+<div class="carousel-item">
+  <div class="carousel-title">
+      <h3>추천요리3번</h3>
+      <p>대충 부제목</p>
+    </div>
+  <div class="row">
+       <div class="col-md-3">
+          <div class="thumbnail">
+            <img class="d-block w-100" src="https://via.placeholder.com/360x240?text=Slide+3" alt="First slide">
+           
+          </div>
+           <div class="caption">
+              <h4>Praesent commodo</h4>
+              <p>Nullam Condimentum Nibh Etiam Sem</p>
+              <a class="btn btn-mini" href="#">&raquo; Read More</a>
+            </div>
+        </div>
+        <!-- 추가 이미지 3개 -->
+        <div class="col-md-3">
+          <div class="thumbnail">
+            <img class="d-block w-100" src="https://via.placeholder.com/360x240?text=Slide+3" alt="First slide">
+            
+          </div>
+          <div class="caption">
+              <h4>Praesent commodo</h4>
+              <p>Nullam Condimentum Nibh Etiam Sem</p>
+              <a class="btn btn-mini" href="#">&raquo; Read More</a>
+            </div>
+        </div>
+        <div class="col-md-3">
+          <div class="thumbnail">
+            <img class="d-block w-100" src="https://via.placeholder.com/360x240?text=Slide+1" alt="First slide">
+            
+          </div>
+          <div class="caption">
+              <h4>Praesent commodo</h4>
+              <p>Nullam Condimentum Nibh Etiam Sem</p>
+              <a class="btn btn-mini" href="#">&raquo; Read More</a>
+            </div>
+        </div>
+        <div class="col-md-3">
+          <div class="thumbnail">
+            <img class="d-block w-100" src="https://via.placeholder.com/360x240?text=Slide+1" alt="First slide">
+            
+          </div>
+          <div class="caption">
+              <h4>Praesent commodo</h4>
+              <p>Nullam Condimentum Nibh Etiam Sem</p>
+              <a class="btn btn-mini" href="#">&raquo; Read More</a>
+            </div>
+        </div>
+      </div>
+</div>
+
+  </div>
+  <div class="control-box">
   <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="sr-only">Previous</span>
   </a>
+  </div>
+  <div class="control-box">
   <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="sr-only">Next</span>
   </a>
+  </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>

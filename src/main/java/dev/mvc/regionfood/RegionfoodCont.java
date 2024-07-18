@@ -93,7 +93,7 @@ public class RegionfoodCont {
 
   
   @PostMapping(value="/create")
-  public String createregionfood(HttpServletRequest request, Model model, RegionfoodVO regionfoodVO, HttpSession session, String mid, RedirectAttributes ra, @RequestParam("regiono") int regiono) {
+  public String createregionfood( Model model, RegionfoodVO regionfoodVO, HttpSession session, String mid, RedirectAttributes ra, @RequestParam(name="regiono", defaultValue = "1") int regiono) {
 
     
     String file1 = ""; // 원본 파일명 image
@@ -119,10 +119,8 @@ public class RegionfoodCont {
           thumb1 = Tool.preview(upDir, file1saved, 200, 150);
         }
     
-        
         regionfoodVO.setFoodimg_url(file1);
         regionfoodVO.setFoodimg_urlsaved(file1saved);
-        regionfoodVO.setFthumb(thumb1);
         regionfoodVO.setFsize(size1);
       }else { // 전송 못하는 파일 형식
         ra.addFlashAttribute("code", "check_upload_file_fail"); // 업로드 할 수 없는 파일

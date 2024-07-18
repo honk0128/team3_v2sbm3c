@@ -33,7 +33,7 @@ public class RegionfoodVO {
 //);
   private String regionname = "";
  
-  private String fthumb = "";
+  
   
   private Integer foodno = 0;
 

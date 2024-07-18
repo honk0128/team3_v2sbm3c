@@ -1,15 +1,10 @@
 <!DOCTYPE html>
-<!--<html  layout:decorate="~{th/layout}">-->
-  <html lang="en">
+<html layout:decorate="~{th/layout}">
   <head>
     <link href="/css/style.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet" />
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
-
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         let lastModifiedTime = 0;
@@ -70,97 +65,138 @@
   </head>
 
   <body>
-    <div class="container_main">
-      <div class="navbarimgroom">
-        <div class="navbar" th:replace="~{th/navbar::navbarFragment}"></div>
-      </div>
+    <div layout:fragment="content">
+      <!-- <div class="boxbody">
+        <div th:replace="~{th/mobingbox :: mobingbox}"></div>
+      </div> -->
 
-    
-    <div layout:fragment="content" style="width: 100%; margin: 50px auto; text-align: center">
-      <div class="container-fluid fruite py-5">
-      <div class="container py-5">
-      
       <!-- Hero Start -->
-<div class="container-fluid py-2 mb-5 hero-header">
-<div class="container py-5">
-<div class="row g-5 align-items-center">
-<div class="col-md-12 col-lg-7">
-<h4 class="mb-3 text-secondary">자신만의 레시피를 작성해 보세요</h4>
-<h1 class="mb-5 display-3 text-primary">My Recipe</h1>
-<div class="position-relative mx-auto">
-<input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="number" placeholder="Search" />
-<button
-type="submit"
-class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100"
-style="top: 0; right: 25%"
->
-Submit Now
-</button>
-</div>
-</div>
-<div class="col-md-12 col-lg-5">
-<div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
-<div class="carousel-inner" role="listbox">
-<div class="carousel-item active rounded">
-<img src="img/hero-img-1.png" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide" />
-<a href="#" class="btn px-4 py-2 text-white rounded">Fruites</a>
-</div>
-<div class="carousel-item rounded">
-<img src="img/hero-img-2.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide" />
-<a href="#" class="btn px-4 py-2 text-white rounded">Vesitables</a>
-</div>
-</div>
-<button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
-<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-<span class="visually-hidden">Previous</span>
-</button>
-<button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
-<span class="carousel-control-next-icon" aria-hidden="true"></span>
-<span class="visually-hidden">Next</span>
-</button>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Hero End -->
-      
-      <div class="boxbody">
-        <div th:replace="~{th/mobingbox :: mobingbox(regions=${regions}, regionfoods=${regionfoods})}"></div>
-      </div>
-
-      <div th:replace="~{th/youtube :: youtube(videos=${videos})}"></div>
-      
-      <!-- 데이터 분석 -->
-<div th:if="${session.managerno != null}">
-<img id="graph" src="http://127.0.0.1:5000/graph" alt="좋아요 그래프" />
-</div>
+      <div class="container-fluid py-2 mb-5 hero-header">
+        <div class="container py-5">
+          <div class="row g-5 align-items-center">
+            <div class="col-md-12 col-lg-7">
+              <h4 class="mb-3 text-secondary">자신만의 레시피를 작성해 보세요</h4>
+              <h1 class="mb-5 display-3 text-primary">My Recipe</h1>
+              <div class="position-relative mx-auto">
+                <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="number" placeholder="Search" />
+                <button
+                  type="submit"
+                  class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100"
+                  style="top: 0; right: 25%"
+                >
+                  Submit Now
+                </button>
+              </div>
+            </div>
+            <div class="col-md-12 col-lg-5">
+              <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
+                <div class="carousel-inner" role="listbox">
+                  <div class="carousel-item active rounded">
+                    <img src="img/hero-img-1.png" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide" />
+                    <a href="#" class="btn px-4 py-2 text-white rounded">Fruites</a>
+                  </div>
+                  <div class="carousel-item rounded">
+                    <img src="img/hero-img-2.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide" />
+                    <a href="#" class="btn px-4 py-2 text-white rounded">Vesitables</a>
+                  </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+      <!-- Hero End -->
 
-      
+      <div class="container-fluid fruite py-5">
+        <div class="container py-5">
+          <div class="tab-class text-center">
+            <!-- 유튜브 -->
+            <div th:replace="~{th/youtube :: youtube}"></div>
 
-      <input type="hidden" id="accountno" th:value="${session.accountno}" />
+            <!-- 데이터 분석 -->
+            <div th:if="${session.managerno != null}">
+              <img id="graph" src="http://127.0.0.1:5000/graph" alt="좋아요 그래프" />
+            </div>
 
+            <h2 class="rank"><i class="fa-solid fa-crown gold"></i>금주의 랭킹</h2>
+            <div class="main">
+              <section class="slideshow">
+                <div class="slidea">
+                  <figure>
+                    <a href="/WinStudy">
+                      <img src="/images/main.jpg" alt="Window" />
+                    </a>
+                    <p class="textb"><i class="fa-solid fa-crown gold"></i>1등</p>
+                  </figure>
+                  <figure>
+                    <a href="/LinStudy">
+                      <img src="/images/main.jpg" alt="Linux" />
+                    </a>
+                    <p class="textb"><i class="fa-solid fa-crown silver"></i>2등</p>
+                  </figure>
+                  <figure>
+                    <a href="/">
+                      <img src="/images/main.jpg" alt="Word Search" />
+                      <p class="textb"><i class="fa-solid fa-crown brown"></i>3등</p>
+                    </a>
+                  </figure>
+                  <figure>
+                    <a href="/WindowsQuizmain">
+                      <img src="/images/main.jpg" alt="Window Quiz" />
+                      <p class="textb">4등</p>
+                    </a>
+                  </figure>
+                  <figure>
+                    <a href="/LinuxQuizmain">
+                      <img src="/images/main.jpg" alt="Linux Quiz" />
+                      <p class="textb">5등</p>
+                    </a>
+                  </figure>
+                  <figure>
+                    <a href="/roadmap">
+                      <img src="/images/main.jpg" alt="RoadMap" />
+                      <p class="textb">6등</p>
+                    </a>
+                  </figure>
+                </div>
+              </section>
+            </div>
 
+            <input type="text" id="accountno" th:value="${session.accountno}" />
 
+            <div class="review">
+              <h2>최신요리 후기</h2>
+              <div
+                class="review_item"
+                th:if="${list.size() > 0}"
+                th:each="boardVO, status:${list}"
+                th:attr="onclick=|location.href='/board/read?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}'|"
+              >
+                <div class="review_content">
+                  <div
+                    class="review_img_room"
+                    th:if="${boardVO.bphoto.endsWith('jpg') or boardVO.bphoto.endsWith('png')  or boardVO.bphoto.endsWith('gif')}"
+                  >
+                    <img class="review_img" th:src="@{|/board/storage/${boardVO.bthumb}|}" alt="" />
+                  </div>
 
-      <div class="review" th:replace="~{th/review :: review(list=${list}, avggpaMap=${avggpaMap})}">
-            
-   
-
-      
+                  <div class="review_title"><span th:text="${boardVO.btitle}"></span><br /></div>
+                  <div class="review_text">가장 최근 댓글 들어갈 예정</div>
+                </div>
+              </div>
+              <button id="loadMore">더보기</button>
+            </div>
+          </div>
+        </div>
       </div>
-    
     </div>
-    </div>
-    </div>
-    <div class="bottom_menu">
-        <div class="footer" th:replace="~{th/footer::footerFragment}"></div>
-      </div>
-    
-    
-    
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
   </body>
 </html>

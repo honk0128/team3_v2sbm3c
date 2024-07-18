@@ -21,31 +21,15 @@
     
       <div class="youtube-carousel-wrap">
         <div class="youtube-carousel-main">
-          <iframe id="main-youtube-video" src="https://www.youtube-nocookie.com/embed/J4vEoFVcguw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <iframe id="main-youtube-video" src="https://www.youtube-nocookie.com/embed/ZV7fxqdmEiI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
         <div class="youtube-carousel-gallery" data-simplebar>
-    <div th:each="video, iterStat : ${videos}" th:switch="${iterStat.index}">
-        <div th:case="0" class="youtube-control growBusiness-vid" th:data-source="${video.url}">
-            <p class="youtube-caption" th:text="${video.videotitle}"></p>
+          <div class="youtube-control growBusiness-vid" data-source="https://www.youtube.com/embed/ZV7fxqdmEiI"><p class="youtube-caption">Grow Your Business</p></div>
+          <div class="youtube-control timothys-vid" data-source="https://www.youtube.com/embed/7WaHKkz1OwA"><p class="youtube-caption">Timothy's Restaurant</p></div>
+          <div class="youtube-control watermark-vid" data-source="https://www.youtube.com/embed/AR6oP5flxdQ"><p class="youtube-caption">Watermark Brewing Compa...</p></div>
+          <div class="youtube-control taborHill-vid" data-source="https://www.youtube.com/embed/eGC9kolY0Bg"><p class="youtube-caption">The Inside Scoop on Three...</p></div>
+          <div class="youtube-control gravityBrew-vid" data-source="https://www.youtube.com/embed/i98Np2Rzdas"><p class="youtube-caption">Final Gravity Brewing</p></div>
         </div>
-        <div th:case="1" class="youtube-control timothys-vid" th:data-source="${video.url}">
-            <p class="youtube-caption" th:text="${video.videotitle}"></p>
-        </div>
-        <div th:case="2" class="youtube-control watermark-vid" th:data-source="${video.url}">
-            <p class="youtube-caption" th:text="${video.videotitle}"></p>
-        </div>
-        <div th:case="3" class="youtube-control taborHill-vid" th:data-source="${video.url}">
-            <p class="youtube-caption" th:text="${video.videotitle}"></p>
-        </div>
-        <div th:case="4" class="youtube-control gravityBrew-vid" th:data-source="${video.url}">
-            <p class="youtube-caption" th:text="${video.videotitle}"></p>
-        </div>
-        <div th:case="*" class="youtube-control timothys-vid" th:data-source="${video.url}">
-            <p class="youtube-caption" th:text="${video.videotitle}"></p>
-        </div>
-    </div>
-</div>
-
       </div>
     </div>
   </div>

@@ -116,7 +116,6 @@ public class Recipe_stepCont {
     
         recipe_stepVO.setStep_img(upDir);
         recipe_stepVO.setStep_imgsaved(file1saved);
-        recipe_stepVO.setThumb(thumb1);
         recipe_stepVO.setSsize(size1);
       }else { // 전송 못하는 파일 형식
         ra.addFlashAttribute("code", "check_upload_file_fail"); // 업로드 할 수 없는 파일

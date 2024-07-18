@@ -13,17 +13,13 @@
         <span>지역 등록</span>
         <span th:if="${word != ''}" th:text="|> ${word} (${search_count} 건)|" class="title_line_text"></span>
       </h1>
-      <ol class="breadcrumb justify-content-center mb-0">
-      <li class="breadcrumb-item">
-        <a th:href="@{/region/create}">등록</a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="javascript:location.reload();">새로고침</a>
-      </li>
-    </ol>
     </div>
     <!-- Header End -->
-  
+  <aside class="aside_right">
+    <a href="javascript:location.reload();">새로고침</a>
+    
+    
+  </aside> 
    <div class="container-fluid fruite py-5">
       <div class="container py-5">
    <input type="hidden" name="now_page" th:value="${now_page}" />
@@ -33,34 +29,30 @@
    
   <div class='menu_line'></div>
        
-   <table class="table">
+   <table class="table table-striped" style='width: 100%;'>
     <colgroup>
-      <col style='width: 25%;'/>
-      <col style='width: 25%;'/>
-      <col style='width: 25%;'/>
-      <col style='width: 25%;'/>
-      
+      <col style='width: 5%;'/>
+      <col style='width: 20%;'/>
+      <col style='width: 20%;'/>
+      <col style='width: 20%;'/>
+      <col style='width: 20%;'/>
       
       
       <col style='width: 5%;'/>
     </colgroup>
-    <thead>
-            <tr>
-
-               <th class='th_bs'>지역번호</th>
+    <tr>
+      <th class='th_bs'>지역번호</th>
       <th class='th_bs'>지역명</th>
       <th class='th_bs'>등록한 관리자</th>
       
       <th class='th_bs'>수정|삭제</th>
-      
-
-            </tr>
-          </thead>
-    
-   <tbody>
+      <th class='th_bs'> </th>
+    </tr>
+   
     <tr th:each="regionVO, status:${list}">
       
-       
+       <fieldset>
+         
           <td class='td_basic' th:text="${regionVO.regiono}"></td>
         
          <td class='td_basic' th:text="${regionVO.regionname}" th:attr="onclick=|location.href='/regionfood/list?regiono=${regionVO.regiono}'|">
@@ -82,7 +74,8 @@
   </table>
    
   <div class='bottom_menu'>
-     <div class="bottom_menu" th:utext="${paging}"></div>
+    <button type='button' onclick="location.reload();" class="btn btn-primary btn-sm">새로 고침</button>
+  <div class="bottom_menu" th:utext="${paging}"></div>
   </div>
 </div>
 </div>

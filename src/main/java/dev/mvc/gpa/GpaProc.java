@@ -2,13 +2,11 @@ package dev.mvc.gpa;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev.mvc.board.Board;
-import dev.mvc.region.RegionVO;
 
 @Service("dev.mvc.gpa.GpaProc")
 public class GpaProc  implements GpaProcInter{
@@ -57,25 +55,23 @@ public class GpaProc  implements GpaProcInter{
   }
 
   @Override
-  public ArrayList<GpaVO> list_search_paging(String word, int now_page, int record_per_page) {
-    //1 페이지 시작 rownum: now_page = 1, (1 - 1) * 10 --> 0 
-    int begin_of_page = (now_page - 1) * record_per_page;
+  public ArrayList<GpaVO> list_search_paging(HashMap<String, Object> map) {
+    int begin_of_page = ((int)map.get("now_page") - 1) * Board.RECORD_PER_PAGE;
     // 시작 rownum 결정
     int start_num = begin_of_page + 1;
-    //  종료 rownum
-    int end_num = begin_of_page + record_per_page;   
+    // 종료 rownum
+    int end_num = begin_of_page + Board.RECORD_PER_PAGE;
 
-    Map <String, Object> map = new HashMap<String, Object>();
-    map.put("word", word);
     map.put("start_num", start_num);
     map.put("end_num", end_num);
 
-    ArrayList<GpaVO> list=this.gpaDAO.list_search_paging(map);
+    ArrayList<GpaVO> list = this.gpaDAO.list_search_paging(map);
+    
     return list;
   }
 
   @Override
-  public String pagingBox(int now_page, String word,String list_file ,int search_count, int record_per_page,
+  public String pagingBox(int boardno, int now_page, String word,String list_file ,int search_count, int record_per_page,
       int page_per_block) {
     // 전체 페이지 수: (double)1/10 -> 0.1 -> 1 페이지, (double)12/10 -> 1.2 페이지 -> 2 페이지
     int total_page = (int) (Math.ceil((double) search_count / record_per_page));
@@ -130,7 +126,7 @@ public class GpaProc  implements GpaProcInter{
     // 현재 3그룹일 경우: (3 - 1) * 10 = 2그룹의 마지막 페이지 20
     int _now_page = (now_grp - 1) * page_per_block;
     if (now_grp >= 2) { // 현재 그룹번호가 2이상이면 페이지수가 11페이지 이상임으로 이전 그룹으로 갈수 있는 링크 생성
-      str.append("<span class='span_box_1'><A href='" + list_file +"&word=" + word + "&now_page=" + _now_page
+      str.append("<span class='span_box_1'><A href='" + list_file + "?boardno="+boardno+"&word=" + word + "&now_page=" + _now_page
           + "'>이전</A></span>");
     }
 
@@ -144,7 +140,7 @@ public class GpaProc  implements GpaProcInter{
         str.append("<span class='span_box_2'>" + i + "</span>"); // 현재 페이지, 강조
       } else {
         // 현재 페이지가 아닌 페이지는 이동이 가능하도록 링크를 설정
-        str.append("<span class='span_box_1'><A href='" + list_file  +"&word=" + word + "&now_page=" + i + "'>" + i
+        str.append("<span class='span_box_1'><A href='" + list_file + "?boardno="+boardno +"&word=" + word + "&now_page=" + i + "'>" + i
             + "</A></span>");
       }
     }
@@ -156,7 +152,7 @@ public class GpaProc  implements GpaProcInter{
     // 현재 페이지 25일경우 -> 현재 3그룹: (3 * 10) + 1 = 4그룹의 시작페이지 31
     _now_page = (now_grp * page_per_block) + 1; // 최대 페이지수 + 1
     if (now_grp < total_grp) {
-      str.append("<span class='span_box_1'><A href='" + list_file +"&word=" + word + "&now_page=" + _now_page
+      str.append("<span class='span_box_1'><A href='" + list_file + "?boardno="+ boardno +"&word=" + word + "&now_page=" + _now_page
           + "'>다음</A></span>");
     }
     str.append("</DIV>");
@@ -165,8 +161,8 @@ public class GpaProc  implements GpaProcInter{
   }
 
   @Override
-  public int list_search_count(String word) {
-    int cnt = this.gpaDAO.list_search_count(word);
+  public int list_cno_search_count(HashMap<String, Object> hashMap) {
+    int cnt = this.gpaDAO.list_cno_search_count(hashMap);
     return cnt;
   }
   

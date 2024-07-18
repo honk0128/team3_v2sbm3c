@@ -2,17 +2,10 @@
 <html layout:decorate="~{th/layout}">
   <!-- layout.html 상속-->
   <div layout:fragment="content">
-    <!-- Header start -->
-    <div class="container-fluid page-header py-5">
-      <h1 class="text-center text-white display-6">
-        <span>영상 등록</span>
-        <span th:if="${word != ''}" th:text="|> ${word} (${search_count} 건)|" class="title_line_text"></span>
-      </h1>
+    <div class="title_line">
+       영상 등록
     </div>
-    <!-- Header End -->
-    
-<div class="container-fluid fruite py-5">
-      <div class="container py-5">
+
     <div class="menu_line"></div>
 
     <form name="frm" method="post" th:object="${videoVO}" action="./create" enctype="multipart/form-data">
@@ -43,7 +36,5 @@
         </button>
       </div>
     </form>
-  </div>
-  </div>
   </div>
 </html>

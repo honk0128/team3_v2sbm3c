@@ -20,7 +20,6 @@ public class GpaVO {
   
   
   /**유저 아이디 */
-  private String btitle = "";
   
   private String aid = "";
   
