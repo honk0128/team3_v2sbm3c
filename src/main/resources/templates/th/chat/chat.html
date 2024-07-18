@@ -82,9 +82,9 @@
           });
 
           // 로컬
-          // const websocket = new WebSocket("ws://localhost:9093/ws/chat");
+          const websocket = new WebSocket("ws://localhost:9093/ws/chat");
           // aws 서버
-          const websocket = new WebSocket("ws://http://15.165.140.165:9093/ws/chat");
+          // const websocket = new WebSocket("ws://http://15.165.140.165:9093/ws/chat");
 
           websocket.onmessage = onMessage;
           websocket.onopen = onOpen;
