@@ -1,31 +1,20 @@
-<!DOCTYPE html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10.0, width=device-width" />
     <title>MY RECIPE</title>
 
-    <script type="text/JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    <!-- Icon Font Stylesheet -->
+    <!-- 필요한 라이브러리 로딩 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <link rel="shortcut icon" href="/images/star.png" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-
-    <!-- Libraries Stylesheet -->
     <link href="/lib/lightbox/css/lightbox.min.css" rel="stylesheet" />
     <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
-
-    <!-- Customized Bootstrap Stylesheet -->
     <link href="/css/bootstrap.min.css" rel="stylesheet" />
-
-    <!-- Template Stylesheet -->
     <link href="/css/style.css" rel="stylesheet" />
     <script src="/js/main.js"></script>
-
-    <!-- JavaScript Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
   </head>
 
@@ -62,7 +51,6 @@
         </h1>
       </div>
 
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
       <script th:inline="javascript">
         $(document).ready(function () {
           const aid = /*[[${aid}]]*/ null; // 컨트롤러에서 설정한 aid 변수 사용
@@ -93,6 +81,9 @@
             }
           });
 
+          // 로컬
+          // const websocket = new WebSocket("ws://localhost:9093/ws/chat");
+          // aws 서버
           const websocket = new WebSocket("ws://http://15.165.140.165:9093/ws/chat");
 
           websocket.onmessage = onMessage;
@@ -152,7 +143,6 @@
               str += "</div></div>";
               $("#msgArea").append(str);
             }
-
             // 스크롤을 맨 아래로 이동
             $("#msgArea").scrollTop($("#msgArea")[0].scrollHeight);
           }
@@ -170,10 +160,9 @@
         <div class="container py-5">
           <div class="">
             <div>
-              <div id="msgArea" class="col" style="height: 400px; overflow-y: auto; border: 0 solid #ccc; padding: 10px"></div>
-
+              <div id="msgArea" class="col mb-3" style="height: 400px; overflow-y: auto; border: 1px solid #ccc; padding: 10px"></div>
               <div class="col">
-                <div class="input-group mb-3">
+                <div class="input-group">
                   <input
                     type="text"
                     id="msg"
