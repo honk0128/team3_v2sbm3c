@@ -4,12 +4,12 @@
 <mapper namespace="dev.mvc.regionfood.RegionfoodDAOInter"> <!-- SB가 자동으로 구현하여 연동하는 interface -->
 
   <insert id="create" parameterType="dev.mvc.regionfood.RegionfoodVO">
-    INSERT INTO regionfood(foodno, foodtitle, foodimg_url,foodimg_urlsaved,fsize, regiono, recipelist, cook_tool, difficulty, cooktime, managerno)
-    VALUES(regionfood_seq.nextval, #{foodtitle}, #{foodimg_url},#{foodimg_urlsaved},#{fsize} , #{regiono}  , #{recipelist} , #{cook_tool} , #{difficulty}, #{cooktime} , #{managerno})
+    INSERT INTO regionfood(foodno, foodtitle, foodimg_url,foodimg_urlsaved,fthumb,fsize, regiono, recipelist, cook_tool, difficulty, cooktime, managerno)
+    VALUES(regionfood_seq.nextval, #{foodtitle}, #{foodimg_url},#{foodimg_urlsaved}, #{fthumb},#{fsize} , #{regiono}  , #{recipelist} , #{cook_tool} , #{difficulty}, #{cooktime} , #{managerno})
   </insert>
   
  <select id="list" parameterType="dev.mvc.regionfood.RegionfoodVO">
-  SELECT foodno, foodtitle, foodimg_url,foodimg_urlsaved,fsize, regiono, recipelist, cook_tool, difficulty, cooktime, managerno
+  SELECT foodno, foodtitle, foodimg_url,foodimg_urlsaved,fthumb,fsize, regiono, recipelist, cook_tool, difficulty, cooktime, managerno
   FROM regionfood
   ORDER BY foodno ASC
   </select>
@@ -28,26 +28,26 @@
   
    <!-- read  -->
     <select id="read" resultType="dev.mvc.regionfood.RegionfoodVO" parameterType="int">
-    SELECT foodno, foodtitle, foodimg_url,foodimg_urlsaved,fsize, regiono, recipelist, cook_tool, difficulty, cooktime, managerno
+    SELECT foodno, foodtitle, foodimg_url,foodimg_urlsaved,fthumb,fsize, regiono, recipelist, cook_tool, difficulty, cooktime, managerno
     FROM regionfood 
-    WHERE regiono = #{regiono}
+    WHERE foodno = #{foodno}
   </select>
   
   
   <!-- 조회 -->
   <select id="alist" resultType="dev.mvc.regionfood.RegionfoodVO" parameterType="int">
-    SELECT foodno, foodtitle, foodimg_url,foodimg_urlsaved,fsize, regiono, recipelist, cook_tool, difficulty, cooktime, managerno
+    SELECT foodno, foodtitle, foodimg_url,foodimg_urlsaved,fthumb,fsize, regiono, recipelist, cook_tool, difficulty, cooktime, managerno
     FROM regionfood
     WHERE regiono = #{regiono}
   </select>
   
   
    <select id="list_search_paging" resultType="dev.mvc.regionfood.RegionfoodVO" parameterType="Map">
-    SELECT foodno, foodtitle, foodimg_url,foodimg_urlsaved,fsize, regiono, recipelist, cook_tool, difficulty, cooktime, managerno, r
+    SELECT foodno, foodtitle, foodimg_url,foodimg_urlsaved,fthumb,fsize, regiono, recipelist, cook_tool, difficulty, cooktime, managerno, r
     FROM (
-        SELECT foodno, foodtitle, foodimg_url,foodimg_urlsaved,fsize, regiono, recipelist, cook_tool, difficulty, cooktime, managerno, rownum as r
+        SELECT foodno, foodtitle, foodimg_url,foodimg_urlsaved,fthumb,fsize, regiono, recipelist, cook_tool, difficulty, cooktime, managerno, rownum as r
         FROM (
-            SELECT v.foodno, v.foodtitle, v.foodimg_url,v.foodimg_urlsaved,v.fsize,v.regiono,v.recipelist,v.cook_tool,v.difficulty,v.cooktime,v.managerno, m.MNAME
+            SELECT v.foodno, v.foodtitle, v.foodimg_url,v.foodimg_urlsaved,fthumb,v.fsize,v.regiono,v.recipelist,v.cook_tool,v.difficulty,v.cooktime,v.managerno, m.MNAME
             FROM regionfood v
             INNER JOIN MANAGER m ON v.managerno = m.MANAGERNO
             <choose>

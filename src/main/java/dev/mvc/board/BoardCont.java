@@ -28,6 +28,7 @@ import dev.mvc.gpa.GpaProcInter;
 import dev.mvc.gpa.GpaVO;
 import dev.mvc.manager.ManagerProc;
 import dev.mvc.manager.ManagerProcInter;
+import dev.mvc.search.SearchProcInter;
 import dev.mvc.tool.Tool;
 import dev.mvc.tool.Upload;
 import dev.mvc.vocabulary.VocabularyProcInter;
@@ -57,6 +58,11 @@ public class BoardCont {
   @Autowired
   @Qualifier("dev.mvc.gpa.GpaProc")
   private GpaProcInter gpaProc;
+  
+  @Autowired
+  @Qualifier("dev.mvc.search.SearchProc")
+  private SearchProcInter searchProc;
+  
   
   @Autowired
   @Qualifier("dev.mvc.vocabulary.VocabularyProc")
@@ -210,6 +216,8 @@ public class BoardCont {
     if (session.getAttribute("managerno") != null) { // 관리자로 로그인한 경우
       word = Tool.checkNull(word).trim();
 
+    
+      
       ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
       model.addAttribute("menu", menu);
 
@@ -374,6 +382,10 @@ public class BoardCont {
 
     word = Tool.checkNull(word).trim();
 
+    if (word != null && !word.trim().isEmpty()) {
+      this.searchProc.search_word(word);
+      }
+    
     HashMap<String, Object> map = new HashMap<>();
     map.put("crudcateno", crudcateno);
     map.put("word", word);
