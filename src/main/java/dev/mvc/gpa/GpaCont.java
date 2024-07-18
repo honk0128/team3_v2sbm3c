@@ -43,7 +43,11 @@ public class GpaCont {
   
   private GpaProcInter gpaproc;
  
-  
+  /** 페이지당 출력할 레코드 갯수 */
+  public int record_per_page = 8;
+
+  /** 블럭당 페이지 수, 하나의 블럭은 10개의 페이지로 구성됨 */
+  public int page_per_blocK = 10;
   
   public GpaCont() {
     System.out.println("-> GpaCont created.");
@@ -105,12 +109,18 @@ public class GpaCont {
   
   
   @GetMapping(value = "/list")
-  public String list(HttpSession session, Model model, @RequestParam(value = "boardno", required = false) Integer boardno,  GpaVO gpaVO, BoardVO boardVO) {
+  public String list(HttpSession session, Model model, @RequestParam(value = "boardno", required = false) Integer boardno,  GpaVO gpaVO, BoardVO boardVO, @RequestParam(name="word", defaultValue = "") String word, @RequestParam(name="now_page", defaultValue = "1") int now_page) {
 
     gpaVO.getBoardno();
     
-    ArrayList<GpaVO> list = this.gpaproc.list();
+    ArrayList<GpaVO> list = this.gpaproc.list_search_paging(word, now_page, this.record_per_page);
     model.addAttribute("list", list);
+    
+    int search_count = this.gpaproc.list_search_count(word);
+    String paging = this.gpaproc.pagingBox(now_page, word, "/gpa/list", search_count, this.record_per_page, this.page_per_blocK);
+    model.addAttribute("paging", paging);
+    model.addAttribute("word", word);
+    model.addAttribute("now_page", now_page);
     model.addAttribute("gpaVO", gpaVO);
     model.addAttribute("boardVO", boardVO);
     
@@ -121,42 +131,42 @@ public class GpaCont {
   }
   
   
-  @GetMapping(value = "/list_paging")
-  public String list_paging(HttpSession session, Model model, @RequestParam(value = "boardno", required = false) Integer boardno,
-      GpaVO gpaVO, BoardVO boardVO,@RequestParam(name = "word", defaultValue = "") String word,
-      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-
-    gpaVO.getBoardno();
-    
-    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
-    model.addAttribute("menu", menu);
-    
-    word = Tool.checkNull(word).trim();
-     
-    HashMap<String, Object> map = new HashMap<>();
-    map.put("boardno", boardno);
-    map.put("word", word);
-    map.put("now_page", now_page);
-    
-    ArrayList<GpaVO> list = this.gpaproc.list_search_paging(map);
-    model.addAttribute("list", list);
-    model.addAttribute("word", word);
-    model.addAttribute("gpaVO", gpaVO);
-    model.addAttribute("boardVO", boardVO);
-    
-    int search_count = this.gpaproc.list_cno_search_count(map);
-    String paging = this.gpaproc.pagingBox(boardno, now_page, word, "/gpa/list_paging", search_count, Gpa.RECORD_PER_PAGE, Gpa.PAGE_PER_BLOCK);
-    model.addAttribute("paging", paging);
-    model.addAttribute("now_page", now_page);
-    model.addAttribute("search_count", search_count);
-    
-    int no = search_count - ((now_page - 1) * Board.RECORD_PER_PAGE);
-    model.addAttribute("no", no);
-    
-   
-    
-    return "th/gpa/list_search_paging"; // templates/member/list.html
-  }
+//  @GetMapping(value = "/list_paging")
+//  public String list_paging(HttpSession session, Model model, @RequestParam(value = "boardno", required = false) Integer boardno,
+//      GpaVO gpaVO, BoardVO boardVO,@RequestParam(name = "word", defaultValue = "") String word,
+//      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+//
+//    gpaVO.getBoardno();
+//    
+//    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+//    model.addAttribute("menu", menu);
+//    
+//    word = Tool.checkNull(word).trim();
+//     
+//    HashMap<String, Object> map = new HashMap<>();
+//    map.put("boardno", boardno);
+//    map.put("word", word);
+//    map.put("now_page", now_page);
+//    
+//    ArrayList<GpaVO> list = this.gpaproc.list_search_paging(map);
+//    model.addAttribute("list", list);
+//    model.addAttribute("word", word);
+//    model.addAttribute("gpaVO", gpaVO);
+//    model.addAttribute("boardVO", boardVO);
+//    
+//    int search_count = this.gpaproc.list_cno_search_count(map);
+//    String paging = this.gpaproc.pagingBox(boardno, now_page, word, "/gpa/list_paging", search_count, Gpa.RECORD_PER_PAGE, Gpa.PAGE_PER_BLOCK);
+//    model.addAttribute("paging", paging);
+//    model.addAttribute("now_page", now_page);
+//    model.addAttribute("search_count", search_count);
+//    
+//    int no = search_count - ((now_page - 1) * Board.RECORD_PER_PAGE);
+//    model.addAttribute("no", no);
+//    
+//   
+//    
+//    return "th/gpa/list_search_paging"; // templates/member/list.html
+//  }
   
   @GetMapping(value = "/avgscore")
   public String avgscore(HttpSession session, Model model, @RequestParam("boardno")int boardno , GpaVO gpaVO) {

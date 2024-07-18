@@ -216,7 +216,8 @@
   border: 1px solid var(--bs-white);
   background: var(--bs-primary);
   position: absolute;
-  top: 50%;
+  margin-top: 200px;
+top: 70%;
   transform: translateY(-50%);
 }
 
@@ -594,19 +595,23 @@
   box-sizing: border-box;
 }
 .growBusiness-vid {
-  background-image: url('https://img.youtube.com/vi/ZV7fxqdmEiI/hqdefault.jpg');
+background-image: url('https://img.youtube.com/vi/J4vEoFVcguw/hqdefault.jpg');
 }
-.timothys-vid {
-  background-image: url('https://img.youtube.com/vi/7WaHKkz1OwA/hqdefault.jpg');
+.timothys-vid
+{
+background-image: url('https://img.youtube.com/vi/Cz0ssQl643I/hqdefault.jpg');
 }
-.watermark-vid {
-  background-image: url('https://img.youtube.com/vi/AR6oP5flxdQ/hqdefault.jpg');
+.watermark-vid
+{
+background-image: url('https://img.youtube.com/vi/XSjtP5Vw9A8/hqdefault.jpg');
 }
-.taborHill-vid {
-  background-image: url('https://img.youtube.com/vi/eGC9kolY0Bg/hqdefault.jpg');
+.taborHill-vid
+{
+background-image: url('https://img.youtube.com/vi/Htm7l6mKBWU/hqdefault.jpg');
 }
-.gravityBrew-vid {
-  background-image: url('https://img.youtube.com/vi/i98Np2Rzdas/hqdefault.jpg');
+.gravityBrew-vid
+{
+background-image: url('https://img.youtube.com/vi/j2cXF7TTN98/hqdefault.jpg');
 }
 @media only screen and (max-width: 1210px) {
   .youtube-carousel-wrap {
@@ -814,7 +819,7 @@
 /**메인페이지 - 리뷰 */
 .review{
   margin-top: 700px;
-  
+  margin-bottom: 500px;
 }
 
 
@@ -960,6 +965,7 @@
         }
         .btn.btn-mini {
             font-size: 0.63rem;
+            margin-top: 20px;
             }
 
  .carousel.slide {
@@ -1037,6 +1043,7 @@
 } 
   
  .boxbody{
+   margin-top: 100px;
    height: 500px;
    border: 1px solid black;
  } 
@@ -1086,3 +1093,83 @@
         max-width: 500px;
         margin: 0 auto;
       }
+      
+      
+      /*** vesitable Start ***/
+
+
+
+.vesitable .vesitable-item {
+height: 100%;
+transition: 0.5s;
+}
+
+.vesitable .vesitable-item:hover {
+box-shadow: 0 0 55px rgba(0, 0, 0, 0.4);
+}
+
+.vesitable .vesitable-item .vesitable-img {
+overflow: hidden;
+transition: 0.5s;
+border-radius: 10px 10px 0 0;
+}
+
+.vesitable .vesitable-item .vesitable-img img {
+transition: 0.5s;
+}
+
+.vesitable .vesitable-item .vesitable-img img:hover {
+transform: scale(1.2);
+}
+
+.vesitable .owl-stage {
+margin: 50px 0;
+position: relative;
+}
+
+.vesitable .owl-nav .owl-prev {
+position: absolute;
+top: -8px;
+right: 0;
+color: var(--bs-primary);
+padding: 5px 25px;
+border: 1px solid var(--bs-secondary);
+border-radius: 20px;
+transition: 0.5s;
+
+}
+
+.vesitable .owl-nav .owl-prev:hover {
+background: var(--bs-secondary);
+color: var(--bs-white);
+}
+
+.vesitable .owl-nav .owl-next {
+position: absolute;
+top: -8px;
+right: 88px;
+color: var(--bs-primary);
+padding: 5px 25px;
+border: 1px solid var(--bs-secondary);
+border-radius: 20px;
+transition: 0.5s;
+}
+
+.vesitable .owl-nav .owl-next:hover {
+background: var(--bs-secondary);
+color: var(--bs-white);
+}
+/*** vesitable End ***/
+
+.recipelist{
+width: 80%;
+margin:auto;
+}
+
+.clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* 표시할 줄 수 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; /* 생략 부호(...) 추가 */
+  }
