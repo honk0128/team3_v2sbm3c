@@ -83,36 +83,31 @@
           
         </aside>
 
-        <aside class="aside_right" >
-          <a href="javascript:location.reload();"><i class="bi bi-arrow-clockwise" style="font-size: 1.5rem"></i></a>
-         
-        </aside>
+        
 
         <!-- 게시글 내용 -->
         <div class="row g-4">
           <div class="col-lg-6">
             <div class="border rounded">
               <div th:if="${regionfoodVO.foodimg_url.endsWith('jpg') || regionfoodVO.foodimg_url.endsWith('png')  || regionfoodVO.foodimg_url.endsWith('gif')}">
-                <img th:src="@{|/regionfood/storage/${regionfoodVO.foodimg_urlsaved}|}" style="width: 100%" />
-              </div>
-              <div th:if="${regionfoodVO.fsize == 0}">
-                <img src="/board/images/aaa.jpg" style="width: 100%" />
-              </div>
-              <div
-                th:if="${((regionfoodVO.foodimg_url.endsWith('jpg') or regionfoodVO.foodimg_url.endsWith('png')  or regionfoodVO.foodimg_url.endsWith('gif')) == false) and (regionfoodVO.fsize > 0)}"
-              >
-                <div>
-                  <span th:text="${regionfoodVO.foodimg_url}"></span>
-                </div>
+          <img th:src="@{|/board/storage/${regionfoodVO.fthumb}|}" style="width: 100%">
+        </div>
+
+        <div th:if="${((regionfoodVO.foodimg_url.endsWith('jpg') || regionfoodVO.foodimg_url.endsWith('png')  || regionfoodVO.foodimg_url.endsWith('gif')) == false) && (regionfoodVO.fsize > 0)}">
+          <span th:text="${regionfoodVO.foodimg_url}"></span>
+        </div>
+
+        <div th:if="${regionfoodVO.fsize == 0}">
+          <img src="/board/images/aaa.jpg" style="width: 120px; height: 90px;">
+        </div>
               </div>
             </div>
-          </div>
-          <div class="col-lg-6">
+            <div class="col-lg-6" style="float: right;">
              
              
             <div style="white-space: pre-wrap"><span th:utext="${content}"></span></div>
 
-            <ul class="mt-4">
+            <ul class="mt-4" >
               <span class="mb-3" style="font-size: 1.5em; font-weight: bold" th:text="${regionfoodVO.foodtitle}"></span>
               <li class="li_none" th:if="${regionfoodVO.fsize > 0}">
                 <span>첨부 파일: </span>
@@ -175,15 +170,31 @@
               ><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a
             > -->
           </div>
+          </div>
+          
         </div>
         
               </div>
         <!-- 게시글 내용 끝-->
-
-        <a>-----------------------------------------------------------------------</a>
+<div class="recipelist">
+        <div class="nav nav-tabs mb-3">
+                    <button
+                      class="nav-link active border-white border-bottom-0"
+                      type="button"
+                      role="tab"
+                      id="nav-about-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#nav-about"
+                      aria-controls="nav-about"
+                      aria-selected="true"
+                    >
+                      레시피
+                    </button>
+                    
+                  </div>
     <aside class="aside_right">
           <a th:href="@{|/recipe_step/create?foodno=${regionfoodVO.foodno}|}"><i class="bi bi-pencil-square" style="font-size: 1.5rem"></i></a>
-          
+         <!-- 
           <a th:href="@{|/regionfood/update?foodno=${regionfoodVO.foodno}&word=${word}&now_page=${now_page}|}"
             ><i class="bi bi-eraser" style="font-size: 1.5rem"></i
           ></a>
@@ -194,31 +205,47 @@
           <a th:href="@{|./delete?foodno=${regionfoodVO.foodno}|}"
             ><i class="bi bi-trash3" style="font-size: 1.5rem"></i
           ></a>
-         
+         -->
 
- 
           <a href="javascript:location.reload();"><i class="bi bi-arrow-clockwise" style="font-size: 1.5rem"></i></a>
 
           
         </aside>
+    
         <div style="width: 100%; margin: 0px auto; clear: both">
           <div>
         <ul>
             <li th:each="step : ${recipe_stepVO}">
-                
+                <aside class="aside_right">
+          <a th:href="@{|/recipe_step/create?foodno=${regionfoodVO.foodno}|}"><i class="bi bi-pencil-square" style="font-size: 1.5rem"></i></a>
+          
+          <a th:href="@{|/recipe_step/update?step_no=${step.step_no}&word=${word}&now_page=${now_page}|}"
+            ><i class="bi bi-eraser" style="font-size: 1.5rem"></i
+          ></a>
+            
+          <a th:href="@{|/recipe_step/delete?step_no=${step.step_no}|}"
+            ><i class="bi bi-trash3" style="font-size: 1.5rem"></i
+          ></a>
+         
+          <a href="javascript:location.reload();"><i class="bi bi-arrow-clockwise" style="font-size: 1.5rem"></i></a>
+
+        </aside>
                 <p>요리 단계: <span th:text="${step.step_order}"></span></p>
                 <p>조리법: <span th:text="${step.step_text}"></span></p>
-                <div th:if="${step.step_imgsaved}">
-                    <p>Image: <img th:src="@{${step.step_imgsaved}}" alt="Step Image"></p>
-                </div>
+                
                 <div th:if="${step.thumb}">
-                    <p>Thumbnail: <img th:src="@{${step.thumb}}" alt="Thumbnail"></p>
+                    <img th:src="@{|/board/storage/@{${step.thumb}}|}" alt="Thumbnail">
+                
+
+        
+
+       
                 </div>
             </li>
         </ul>
           </div>
           <br />
-          
+          </div>
       </div>
     </div>
   </div>

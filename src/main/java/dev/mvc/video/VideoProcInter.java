@@ -22,6 +22,8 @@ public interface VideoProcInter {
 //    
     public ArrayList<VideoVO> list();
     
+    public String extractSrc(String iframeHtml);
+    
     /**
      * 비디오 조회
      * @param spiceno
@@ -30,6 +32,7 @@ public interface VideoProcInter {
     public VideoVO read(int videono);
 
     public ArrayList<VideoVO> list_search_paging(String word, int now_page, int record_per_page);
+    
     
     
     public int list_search_count(String word);

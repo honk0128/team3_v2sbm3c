@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev.mvc.board.Board;
 import dev.mvc.manager.ManagerVO;
 import dev.mvc.spice.SpiceVO;
+
+
 
 @Service("dev.mvc.video.VideoProc")
 public class VideoProc  implements VideoProcInter{
@@ -40,6 +45,13 @@ public class VideoProc  implements VideoProcInter{
     return list;
   }
 
+  
+  public String extractSrc(String iframeHtml) {
+    Document doc = Jsoup.parse(iframeHtml);
+    Element iframe = doc.select("iframe").first();
+    return iframe != null ? iframe.attr("src") : "";
+}
+  
   @Override
   public int delete(int videono) {
     int cnt = this.videoDAO.delete(videono);
