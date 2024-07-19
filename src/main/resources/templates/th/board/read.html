@@ -453,9 +453,9 @@
         <input type="hidden" name="crudcateno" th:value="${param.crudcateno}" />
         <input type="hidden" id="accountNo" th:value="${session.accountno}" />
 
-        <aside class="aside_right" th:if="${session.managerno >= 1 || session.accountno >= 1}">
+        <aside class="aside_right">
           <a th:href="@{|/board/create?crudcateno=${boardVO.crudcateno}|}"
-            ><i class="bi bi-pencil-square" style="font-size: 1.5rem" title="등록"></i
+            ><i class="bi bi-pencil-square" style="font-size: 1.5rem" title="등록" th:if="${session.managerno >= 1 || session.accountno >= 1}"></i
           ></a>
           <a
             th:href="@{|/board/update_board?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}"
@@ -481,21 +481,14 @@
             ><i class="bi bi-wordpress" style="font-size: 1.5rem" title="단어장" th:if="${session.managerno >= 1}"></i
           ></a>
 
-          <a onclick="addBookmark()"><i class="bi bi-bookmark-star" style="font-size: 1.5rem" title="북마크"></i></a>
+          <a onclick="addBookmark()" th:if="${session.managerno >= 1 || session.accountno >= 1}"><i class="bi bi-bookmark-star" style="font-size: 1.5rem" title="북마크"></i></a>
 
-          <a onclick="deleteBookmark()"><i class="bi bi-bookmark-x" style="font-size: 1.5rem; color: red" title="북마크 삭제"></i></a>
+          <a onclick="deleteBookmark()" th:if="${session.managerno >= 1 || session.accountno >= 1}"><i class="bi bi-bookmark-x" style="font-size: 1.5rem; color: red" title="북마크 삭제" ></i></a>
 
           <a href="javascript:location.reload();"><i class="bi bi-arrow-clockwise" style="font-size: 1.5rem" title="새로고침"></i></a>
 
           <a th:href="@{|./list_cno?crudcateno=${crudcateVO.crudcateno}&word=${word}&now_page=${now_page}|}"
             ><i class="bi bi-list-columns-reverse" style="font-size: 1.5rem" title="목록"></i
-          ></a>
-        </aside>
-
-        <aside class="aside_right" th:unless="${session.managerno >= 1 || session.accountno == boardVO.accountno}">
-          <a href="javascript:location.reload();"><i class="bi bi-arrow-clockwise" style="font-size: 1.5rem"></i></a>
-          <a th:href="@{|./list_cno?crudcateno=${crudcateVO.crudcateno}&word=${word}&now_page=${now_page}|}"
-            ><i class="bi bi-list-columns-reverse" style="font-size: 1.5rem"></i
           ></a>
         </aside>
 
