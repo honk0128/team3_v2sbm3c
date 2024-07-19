@@ -60,10 +60,7 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <li class="nav-item">
-                    <a
-                      class="nav-link"
-                      th:if="${session.accountno != null} or ${session.managerno != null}"
-                      th:href="@{|/bookmark/bm_list?accountno=${session.accountno}|}"
+                    <a class="nav-link" th:if="${session.accountno != null}" th:href="@{|/bookmark/bm_list?accountno=${session.accountno}|}"
                       >북마크 목록</a
                     >
                   </li>
@@ -81,6 +78,9 @@
                   </li>
                   <li class="nav-item" th:if="${session.managerno != null or session.accountno != null}">
                     <a class="nav-link" th:href="@{|/gpa/list|}">별점 리스트</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="openWordCloudPopup()">워드 클라우드</a>
                   </li>
                 </ul>
               </li>
@@ -104,6 +104,18 @@
                   <li class="nav-item"><a class="nav-link" href="/manager/list">관리자 목록</a></li>
                   <li class="nav-item">
                     <a class="nav-link" href="#" onclick="recommendPopup()">추천 관리</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" th:href="@{/vocabulary/create}">단어 등록</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" th:href="@{/vocabulary/list}">단어 목록</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" th:href="@{/region/list}">지역 목록</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" th:if="${session.managerno >=1}" th:href="@{/region/create}">지역 생성</a>
                   </li>
                 </ul>
               </li>
@@ -142,51 +154,6 @@
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" th:href="@{/spice/list}">향신료정보</a>
-                  </li>
-                </ul>
-              </li>
-
-              <!-- 댓글 -->
-              <li class="nav-item dropdown" th:if="${session.managerno >=1}">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  id="navbarDropdownMenuLink"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                  th:text="단어장"
-                >
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li class="nav-item">
-                    <a class="nav-link" th:href="@{/vocabulary/create}">단어 등록</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" th:href="@{/vocabulary/list}">단어 목록</a>
-                  </li>
-                </ul>
-              </li>
-              <!--메인 유튜브 영상 -->
-
-              <!-- 지역 음식 등록 -->
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  id="navbarDropdownMenuLink"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                  th:text="지역별추천음식"
-                >
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li class="nav-item">
-                    <a class="nav-link" th:href="@{/region/list}">지역 목록</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" th:if="${session.managerno >=1}" th:href="@{/region/create}">지역 생성</a>
                   </li>
                 </ul>
               </li>
@@ -239,7 +206,7 @@
               </script>
 
               <!-- 주간 식단 -->
-              <li class="nav-item dropdown" th:if="${session.managerno != null or session.accountno != null}">
+              <li class="nav-item dropdown" th:if="${session.accountno != null}">
                 <a
                   class="nav-link dropdown-toggle"
                   href="#"
@@ -292,12 +259,8 @@
                   <li class="nav-item">
                     <a class="nav-link" href="#" onclick="openChatPopup()">채팅방</a>
                   </li>
-
                   <li class="nav-item">
                     <a class="nav-link" href="#" onclick="openChatbotPopup()">챗 봇</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="openWordCloudPopup()">워드 클라우드</a>
                   </li>
                 </ul>
               </li>
