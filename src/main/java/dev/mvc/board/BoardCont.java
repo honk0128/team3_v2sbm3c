@@ -6,13 +6,12 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.catalina.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +25,6 @@ import dev.mvc.crudcate.CrudcateVO;
 import dev.mvc.crudcate.CrudcateVOMenu;
 import dev.mvc.gpa.GpaProcInter;
 import dev.mvc.gpa.GpaVO;
-import dev.mvc.manager.ManagerProc;
 import dev.mvc.manager.ManagerProcInter;
 import dev.mvc.search.SearchProcInter;
 import dev.mvc.tool.Tool;
@@ -72,17 +70,14 @@ public class BoardCont {
     System.out.println("-> BoardCont created.");
   }
 
-    /**
-   * POST 요청시 새로고침 방지, POST 요청 처리 완료 → redirect → url → GET → forward -> html 데이터
-   * 전송
-   * @return
-   */
-  @GetMapping(value = "/msg")
-  public String msg(Model model, String url) {
+
+  @GetMapping(value = "/errors")
+  public String errors(Model model, String url) {
+    
     ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
     model.addAttribute("menu", menu);
 
-    return url;
+    return "th/board/errors";
   }
 
   /**
@@ -161,10 +156,7 @@ public class BoardCont {
           boardVO.setBsize(size1); // 파일 크기
 
         } else { // 전송 못하는 파일 형식
-          ra.addFlashAttribute("code", "check_upload_file_fail"); // 업로드 할 수 없는 파일
-          ra.addFlashAttribute("cnt", 0); // 업로드 실패
-          ra.addFlashAttribute("url", "/board/msg"); // msg.html, redirect parameter 적용
-          return "redirect:/board/msg"; // Post -> Get - param...
+          return "th/board/errors";
         }
       } else { // 글만 등록하는 경우
         System.out.println("-> 글만 등록");
@@ -193,14 +185,11 @@ public class BoardCont {
         ra.addAttribute("crudcateno", boardVO.getCrudcateno()); // controller -> controller: O
         return "redirect:/board/list_cno";
       } else {
-        ra.addFlashAttribute("code", "create_fail"); // DBMS 등록 실패
-        ra.addFlashAttribute("cnt", 0); // 업로드 실패
-        ra.addFlashAttribute("url", "/board/msg"); // msg.html, redirect parameter 적용
-        return "redirect:/board/msg"; // Post -> Get - param...
+        return "th/board/errors";
       }
   
   }
-  return "redirect:/member/login_form_need"; // /member/login_cookie_need.html
+  return "redirect:/account/login_need";
 }
   /**
    * 전체 목록
@@ -239,7 +228,7 @@ public class BoardCont {
 
       return "th/board/list_all";
     } else {
-      return "redirect:/manager/login_form_need";
+      return "redirect:/account/login_need";
     }
   }
 
@@ -329,7 +318,7 @@ public class BoardCont {
       
       return "th/board/youtube"; 
     }
-    return "redirect:/account/login_need"; // account/login_need.html
+    return "redirect:/account/login_need";
   }
 
   /**
@@ -448,8 +437,7 @@ public class BoardCont {
       }
   
       // 관리자 또는 작성자가 아닐 경우
-      ra.addAttribute("url", "/account/login_need"); 
-      return "redirect:/board/msg";
+      return "redirect:/account/login_need";
   }
   
 
@@ -491,22 +479,13 @@ public class BoardCont {
                 return "redirect:/board/read"; // @GetMapping(value = "/read")
             } else {
                 // 작성자도 관리자도 아닌 경우
-                ra.addFlashAttribute("code", "not_authorized");
-                ra.addFlashAttribute("cnt", 0);
-                ra.addAttribute("url", "/board/msg"); // msg.html, redirect parameter 적용
-
-                return "redirect:/board/msg"; // @GetMapping(value = "/msg")
+                return "th/board/errors";
             }
         } else { // 패스워드 불일치
-            ra.addFlashAttribute("code", "passwd_fail"); // redirect -> forward -> html
-            ra.addFlashAttribute("cnt", 0);
-            ra.addAttribute("url", "/board/msg"); // msg.html, redirect parameter 적용
-
-            return "redirect:/board/msg"; // @GetMapping(value = "/msg")
+          return "th/board/errors";
         }
     } else { // 정상적인 로그인이 아닌 경우 로그인 유도
-        ra.addAttribute("url", "/account/login_need");
-        return "redirect:/board/msg"; // @GetMapping(value = "/msg")
+      return "redirect:/account/login_need";
     }
   }
 
@@ -633,15 +612,10 @@ public class BoardCont {
               return "redirect:/board/read";
           } else {
               // 작성자도 관리자도 아닌 경우
-              ra.addFlashAttribute("code", "not_authorized");
-              ra.addFlashAttribute("cnt", 0);
-              ra.addAttribute("url", "/board/msg"); // msg.html, redirect parameter 적용
-
-              return "redirect:/board/msg"; // GET
+              return "th/board/errors";
           }
       } else {
-          ra.addAttribute("url", "/member/login_cookie_need");
-          return "redirect:/board/msg"; // GET
+        return "redirect:/account/login_need";
       }
   }
 
@@ -680,16 +654,11 @@ public class BoardCont {
               return "th/board/delete"; // forward
           } else {
               // 작성자도 관리자도 아닌 경우
-              ra.addFlashAttribute("code", "not_authorized");
-              ra.addFlashAttribute("cnt", 0);
-              ra.addAttribute("url", "/board/msg"); // msg.html, redirect parameter 적용
-
-              return "redirect:/board/msg"; // GET
+              return "th/board/errors";
           }
       } else {
           // 로그인한 사용자가 없는 경우
-          ra.addAttribute("url", "/manager/login_cookie_need");
-          return "redirect:/board/msg";
+          return "redirect:/account/login_need";
       }
   }
   
@@ -724,8 +693,9 @@ public class BoardCont {
               Tool.deleteFile(uploadDir, thumb1);
               // DBMS 삭제
               this.boardProc.delete_gpa(boardno);
-              this.boardProc.delete_recommend(boardno);
               this.boardProc.delete_bookmark(boardno);
+              this.boardProc.delete_breply(boardno);
+              this.boardProc.delete_brereply(boardno);
               this.boardProc.delete(boardno);
   
               // 페이지 번호 조정
@@ -747,16 +717,11 @@ public class BoardCont {
               return "redirect:/board/list_cno";
           } else {
               // 작성자도 관리자도 아닌 경우
-              ra.addFlashAttribute("code", "not_authorized");
-              ra.addFlashAttribute("cnt", 0);
-              ra.addAttribute("url", "/board/msg"); // msg.html, redirect parameter 적용
-
-              return "redirect:/board/msg"; // GET
+              return "th/board/errors";
           }
       } else {
           // 로그인한 사용자가 없는 경우
-          ra.addAttribute("url", "/manager/login_cookie_need");
-          return "redirect:/board/msg";
+          return "redirect:/account/login_need";
       }
   }
   

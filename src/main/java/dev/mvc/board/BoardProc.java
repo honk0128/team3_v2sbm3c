@@ -265,15 +265,23 @@ public class BoardProc implements BoardProcInter {
     return cnt;
   }
 
-  @Override
-  public int delete_recommend(int boardno) {
-    int cnt = this.boardDAO.delete_recommend(boardno);
-    return cnt;
-  }
 
   @Override
   public int delete_bookmark(int boardno) {
     int cnt = this.boardDAO.delete_bookmark(boardno);
+    return cnt;
+  }
+
+  
+  @Override
+  public int delete_breply(int boardno) {
+    int cnt = this.boardDAO.delete_breply(boardno);
+    return cnt;
+  }
+
+  @Override
+  public int delete_brereply(int boardno) {
+    int cnt = this.boardDAO.delete_brereply(boardno);
     return cnt;
   }
 

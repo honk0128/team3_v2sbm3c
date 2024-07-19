@@ -159,18 +159,25 @@
       WHERE boardno=#{boardno}
   </delete>
 
-  <!-- RECOMMEND 테이블의 레코드 삭제 -->
-  <delete id="delete_recommend" parameterType="int">
-      DELETE FROM RECOMMEND
-      WHERE boardno=#{boardno}
-  </delete>
-
   <!-- BOOKMARK 테이블의 레코드 삭제 -->
   <delete id="delete_bookmark" parameterType="int">
       DELETE FROM BOOKMARK
       WHERE boardno=#{boardno}
   </delete>
+
+      <!-- BEREREPLY 테이블의 레코드 삭제 -->
+  <delete id="delete_brereply" parameterType="int">
+    DELETE FROM BREREPLY
+    WHERE breplyno = #{bereplyno}
+  </delete>
+
     
+    <!-- BEREPLY 테이블의 레코드 삭제 -->
+  <delete id="delete_breply" parameterType="int">
+      DELETE FROM BREPLY
+      WHERE boardno=#{boardno}
+  </delete>
+
   <!-- FK cateno 컬럼에 대응하는 필수 SQL -->
   <!-- 특정 카테고리에 속한 레코드 갯수를 리턴 -->
   <select id="count_cno" resultType="int" parameterType="int">

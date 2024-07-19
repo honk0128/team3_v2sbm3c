@@ -60,7 +60,7 @@
         let content_tag = document.getElementById("breplycont");
         let password_tag = document.getElementById("breplypasswd");
         let file_tag = document.getElementById("file1MF");
-
+        
         let btn_create_tag = document.getElementById("btn_create"); // 댓글 등록
         let btn_save_tag = document.getElementById("btn_save"); // 댓글 수정 저장
         let btn_cancel_tag = document.getElementById("btn_cancel"); // 댓글 수정 취소
@@ -453,23 +453,33 @@
         <input type="hidden" name="crudcateno" th:value="${param.crudcateno}" />
         <input type="hidden" id="accountNo" th:value="${session.accountno}" />
 
-        <aside class="aside_right" th:if="${session.managerno >= 1 || session.accountno == boardVO.accountno}">
+        <aside class="aside_right" th:if="${session.managerno >= 1 || session.accountno >= 1}">
           <a th:href="@{|/board/create?crudcateno=${boardVO.crudcateno}|}"
             ><i class="bi bi-pencil-square" style="font-size: 1.5rem" title="등록"></i
           ></a>
-          <a th:href="@{|/board/update_board?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}"
+          <a
+            th:href="@{|/board/update_board?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}"
+            th:if="${session.managerno >= 1 || session.accountno == boardVO.accountno}"
             ><i class="bi bi-eraser" style="font-size: 1.5rem" title="수정"></i
           ></a>
-          <a th:href="@{|./update_file?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}"
+          <a
+            th:href="@{|./update_file?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}"
+            th:if="${session.managerno >= 1 || session.accountno == boardVO.accountno}"
             ><i class="bi bi-image" style="font-size: 1.5rem" title="파일 수정"></i
           ></a>
-          <a th:href="@{|/board/youtube?crudcateno=${boardVO.crudcateno}&boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}"
+          <a
+            th:href="@{|/board/youtube?crudcateno=${boardVO.crudcateno}&boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}|}"
+            th:if="${session.managerno >= 1 || session.accountno == boardVO.accountno}"
             ><i class="bi bi-youtube" style="font-size: 1.5rem" title="유튜브"></i
           ></a>
-          <a th:href="@{|./delete?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}&crudcateno=${boardVO.crudcateno}|}"
+          <a
+            th:href="@{|./delete?boardno=${boardVO.boardno}&word=${word}&now_page=${now_page}&crudcateno=${boardVO.crudcateno}|}"
+            th:if="${session.managerno >= 1 || session.accountno == boardVO.accountno}"
             ><i class="bi bi-trash3" style="font-size: 1.5rem" title="삭제"></i
           ></a>
-          <a th:href="@{|/vocabulary/create|}"><i class="bi bi-wordpress" style="font-size: 1.5rem" title="단어장"></i></a>
+          <a th:href="@{|/vocabulary/create|}"
+            ><i class="bi bi-wordpress" style="font-size: 1.5rem" title="단어장" th:if="${session.managerno >= 1}"></i
+          ></a>
 
           <a onclick="addBookmark()"><i class="bi bi-bookmark-star" style="font-size: 1.5rem" title="북마크"></i></a>
 

@@ -128,8 +128,9 @@ public interface BoardProcInter {
    */
   public int delete(int boardno);
   public int delete_gpa(int boardno);
-  public int delete_recommend(int boardno);
   public int delete_bookmark(int boardno);
+  public int delete_breply(int boardno);
+  public int delete_brereply(int boardno);
   
   /**
   * FK crudcateno 값이 같은 레코드 갯수 산출
