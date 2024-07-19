@@ -216,9 +216,17 @@
   border: 1px solid var(--bs-white);
   background: var(--bs-primary);
   position: absolute;
-  margin-top: 200px;
-top: 70%;
+
+  top: 70%;
   transform: translateY(-50%);
+}
+
+.mobingprev {
+  margin-top: 200px;
+}
+
+.mobingnext {
+  margin-top: 200px;
 }
 
 .carousel-control-next {
@@ -533,32 +541,31 @@ top: 70%;
   vertical-align: middle;
 }
 
-
 /**
 메인페이지_영상
 **/
-.youtuberoom{
-  margin-top: 100px;;
+.youtuberoom {
+  margin-top: 100px;
 }
 
- .youtext{
+.youtext {
   font-size: 50px;
 }
 
-.fa-youtube{
+.fa-youtube {
   color: red;
   font-size: 50px;
 }
 
 .youtube-carousel-wrap {
-  width: 100%; 
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
   flex-wrap: nowrap;
 }
 .youtube-carousel-main {
-  width:960px;
+  width: 960px;
   height: 540px;
 }
 .youtube-carousel-gallery {
@@ -588,36 +595,36 @@ top: 70%;
   font-size: 18px;
   font-family: inherit;
   color: white;
-  background: rgba(0,0,0,0.6);
-  position:absolute; bottom: 0;
-  left: 0; width: 100%;
-  margin: 0; padding: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  padding: 10px;
   box-sizing: border-box;
 }
 .growBusiness-vid {
-background-image: url('https://img.youtube.com/vi/J4vEoFVcguw/hqdefault.jpg');
+  background-image: url("https://img.youtube.com/vi/J4vEoFVcguw/hqdefault.jpg");
 }
-.timothys-vid
-{
-background-image: url('https://img.youtube.com/vi/Cz0ssQl643I/hqdefault.jpg');
+.timothys-vid {
+  background-image: url("https://img.youtube.com/vi/Cz0ssQl643I/hqdefault.jpg");
 }
-.watermark-vid
-{
-background-image: url('https://img.youtube.com/vi/XSjtP5Vw9A8/hqdefault.jpg');
+.watermark-vid {
+  background-image: url("https://img.youtube.com/vi/XSjtP5Vw9A8/hqdefault.jpg");
 }
-.taborHill-vid
-{
-background-image: url('https://img.youtube.com/vi/Htm7l6mKBWU/hqdefault.jpg');
+.taborHill-vid {
+  background-image: url("https://img.youtube.com/vi/Htm7l6mKBWU/hqdefault.jpg");
 }
-.gravityBrew-vid
-{
-background-image: url('https://img.youtube.com/vi/j2cXF7TTN98/hqdefault.jpg');
+.gravityBrew-vid {
+  background-image: url("https://img.youtube.com/vi/j2cXF7TTN98/hqdefault.jpg");
 }
 @media only screen and (max-width: 1210px) {
   .youtube-carousel-wrap {
     flex-wrap: wrap;
   }
-  .youtube-carousel-gallery, .youtube-carousel-main {
+  .youtube-carousel-gallery,
+  .youtube-carousel-main {
     width: 100%;
   }
   .youtube-carousel-gallery {
@@ -637,7 +644,6 @@ background-image: url('https://img.youtube.com/vi/j2cXF7TTN98/hqdefault.jpg');
 메인페이지_슬라이더
 **/
 .main {
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -645,37 +651,35 @@ background-image: url('https://img.youtube.com/vi/j2cXF7TTN98/hqdefault.jpg');
   height: 100%;
 }
 
-@media(max-width: 1000px) {
+@media (max-width: 1000px) {
   .slidea figure {
     width: 150px; /* 이미지 간격을 줄이기 위해 조정 */
   }
-  
-  .fa-crown.gold{
-  color: rgb(255, 255, 128);
-  font-size: 30px;
-}
 
-.fa-crown.silver{
-  color: lightgrey;
-  font-size: 30px;
-}
+  .fa-crown.gold {
+    color: rgb(255, 255, 128);
+    font-size: 30px;
+  }
 
+  .fa-crown.silver {
+    color: lightgrey;
+    font-size: 30px;
+  }
 
-.fa-crown.brown{
-  color: brown;
-  font-size: 30px;
-}
-  
-  .rank{
-  position: relative;
-  top: 80px;
-  font-size: 20px;
-}
+  .fa-crown.brown {
+    color: brown;
+    font-size: 30px;
+  }
+
+  .rank {
+    position: relative;
+    top: 80px;
+    font-size: 20px;
+  }
 
   .slidea figure img {
     max-width: 80%; /* 이미지 크기 조정 */
   }
-  
 
   /* 이미지의 3D 거리를 좁히기 위해 translateZ 값을 조정 */
   .slidea figure:nth-child(1) {
@@ -697,7 +701,6 @@ background-image: url('https://img.youtube.com/vi/j2cXF7TTN98/hqdefault.jpg');
     transform: rotateY(360deg) translateZ(200px); /* 수정된 값 */
   }
 }
-
 
 .textarea {
   height: 300px;
@@ -725,7 +728,7 @@ background-image: url('https://img.youtube.com/vi/j2cXF7TTN98/hqdefault.jpg');
 
 .slideshow {
   width: 400px;
-  
+
   perspective: 1200px;
   position: relative;
 }
@@ -770,8 +773,7 @@ background-image: url('https://img.youtube.com/vi/j2cXF7TTN98/hqdefault.jpg');
 .slidea img {
   width: 100%;
   height: 100%;
-  -webkit-box-reflect: below 10px
-    linear-gradient(transparent, transparent, #0005);
+  -webkit-box-reflect: below 10px linear-gradient(transparent, transparent, #0005);
   box-shadow: 0 0 8px #fff;
 }
 
@@ -794,87 +796,78 @@ background-image: url('https://img.youtube.com/vi/j2cXF7TTN98/hqdefault.jpg');
   }
 }
 
-.rank{
+.rank {
   position: relative;
   top: 80px;
   font-size: 50px;
 }
 
-.fa-crown.gold{
+.fa-crown.gold {
   color: rgb(255, 255, 128);
   font-size: 50px;
 }
 
-.fa-crown.silver{
+.fa-crown.silver {
   color: lightgrey;
   font-size: 50px;
 }
 
-
-.fa-crown.brown{
+.fa-crown.brown {
   color: brown;
   font-size: 50px;
 }
 
 /**메인페이지 - 리뷰 */
-.review{
+.review {
   margin-top: 700px;
   margin-bottom: 500px;
 }
 
+.review_title {
+  width: 100%;
+  height: 15%;
+}
 
-  .review_title{
-   width: 100%;
-   height: 15%; 
-  
-  
-  }
-   
-    .review_title span{
+.review_title span {
   font-size: large;
-  
-   color:#99cc00;
-  
-  }
 
-.review_content{
+  color: #99cc00;
+}
+
+.review_content {
   border: solid black 1px;
   width: 90%;
   height: 150px;
- 
- 
 }
 
-.review_img_room{
-   border: solid black 1px;
-   width: 20%;
-   float: left;
-   height: 100%;
-
+.review_img_room {
+  border: solid black 1px;
+  width: 20%;
+  float: left;
+  height: 100%;
 }
 
-.review_img{
+.review_img {
   width: 100%;
   height: 100%;
   justify-content: center;
   text-align: center;
   margin: auto;
-  
-  }
-  
-  
-  /**메인 페이지 - 무빙박스 */
-  /* Global */
+}
 
+/**메인 페이지 - 무빙박스 */
+/* Global */
 
-.box-fluid img { max-width:100%; }
+.box-fluid img {
+  max-width: 100%;
+}
 
 .box-fluid a {
   -webkit-transition: all 150ms ease;
   -moz-transition: all 150ms ease;
   -ms-transition: all 150ms ease;
   -o-transition: all 150ms ease;
-  transition: all 150ms ease; 
+  transition: all 150ms ease;
 }
 .box-fluid a:hover {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; /* IE 8 */
@@ -884,16 +877,12 @@ background-image: url('https://img.youtube.com/vi/j2cXF7TTN98/hqdefault.jpg');
 }
 
 .carousel-control-prev {
-  
 }
 
- 
-
-.carousel-control-prev-icon{
-  
+.carousel-control-prev-icon {
 }
 
-.fa-backward{
+.fa-backward {
   font-size: 50px;
 }
 
@@ -912,15 +901,15 @@ background-image: url('https://img.youtube.com/vi/j2cXF7TTN98/hqdefault.jpg');
 .carousel-item-prev {
   transform: translateX(-100%); /* 이전 슬라이드가 왼쪽에 위치하도록 설정 */
 }
-  
-.thumbnail{
+
+.thumbnail {
   width: 240px;
   height: 150px;
-  
-  margin:10px;
- border: 1px solid rgb(192, 192, 192); 
-  padding: 5px; 
-  background-color: white; 
+
+  margin: 10px;
+  border: 1px solid rgb(192, 192, 192);
+  padding: 5px;
+  background-color: white;
   border-radius: 25px, 25px, 25px, 25px;
 }
 
@@ -928,8 +917,7 @@ background-image: url('https://img.youtube.com/vi/j2cXF7TTN98/hqdefault.jpg');
   -webkit-box-reflect: none !important;
 }
 
-.col-md-3{
- 
+.col-md-3 {
 }
 
 .caption {
@@ -942,234 +930,235 @@ background-image: url('https://img.youtube.com/vi/j2cXF7TTN98/hqdefault.jpg');
   color: white; /* 텍스트 색상 설정 */
 }
 
-@media(max-width: 1000px) {
-  
+@media (max-width: 1000px) {
   .caption {
-  position: relative; /* 절대 위치로 설정하여 이미지 위에 오게 합니다. */
-  bottom: 0px; /* 이미지의 하단에 위치하도록 설정 */
-  background-color: rgba(0, 0, 0, 0); /* 배경색 설정 */
-  width: 100%; /* 컨테이너의 너비를 이미지와 같게 설정 */
-  padding: 10px; /* 내부 여백 설정 */
-  
-  color: white; /* 텍스트 색상 설정 */
-}
+    position: relative; /* 절대 위치로 설정하여 이미지 위에 오게 합니다. */
+    bottom: 0px; /* 이미지의 하단에 위치하도록 설정 */
+    background-color: rgba(0, 0, 0, 0); /* 배경색 설정 */
+    width: 100%; /* 컨테이너의 너비를 이미지와 같게 설정 */
+    padding: 10px; /* 내부 여백 설정 */
+
+    color: white; /* 텍스트 색상 설정 */
   }
+}
 
 .caption h4 {
-    font-size: 1rem;
-    color: #444;
-    }
-    .caption p {
-        font-size: 0.75rem;
-        color: #999;
-        }
-        .btn.btn-mini {
-            font-size: 0.63rem;
-            margin-top: 20px;
-            }
+  font-size: 1rem;
+  color: #444;
+}
+.caption p {
+  font-size: 0.75rem;
+  color: #999;
+}
+.btn.btn-mini {
+  font-size: 0.63rem;
+  margin-top: 20px;
+}
 
- .carousel.slide {
-    width: 100%;
-    float: right;
-    animation: none; /* animation 속성을 없애서 돌지 않게 합니다. */
-    transform-style: preserve-3d;
-} 
-  
+.carousel.slide {
+  width: 100%;
+  float: right;
+  animation: none; /* animation 속성을 없애서 돌지 않게 합니다. */
+  transform-style: preserve-3d;
+}
+
 .control-box {
-    text-align: right;
-    width: 100%;
-    position: relative;
-    
-    }
-   
-  
-  .carousel-control-prev{
-   position: absolute;
-   left: 30%;
-    width: 50px;
-    height: 50px;
-    background-color: #777777;
-  }
-  
-  .carousel-control-next{
-    position: absolute;
-   right: 30%;
-    width: 50px;
-    height: 50px;
-    background-color: #777777;
-  }
-  
-  .slide:hover {
+  text-align: right;
+  width: 100%;
+  position: relative;
+}
+
+.carousel-control-prev {
+  position: absolute;
+  left: 30%;
+  width: 50px;
+  height: 50px;
+  background-color: #777777;
+}
+
+.carousel-control-next {
+  position: absolute;
+  right: 30%;
+  width: 50px;
+  height: 50px;
+  background-color: #777777;
+}
+
+.slide:hover {
   animation-play-state: paused;
   cursor: pointer;
 }
-  
- 
-.carousel-indicators li {
-      background-color: #007bff; /* 배경 색상 */
-      width: 20px; /* 너비 */
-      height: 20px; /* 높이 */
-      border-radius: 50%; /* 둥근 모서리 */
-      margin: 5px; /* 간격 */
-    }
 
-    .carousel-indicators .active {
-      background-color: #ffc107; /* 활성 상태의 배경 색상 */
-      width: 20px; /* 활성 상태의 너비 */
-      height: 20px; /* 활성 상태의 높이 */
-    }
- 
- .carousel-title{
-   text-align: left;
-   height: 100px;
-   background-color: #f9f9f9;
-   border: 1px solid black;
- }
- 
- .carousel-title h3{
-   margin-top: 20px;
- }
- 
-  .carousel-title h3, p{
-   margin-left: 30px;
- }
- 
- 
- 
+.carousel-indicators li {
+  background-color: #007bff; /* 배경 색상 */
+  width: 20px; /* 너비 */
+  height: 20px; /* 높이 */
+  border-radius: 50%; /* 둥근 모서리 */
+  margin: 5px; /* 간격 */
+}
+
+.carousel-indicators .active {
+  background-color: #ffc107; /* 활성 상태의 배경 색상 */
+  width: 20px; /* 활성 상태의 너비 */
+  height: 20px; /* 활성 상태의 높이 */
+}
+
+.carousel-title {
+  text-align: center;
+  height: 100px;
+}
+
+.carousel-title h3 {
+  margin-top: 20px;
+}
+
+.carousel-title h3,
+p {
+  margin-left: 30px;
+}
+
 .slide img {
   width: 100%;
   height: 100%;
   box-shadow: 0 0 8px #fff;
-} 
-  
- .boxbody{
-   margin-top: 100px;
-   height: 500px;
-   border: 1px solid black;
- } 
- 
- @media(max-width: 800px) {
-  .boxbody{
-   height: 1300px;
-   border: 1px solid black;
- } 
+}
+
+.boxbody {
+  margin-top: 100px;
+  height: 500px;
+}
+
+@media (max-width: 800px) {
+  .boxbody {
+    height: 1300px;
+    border: 1px solid black;
   }
- 
- 
- .boardcontent{
-   height: 100%;
-   margin-bottom: 100px;
- }
- 
- .boardcontent ul{
-   height: 100%;
- }
- 
- .navbar-toggler{
-   background-color: white;
-   color: black;
-   
- }
- 
- /**
+}
+
+.boardcontent {
+  height: 100%;
+  margin-bottom: 100px;
+}
+
+.boardcontent ul {
+  height: 100%;
+}
+
+.navbar-toggler {
+  background-color: white;
+  color: black;
+}
+
+/**
  평균 별점
  **/
- 
- .avgstar{
-   background-color: white;
-   color: white;
-   width: 100%;
- }
- 
- .center-box {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid #ddd;
-        border-radius: 15px;
-        padding: 20px;
-        background-color: #f8f9fa;
-        text-align: center;
-        max-width: 500px;
-        margin: 0 auto;
-      }
-      
-      
-      /*** vesitable Start ***/
 
+.avgstar {
+  background-color: white;
+  color: white;
+  width: 100%;
+}
 
+.center-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  text-align: center;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/*** vesitable Start ***/
 
 .vesitable .vesitable-item {
-height: 100%;
-transition: 0.5s;
+  height: 100%;
+  transition: 0.5s;
 }
 
 .vesitable .vesitable-item:hover {
-box-shadow: 0 0 55px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 55px rgba(0, 0, 0, 0.4);
 }
 
 .vesitable .vesitable-item .vesitable-img {
-overflow: hidden;
-transition: 0.5s;
-border-radius: 10px 10px 0 0;
+  overflow: hidden;
+  transition: 0.5s;
+  border-radius: 10px 10px 0 0;
 }
 
 .vesitable .vesitable-item .vesitable-img img {
-transition: 0.5s;
+  transition: 0.5s;
 }
 
 .vesitable .vesitable-item .vesitable-img img:hover {
-transform: scale(1.2);
+  transform: scale(1.2);
 }
 
 .vesitable .owl-stage {
-margin: 50px 0;
-position: relative;
+  margin: 50px 0;
+  position: relative;
 }
 
 .vesitable .owl-nav .owl-prev {
-position: absolute;
-top: -8px;
-right: 0;
-color: var(--bs-primary);
-padding: 5px 25px;
-border: 1px solid var(--bs-secondary);
-border-radius: 20px;
-transition: 0.5s;
-
+  position: absolute;
+  top: -8px;
+  right: 0;
+  color: var(--bs-primary);
+  padding: 5px 25px;
+  border: 1px solid var(--bs-secondary);
+  border-radius: 20px;
+  transition: 0.5s;
 }
 
 .vesitable .owl-nav .owl-prev:hover {
-background: var(--bs-secondary);
-color: var(--bs-white);
+  background: var(--bs-secondary);
+  color: var(--bs-white);
 }
 
 .vesitable .owl-nav .owl-next {
-position: absolute;
-top: -8px;
-right: 88px;
-color: var(--bs-primary);
-padding: 5px 25px;
-border: 1px solid var(--bs-secondary);
-border-radius: 20px;
-transition: 0.5s;
+  position: absolute;
+  top: -8px;
+  right: 88px;
+  color: var(--bs-primary);
+  padding: 5px 25px;
+  border: 1px solid var(--bs-secondary);
+  border-radius: 20px;
+  transition: 0.5s;
 }
 
 .vesitable .owl-nav .owl-next:hover {
-background: var(--bs-secondary);
-color: var(--bs-white);
+  background: var(--bs-secondary);
+  color: var(--bs-white);
 }
 /*** vesitable End ***/
 
-.recipelist{
-width: 80%;
-margin:auto;
+.recipelist {
+  width: 80%;
+  margin: auto;
 }
 
 .clamp {
-    display: -webkit-box;
-    -webkit-line-clamp: 4; /* 표시할 줄 수 */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis; /* 생략 부호(...) 추가 */
-  }
+  margin-top: 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 4; /* 표시할 줄 수 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; /* 생략 부호(...) 추가 */
+}
+
+.rounded-bottom {
+  position: relative;
+}
+
+.reviewbot {
+  position: absolute;
+  bottom: 0;
+}
+
+.reviewmain {
+  text-align: center;
+  justify-content: center;
+}
