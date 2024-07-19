@@ -25,6 +25,7 @@ import dev.mvc.crudcate.CrudcateVOMenu;
 import dev.mvc.tool.Tool;
 import dev.mvc.tool.Upload;
 import dev.mvc.gpa.Gpa;
+import dev.mvc.spice.Spice;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -109,23 +110,36 @@ public class GpaCont {
   
   
   @GetMapping(value = "/list")
-  public String list(HttpSession session, Model model, @RequestParam(value = "boardno", required = false) Integer boardno,  GpaVO gpaVO, BoardVO boardVO, @RequestParam(name="word", defaultValue = "") String word, @RequestParam(name="now_page", defaultValue = "1") int now_page) {
-
-    gpaVO.getBoardno();
+  public String list(HttpSession session, Model model,   GpaVO gpaVO, BoardVO boardVO, @RequestParam(name="word", defaultValue = "") String word, @RequestParam(name="now_page", defaultValue = "1") int now_page) {
+   
+    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
+    model.addAttribute("menu", menu);
+    
+    word = Tool.checkNull(word).trim();
+    
+    HashMap<String, Object> map = new HashMap<>();
+    map.put("word", word);
+    map.put("now_page", now_page);
+    
+    
     
     ArrayList<GpaVO> list = this.gpaproc.list_search_paging(word, now_page, this.record_per_page);
     model.addAttribute("list", list);
     
-    int search_count = this.gpaproc.list_search_count(word);
-    String paging = this.gpaproc.pagingBox(now_page, word, "/gpa/list", search_count, this.record_per_page, this.page_per_blocK);
-    model.addAttribute("paging", paging);
     model.addAttribute("word", word);
+    
+    int search_count = this.gpaproc.list_search_count(word);
+    String paging = this.gpaproc.pagingBox(now_page, word, "/gpa/list", search_count,Gpa.RECORD_PER_PAGE , Gpa.PAGE_PER_BLOCK);
+    model.addAttribute("paging", paging);
+    
     model.addAttribute("now_page", now_page);
     model.addAttribute("gpaVO", gpaVO);
     model.addAttribute("boardVO", boardVO);
     
-    ArrayList<CrudcateVOMenu> menu = this.crudcateProc.menu();
-    model.addAttribute("menu", menu);
+    int no = search_count - ((now_page - 1) * Spice.record_per_page);
+    model.addAttribute("no", no);
+    
+  
     
     return "th/gpa/list"; // templates/member/list.html
   }

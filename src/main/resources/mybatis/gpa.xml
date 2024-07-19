@@ -20,19 +20,16 @@
   ORDER BY GPANO ASC
   </select>
   
-  <select id="list_cno_search_count" resultType="int" parameterType="HashMap">
-  SELECT COUNT(*) AS cnt
-  FROM GPA
-  <choose>
-    <when test="word == null or word == ''"> 
-      WHERE GPANO = #{gpano}
-      
-   </when>
-   <otherwise>WHERE GPANO = #{gpano} AND (BOARDNO LIKE '%' || #{word} || '%')
-    
-    </otherwise>
+  <select id="list_search_count" resultType="int" parameterType="String">
+  SELECT count(*) AS cnt
+   FROM GPA 
+            
+  <if test="word != null and word !=''">
+            WHERE UPPER(BOARDNO) LIKE '%' || UPPER(#{word}) || '%'  
+            </if>
+   ORDER BY GPANO ASC
    
-  </choose>
+  
 </select>
 
   
@@ -42,21 +39,16 @@
         FROM (
             SELECT GPANO, GPASCORE, ACCOUNTNO, BOARDNO, GPADATE, ROWNUM as r
             FROM (
-                SELECT GPANO, GPASCORE, ACCOUNTNO, BOARDNO, GPADATE
-                FROM GPA
-                <choose>
-                    <when test="word == null or word == ''">
-                        WHERE GPANO = #{gpano}
-                    </when>
-                    <otherwise>
-                        WHERE GPANO = #{gpano}
-                        AND (BOARDNO LIKE '%' || #{word} || '%')
-                    </otherwise>
-                </choose>
-                ORDER BY GPANO DESC
-            )
+            SELECT GPANO, GPASCORE, ACCOUNTNO,BOARDNO, GPADATE 
+            FROM GPA 
+            
+            <if test="word != null and word !=''">
+            WHERE UPPER(BOARDNO) LIKE '%' || UPPER(#{word}) || '%'  
+            </if>
+            ORDER BY GPANO ASC
         )
-        WHERE <![CDATA[ r >= #{start_num} AND r <= #{end_num} ]]>
+    )
+    WHERE r &gt;= #{start_num} AND r &lt;= #{end_num}
     </select>
   
   

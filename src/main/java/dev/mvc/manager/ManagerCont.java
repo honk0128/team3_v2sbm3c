@@ -2,6 +2,7 @@ package dev.mvc.manager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ibatis.reflection.SystemMetaObject;
 
@@ -11,6 +12,7 @@ import org.apache.ibatis.reflection.SystemMetaObject;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -129,6 +131,20 @@ public class ManagerCont {
     return "th/manager/login"; // templates/member/login.html
   }
 
+  @GetMapping("/getsessiondata")
+  public ResponseEntity<Map<String, Object>> getSessionData(HttpSession session) {
+      Map<String, Object> sessionData = new HashMap<>();
+      Integer accountNo = (Integer) session.getAttribute("managerno");
+      String aid = (String) session.getAttribute("mid");
+      // 필요한 세션 데이터를 sessionData에 추가
+      sessionData.put("accountno", accountNo);
+      sessionData.put("mid", aid);
+
+      System.out.println("sessiondata: " + sessionData);
+      
+      return ResponseEntity.ok(sessionData);
+  }
+  
   /**
    * 로그인 처리
    * 
