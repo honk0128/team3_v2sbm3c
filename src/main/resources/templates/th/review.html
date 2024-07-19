@@ -61,8 +61,11 @@
                   <img src="/board/images/aaa.jpg" class="img-fluid w-100 rounded-top" />
                 </div>
                 <div class="vesitable-img" th:if="${boardVO.bsize > 0}">
-                  <img src="/board/images/aaa.jpg" class="img-fluid w-100 rounded-top" />
+                  <img th:src="@{|/board/storage/${boardVO.bthumb}|}" class="img-fluid w-100 rounded-top" />
                 </div>
+                <!-- <div class="vesitable-img" th:unless="|${boardVO.bsize > 0} and {boardVO.bsize == 0}|">
+                  <img src="/board/images/aaa.jpg" class="img-fluid w-100 rounded-top" />
+                </div> -->
                 <div
                   class="text-white bg-primary px-3 py-1 rounded position-absolute"
                   style="top: 10px; right: 10px"
